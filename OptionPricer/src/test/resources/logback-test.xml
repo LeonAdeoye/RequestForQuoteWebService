@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ 
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
+    </layout>
+  </appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+	  <file>c:\development\logs\Test.log</file>
+	  <layout class="ch.qos.logback.classic.PatternLayout">
+	    <Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
+	  </layout>
+	</appender>  
+   
+  <logger name="com.leon.ws.rfq.option.model" level="TRACE"/>
+   
+ 
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>

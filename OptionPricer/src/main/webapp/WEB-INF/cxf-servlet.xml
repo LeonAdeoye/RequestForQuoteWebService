@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<bean id="blackScholesModel" class="com.leon.ws.rfq.option.model.BlackScholesModelImpl"/>
+	
+	<bean id="clientCommunicator" class="com.leon.ws.rfq.communicator.ClientCommunicatorImpl"
+		init-method="initialize" destroy-method="dispose">
+		<constructor-arg value="127.0.0.1"/>
+		<constructor-arg value="1972"/>
+	</bean>
+	
+	<bean id="optionPricer" class="com.leon.ws.rfq.option.model.OptionPricingControllerImpl">
+		<constructor-arg ref="blackScholesModel"/>
+	</bean>
+	
+	<bean id="chatMediator" class="com.leon.ws.rfq.chat.ChatMediatorImpl">
+		<constructor-arg ref="clientCommunicator"/>
+		<constructor-arg ref="chatMessageDao"/>
+	</bean>
+	
+    <bean id="searchController" class="com.leon.ws.rfq.search.SearchControllerImpl">
+    	<property name="searchManagerDao" ref="searchManagerDao"/>
+    </bean>
+    
+    <bean id="clientController" class="com.leon.ws.rfq.client.ClientControllerImpl">
+    	<property name="clientManagerDao" ref="clientManagerDao"/>
+    </bean>
+    
+    <bean id="bookController" class="com.leon.ws.rfq.book.BookControllerImpl">
+    	<property name="bookManagerDao" ref="bookManagerDao"/>
+    </bean>
+    
+    <bean id="holidayController" class="com.leon.ws.rfq.holiday.HolidayControllerImpl">
+    	<property name="holidayDao" ref="holidayDao"/>
+    </bean> 
+    
+    <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoJdbcImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="clientManagerDao" class="com.leon.ws.rfq.client.ClientManagerDaoJdbcImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="bookManagerDao" class="com.leon.ws.rfq.book.BookManagerDaoJdbcImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="chatMessageDao" class="com.leon.ws.rfq.chat.ChatMessageDaoJdbcImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="holidayDao" class="com.leon.ws.rfq.holiday.HolidayDaoJdbcImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    	<property name="url" value="jdbc:mysql://localhost/rfq_development"/>
+    	<property name="username" value="root"/>
+    	<property name="password" value="liverpool"/>
+    	<property name="initialSize" value="3"/>
+    	<property name="maxActive" value="5"/>
+    </bean>
+    	
+	<jaxws:endpoint 	  id="optionPricingController"	  implementor="#optionPricer"	  address="/PriceOption" />
+	<jaxws:endpoint 	  id="searchCriteriaController"	  implementor="#searchController"	  address="/SearchCriteria" />
+	<jaxws:endpoint 	  id="clientMaintenanceController"	  implementor="#clientController"	  address="/ClientMaintenance" />
+	<jaxws:endpoint 	  id="bookMaintenanceController"	  implementor="#bookController"	  address="/BookMaintenance" />
+	<jaxws:endpoint 	  id="chatController"	  implementor="#chatMediator"	  address="/Chat" />
+	<jaxws:endpoint 	  id="holidayMaintenanceController"	  implementor="#holidayController"	  address="/HolidayMaintenance" />
+</beans>
