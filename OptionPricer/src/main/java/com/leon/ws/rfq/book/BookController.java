@@ -1,5 +1,7 @@
-package com.leon.ws.rfq.book;
+// Created by Leon Adeoye
+// EndPoint interface for BookController public interface
 
+package com.leon.ws.rfq.book;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
