@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>OptionPricer</groupId>
-  <artifactId>OptionPricer</artifactId>
+  <groupId>RequestForQuoteWebService</groupId>
+  <artifactId>RequestForQuoteWebService</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
   <properties>
@@ -82,7 +82,7 @@
 		</dependency>                     
 	</dependencies>  
 	<build>
-		<testSourceDirectory>C:\development\git\RequestForQuoteWebService\OptionPricer\src\test</testSourceDirectory>
+		<testSourceDirectory>C:\development\git\RequestForQuoteWebService\src\test</testSourceDirectory>
 		<finalName>rfq</finalName>
 	 <plugins>
       <plugin>	 

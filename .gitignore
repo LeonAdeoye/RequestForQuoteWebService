@@ -3,5 +3,5 @@
 *.jar
 *.ear
 *.lst
-OptionPricer/target/
+target/
 *~

@@ -17,7 +17,7 @@ public class SearchingTest extends TestCase
 	@Before
 	public void setUp()
 	{
-		ApplicationContext context = new FileSystemXmlApplicationContext("C:\\development\\git\\RequestForQuoteWebService\\OptionPricer\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
+		ApplicationContext context = new FileSystemXmlApplicationContext("C:\\development\\git\\RequestForQuoteWebService\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
 		searcher = (SearchController) context.getBean("searchController");
 	}
 	
