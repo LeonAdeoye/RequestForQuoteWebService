@@ -21,6 +21,7 @@ public class HolidayTest extends TestCase
 	@Before
 	public void setUp()
 	{
+		// TODO switch to a relative path
 		ApplicationContext context = new FileSystemXmlApplicationContext("C:\\development\\git\\RequestForQuoteWebService\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
 		holidayController = (HolidayController) context.getBean("holidayController");
 	}

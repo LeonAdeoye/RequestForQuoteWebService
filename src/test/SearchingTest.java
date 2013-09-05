@@ -17,6 +17,7 @@ public class SearchingTest extends TestCase
 	@Before
 	public void setUp()
 	{
+		// TODO switch to relative path
 		ApplicationContext context = new FileSystemXmlApplicationContext("C:\\development\\git\\RequestForQuoteWebService\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
 		searcher = (SearchController) context.getBean("searchController");
 	}
