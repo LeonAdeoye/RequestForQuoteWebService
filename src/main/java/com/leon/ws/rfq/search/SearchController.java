@@ -10,20 +10,20 @@ import javax.jws.WebService;
 public interface SearchController 
 {
 	@WebMethod
-	public void delete(@WebParam(name="owner") String owner, @WebParam(name="key") String key);
+	void delete(@WebParam(name="owner") String owner, @WebParam(name="key") String key);
 
 	@WebMethod
-	public void updatePrivacy(@WebParam(name="owner") String owner, @WebParam(name="key") String key, 
+	void updatePrivacy(@WebParam(name="owner") String owner, @WebParam(name="key") String key, 
 			@WebParam(name="isPrivate") Boolean isPrivate);	
 	
 	@WebMethod
-	public void save(@WebParam(name="owner") String owner, @WebParam(name="key")String key, 
+	void save(@WebParam(name="owner") String owner, @WebParam(name="key")String key, 
 			@WebParam(name="controlName") String controlName, @WebParam(name="controlValue") String controlValue, 
 			@WebParam(name="isPrivate") Boolean isPrivate, @WebParam(name="isFilter") Boolean isFilter);
 	
 	@WebMethod
-	public List<SearchCriterion> getAll();
+	List<SearchCriterion> getAll();
 
 	@WebMethod
-	public List<SearchCriterion> get(@WebParam(name="owner") String owner, @WebParam(name="key")String key);	
+	List<SearchCriterion> get(@WebParam(name="owner") String owner, @WebParam(name="key")String key);	
 }

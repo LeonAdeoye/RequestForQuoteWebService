@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public interface OptionPricingController
 {
 	@WebMethod
-	public void parameterize(@WebParam(name="strike") BigDecimal strike,
+	void parameterize(@WebParam(name="strike") BigDecimal strike,
 			@WebParam(name="volatility") BigDecimal volatility,
 			@WebParam(name="underlyingPrice") BigDecimal underlyingPrice,
 			@WebParam(name="daysToExpiry") BigDecimal daysToExpiry,
@@ -21,7 +21,7 @@ public interface OptionPricingController
 	
 	
 	@WebMethod
-	public OptionPriceResult calculate(@WebParam(name="strike") BigDecimal strike,
+	OptionPriceResult calculate(@WebParam(name="strike") BigDecimal strike,
 			@WebParam(name="volatility") BigDecimal volatility,
 			@WebParam(name="underlyingPrice") BigDecimal underlyingPrice,
 			@WebParam(name="daysToExpiry") BigDecimal daysToExpiry,
@@ -31,10 +31,10 @@ public interface OptionPricingController
 			@WebParam(name="dayCountConvention") BigDecimal dayCountConvention);
 	
 	@WebMethod
-	public String getModelDetails();	
+	String getModelDetails();	
 	
 	@WebMethod
-	public OptionPriceResultSet calculateRange(@WebParam(name="rangeKey") String rangeKey,
+	OptionPriceResultSet calculateRange(@WebParam(name="rangeKey") String rangeKey,
 			@WebParam(name="startValue") BigDecimal startValue,
 			@WebParam(name="endValue") BigDecimal endValue,
 			@WebParam(name="increment") BigDecimal increment); 

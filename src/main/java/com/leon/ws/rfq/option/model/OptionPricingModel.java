@@ -3,21 +3,21 @@ import java.util.Map;
  
 public interface OptionPricingModel
 {
-        public static final String DELTA = "DELTA";    
-        public static final String GAMMA = "GAMMA";
-        public static final String VEGA = "VEGA";
-        public static final String THETA = "THETA";
-        public static final String RHO = "RHO";
-        public static final  String PRICE = "PRICE";
+        static final String DELTA = "DELTA";    
+        static final String GAMMA = "GAMMA";
+        static final String VEGA = "VEGA";
+        static final String THETA = "THETA";
+        static final String RHO = "RHO";
+        static final  String PRICE = "PRICE";
        
-        public static final String VOLATILITY = "VOLATILITY";
-        public static final String INTEREST_RATE = "INTEREST_RATE";
-        public static final String UNDERLYING_PRICE = "UNDERLYING_PRICE";
-        public static final String STRIKE = "STRIKE";
-        public static final  String TIME_TO_EXPIRY = "TIME_TO_EXPIRY";
+        static final String VOLATILITY = "VOLATILITY";
+        static final String INTEREST_RATE = "INTEREST_RATE";
+        static final String UNDERLYING_PRICE = "UNDERLYING_PRICE";
+        static final String STRIKE = "STRIKE";
+        static final  String TIME_TO_EXPIRY = "TIME_TO_EXPIRY";
              
-        public OptionPriceResult calculate(Map<String, Double> input) throws Exception;
-        public OptionPriceResultSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment) throws Exception;
-        public void setToCall(boolean isCallOption);
-        public void setToEuropean(boolean isEuropeanOption);
+        OptionPriceResult calculate(Map<String, Double> input) throws Exception;
+        OptionPriceResultSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment) throws Exception;
+        void setToCall(boolean isCallOption);
+        void setToEuropean(boolean isEuropeanOption);
 }

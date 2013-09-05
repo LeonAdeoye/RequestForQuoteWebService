@@ -10,16 +10,16 @@ import javax.jws.WebService;
 public interface HolidayController 
 {
 	@WebMethod
-	public void delete(@WebParam(name="location") String location, @WebParam(name="holidayDate") Calendar holidayDate);
+	void delete(@WebParam(name="location") String location, @WebParam(name="holidayDate") Calendar holidayDate);
 	
 	@WebMethod
-	public void save(@WebParam(name="location")String location,
+	void save(@WebParam(name="location")String location,
 					@WebParam(name="holidayDate") Calendar holidayDate,
 					@WebParam(name="addedByUser") String addedByUser);
 	
 	@WebMethod
-	public List<Holiday> getAll();
+	List<Holiday> getAll();
 	
 	@WebMethod
-	public List<Holiday> get(@WebParam(name="location")String location);
+	List<Holiday> get(@WebParam(name="location")String location);
 }

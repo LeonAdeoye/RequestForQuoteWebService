@@ -2,15 +2,15 @@ package com.leon.ws.rfq.chat;
 
 public interface ChatMessage
 {
-	public String getOwner();		
-	public String getContent();		
-	public String getTimeStamp();		
-	public int getRequestForQuoteId();	
-	public int getSequenceId();	
+	String getOwner();		
+	String getContent();		
+	String getTimeStamp();		
+	int getRequestForQuoteId();	
+	int getSequenceId();	
 	
-	public void setOwner(String owner);	
-	public void setContent(String content);
-	public void setTimeStamp(String timeStamp);
-	public void setRequestForQuoteId(int requestForQuoteId);
-	public void setSequenceId(int sequenceId);	
+	void setOwner(String owner);	
+	void setContent(String content);
+	void setTimeStamp(String timeStamp);
+	void setRequestForQuoteId(int requestForQuoteId);
+	void setSequenceId(int sequenceId);	
 }

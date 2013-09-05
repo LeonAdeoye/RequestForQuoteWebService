@@ -11,18 +11,18 @@ import javax.jws.WebService;
 public interface BookController 
 {
 	@WebMethod
-	public void delete(@WebParam(name="bookCode") String bookCode);
+	void delete(@WebParam(name="bookCode") String bookCode);
 	
 	@WebMethod
-	public void save(@WebParam(name="bookCode")String bookCode,
+	void save(@WebParam(name="bookCode")String bookCode,
 					@WebParam(name="entity") String entity,
 					@WebParam(name="updatedByUser") String updatedByUser);
 	
 	@WebMethod
-	public void updateValidity(@WebParam(name="bookCode") String bookCode,
+	void updateValidity(@WebParam(name="bookCode") String bookCode,
 							@WebParam(name="isValid") boolean isValid);	
 	
 	@WebMethod
-	public List<BookDetail> getAll();
+	List<BookDetail> getAll();
 }
 
