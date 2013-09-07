@@ -17,7 +17,7 @@ public class Holiday
 		this.location = location;
 		this.holidayDate = holidayDate;
 		
-		logger.debug("Holiday object instantiated = > " +  this.toString());
+		logger.debug("Holiday object instantiated = > " +  this);
 	}
 	
 	public Holiday() {} 

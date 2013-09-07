@@ -21,7 +21,7 @@ public class ClientDetail
 		this.tier = tier;
 		this.isValid = isValid;
 		
-		logger.debug("ClientDetail object instantiated = > " +  this.toString());
+		logger.debug("ClientDetail object instantiated = > " +  this);
 	}
 	
 	public ClientDetail() {} 
