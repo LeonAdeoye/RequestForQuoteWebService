@@ -1,15 +1,11 @@
 import junit.framework.TestCase;
-
-//import com.leon.ws.rfq.holiday.HolidayController;
 import com.leon.ws.rfq.option.model.*;
-
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 import java.math.BigDecimal;
 
 public class PricingTest extends TestCase
