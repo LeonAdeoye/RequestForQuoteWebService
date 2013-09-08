@@ -1,10 +1,20 @@
 import junit.framework.TestCase;
+
+//import com.leon.ws.rfq.holiday.HolidayController;
 import com.leon.ws.rfq.option.model.*;
+
 import org.junit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import java.math.BigDecimal;
 
 public class PricingTest extends TestCase
 {
+	private static Logger logger = LoggerFactory.getLogger(PricingTest.class);
 	private OptionPricingController pricingController;
 	private OptionPriceResult result1;
 	private OptionPriceResult result2;
@@ -23,12 +33,29 @@ public class PricingTest extends TestCase
 	public PricingTest(String name)
 	{
 		super(name);
+		initializeBean();
 	}
+	
+	private void initializeBean()
+	{
+		try
+		{			
+			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml"); 
+			pricingController = (OptionPricingController) context.getBean("optionPricer");
+			
+			if(logger.isDebugEnabled())
+				logger.debug("Successfully wired bean option pricing controller from file system application context.");			
+		}
+		catch(BeansException be)
+		{
+			logger.error("Failed to load application context for option controller!", be);
+		}
+	}	
 	
 	@Before
 	public void setUp()
 	{
-		pricingController = new OptionPricingControllerImpl(new BlackScholesModelImpl());
+		//pricingController = new OptionPricingControllerImpl(new BlackScholesModelImpl());
 			
 		result1 = new OptionPriceResult();
 		result1.setDelta(new BigDecimal("0.5156598006927081"));

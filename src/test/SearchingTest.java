@@ -2,10 +2,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.junit.*; 
+
 import com.leon.ws.rfq.search.SearchController;
 import com.leon.ws.rfq.search.SearchCriterion;
 
@@ -17,32 +21,28 @@ public class SearchingTest extends TestCase
 	public SearchingTest(String name)
 	{		
 		super(name);
-		//initializeBean();
+		initializeBean();
 	}
 	
-	public void initializeBean()
+	private void initializeBean()
 	{
 		try
-		{
-			if(logger.isDebugEnabled())
-				logger.debug("Application context class path = " +  System.getProperty("java.class.path"));
-			
-			ApplicationContext context = new ClassPathXmlApplicationContext("cxf-servlet.xml"); 
+		{			
+			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml"); 
 			searcher = (SearchController) context.getBean("searchController");
 			
 			if(logger.isDebugEnabled())
-				logger.debug("Successfully wired bean search controller from class path application context.");			
+				logger.debug("Successfully wired bean search controller from file system application context.");			
 		}
 		catch(BeansException be)
 		{
-			logger.error("Failed to load class path application context ", be);
+			logger.error("Failed to load application context for search controller!", be);
 		}
 	}	
 	
 	@Before
 	public void setUp()
 	{
-		initializeBean();
 	}
 	
 	public void test_saveAndDelete_addTwoValidCriterionSameOwnerSameKey_twoCriteriaShouldBeAddedWithSameOwnerAndKey()

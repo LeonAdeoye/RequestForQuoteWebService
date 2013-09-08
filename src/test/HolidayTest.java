@@ -1,29 +1,49 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import com.leon.ws.rfq.holiday.Holiday;
 import com.leon.ws.rfq.holiday.HolidayController;
+
 import java.util.GregorianCalendar;
 import java.util.List;
+
 import junit.framework.TestCase;
 
 public class HolidayTest extends TestCase
 {
+	private static Logger logger = LoggerFactory.getLogger(HolidayTest.class);
 	private HolidayController holidayController;
 
 	public HolidayTest(String name)
 	{
 		super(name);
+		initializeBean();
 	}
+	
+	private void initializeBean()
+	{
+		try
+		{			
+			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml"); 
+			holidayController = (HolidayController) context.getBean("holidayController");
+			
+			if(logger.isDebugEnabled())
+				logger.debug("Successfully wired bean holiday controller from file system application context.");			
+		}
+		catch(BeansException be)
+		{
+			logger.error("Failed to load application context for holiday controller!", be);
+		}
+	}		
 	
 	@Before
 	public void setUp()
 	{
-		// TODO switch to a relative path
-		ApplicationContext context = new FileSystemXmlApplicationContext("C:\\development\\git\\RequestForQuoteWebService\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-		holidayController = (HolidayController) context.getBean("holidayController");
 	}
 	
 	@Test
