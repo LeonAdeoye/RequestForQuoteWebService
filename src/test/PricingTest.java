@@ -13,8 +13,7 @@ public class PricingTest extends TestCase
 	private static Logger logger = LoggerFactory.getLogger(PricingTest.class);
 	private OptionPricingController pricingController;
 	private OptionPriceResult result1;
-	private OptionPriceResult result2;
-	
+	private OptionPriceResult result2;	
 	private BigDecimal strike = new BigDecimal("100.0");
 	private BigDecimal underlyingPrice = new BigDecimal("90.0");
 	private BigDecimal volatility = new BigDecimal("0.2");
@@ -50,9 +49,7 @@ public class PricingTest extends TestCase
 	
 	@Before
 	public void setUp()
-	{
-		//pricingController = new OptionPricingControllerImpl(new BlackScholesModelImpl());
-			
+	{		
 		result1 = new OptionPriceResult();
 		result1.setDelta(new BigDecimal("0.5156598006927081"));
 		result1.setGamma(new BigDecimal("0.0295285106625831"));
