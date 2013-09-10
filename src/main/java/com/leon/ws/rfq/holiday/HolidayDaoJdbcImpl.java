@@ -14,7 +14,7 @@ public class HolidayDaoJdbcImpl extends SimpleJdbcDaoSupport implements HolidayD
 	private static final String SELECT_ALL = "CALL holidays_SELECT_ALL";
 	private static final String GET = "CALL holidays_GET (?)";
 	private static final String DELETE = "CALL holidays_DELETE (?, ?)";
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(HolidayDaoJdbcImpl.class);
 	
 	@Override
 	public boolean delete(String location, Calendar holidayDate)

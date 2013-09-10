@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 @XmlRootElement(name="ChatMessageImpl")
 public class ChatMessageImpl implements ChatMessage
 {
-	private static Logger logger = LoggerFactory.getLogger("ChatLogger");	
+	private static Logger logger = LoggerFactory.getLogger(ChatMessageImpl.class);	
 	private String owner;
 	private String content;
 	private String timeStamp;

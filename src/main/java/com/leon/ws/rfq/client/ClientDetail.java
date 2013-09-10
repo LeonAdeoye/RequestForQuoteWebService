@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 @XmlRootElement(name="ClientDetail")
 public class ClientDetail 
 {
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(ClientDetail.class);
 	private String name;
 	private int identifier;
 	private boolean isValid;

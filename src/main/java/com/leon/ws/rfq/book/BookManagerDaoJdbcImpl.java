@@ -15,7 +15,7 @@ public final class BookManagerDaoJdbcImpl extends SimpleJdbcDaoSupport implement
 	private static final String SAVE = "CALL books_SAVE (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL books_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL books_SELECT_ALL";	
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(BookManagerDaoJdbcImpl.class);
 	
 	public boolean delete(String bookCode)
 	{

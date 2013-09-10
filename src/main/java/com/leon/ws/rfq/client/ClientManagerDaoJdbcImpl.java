@@ -16,7 +16,7 @@ public final class ClientManagerDaoJdbcImpl extends SimpleJdbcDaoSupport impleme
 	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";	
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(ClientManagerDaoJdbcImpl.class);
 	
 	public boolean delete(int identifier)
 	{

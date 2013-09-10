@@ -16,7 +16,7 @@ public final class SearchManagerDaoJdbcImpl extends SimpleJdbcDaoSupport impleme
 	private static final String SELECT_ALL = "CALL searches_SELECT_ALL";
 	private static final String GET = "CALL searches_GET (?, ?)";
 	private static final String UPDATE_PRIVACY = "CALL searches_UPDATE_PRIVACY (?, ?, ?)";	
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(SearchManagerDaoJdbcImpl.class);
 	
 	public boolean delete(String owner, String key)
 	{

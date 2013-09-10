@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 @XmlRootElement(name="SearchCriterion")
 public class SearchCriterion 
 {
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(SearchCriterion.class);
 	private String controlName;
 	private String controlValue;
 	private String owner;

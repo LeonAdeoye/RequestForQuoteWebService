@@ -29,7 +29,7 @@ public class ChatMessageDaoJdbcImpl extends SimpleJdbcDaoSupport implements Chat
 	
 	private static final String SAVE = "CALL chatMessages_SAVE (?, ?, ?)";
 	private static final String GET = "CALL chatMessages_GET (?, ?)";
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(ChatMessageDaoJdbcImpl.class);
 	
 	public ChatMessage save(int requestForQuoteId, String owner, String content)
 	{

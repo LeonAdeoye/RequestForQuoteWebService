@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 @XmlRootElement(name="Holiday")
 public class Holiday 
 {
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(Holiday.class);
 	private String location;
 	private Date holidayDate;
 

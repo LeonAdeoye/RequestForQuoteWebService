@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 @XmlRootElement(name="BookDetail")
 public class BookDetail 
 {
-	private static Logger logger = LoggerFactory.getLogger("DaoLogger");
+	private static Logger logger = LoggerFactory.getLogger(BookDetail.class);
 	private String bookCode;
 	private boolean isValid;
 	private String entity;
