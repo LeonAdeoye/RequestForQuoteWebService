@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import com.leon.ws.rfq.holiday.Holiday;
 
-public interface HolidayDao
+interface HolidayDao
 {
 	boolean delete(String location, Calendar holidayDate);
 	boolean save(String location, Calendar holidayDate, String updatedByUser);

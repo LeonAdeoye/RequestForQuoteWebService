@@ -1,11 +1,8 @@
-
 package com.leon.ws.rfq.book;
 
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.Oneway;
-
 
 @WebService(serviceName="BookController", endpointInterface="com.leon.ws.rfq.book.BookController")
 public class BookControllerImpl implements BookController
@@ -20,24 +17,21 @@ public class BookControllerImpl implements BookController
 	public BookControllerImpl() {}
 	
 	@WebMethod
-	@Oneway
-	public void delete(String bookCode)
+	public boolean delete(String bookCode)
 	{
-		dao.delete(bookCode);
+		return dao.delete(bookCode);
 	}
 	
 	@WebMethod
-	@Oneway
-	public void save(String bookCode, String entity, String updatedByUser)
+	public boolean save(String bookCode, String entity, String updatedByUser)
 	{
-		dao.save(bookCode, entity, updatedByUser);
+		return dao.save(bookCode, entity, updatedByUser);
 	}
 		
 	@WebMethod
-	@Oneway
-	public void updateValidity(String bookCode, boolean isValid)
+	public boolean updateValidity(String bookCode, boolean isValid)
 	{
-		dao.updateValidity(bookCode, isValid);
+		return dao.updateValidity(bookCode, isValid);
 	}
 	
 	@WebMethod

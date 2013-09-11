@@ -56,13 +56,15 @@ public class PricingTest extends TestCase
 		result1.setTheta(new BigDecimal("-0.06816052348492706"));
 		result1.setVega(new BigDecimal("0.35877140455038464"));
 		result1.setRho(new BigDecimal("0.4125266814364821"));
+		result1.setPrice(new BigDecimal("5.156713918695523"));
 		
 		result2 = new OptionPriceResult();
 		result2.setDelta(new BigDecimal("0.5185429152657319"));
 		result2.setGamma(new BigDecimal("0.027674393521714098"));
 		result2.setTheta(new BigDecimal("-0.06984624247529421"));
 		result2.setVega(new BigDecimal("0.35866014004141467"));
-		result2.setRho(new BigDecimal("0.4115343127198103"));		
+		result2.setRho(new BigDecimal("0.4115343127198103"));
+		result2.setPrice(new BigDecimal("5.515431101934844"));
 	}
 	
 	public void test_calculate_validInput_validDeltaResult()

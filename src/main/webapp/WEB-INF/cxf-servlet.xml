@@ -50,8 +50,8 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="dataSource" ref="dataSource"/>
     </bean>
     
-    <bean id="bookManagerDao" class="com.leon.ws.rfq.book.BookManagerDaoJdbcImpl">
-    	<property name="dataSource" ref="dataSource"/>
+    <bean id="bookManagerDao" class="com.leon.ws.rfq.book.BookManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
     
     <bean id="chatMessageDao" class="com.leon.ws.rfq.chat.ChatMessageDaoJdbcImpl">
@@ -61,6 +61,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     <bean id="holidayDao" class="com.leon.ws.rfq.holiday.HolidayDaoJdbcImpl">
     	<property name="dataSource" ref="dataSource"/>
     </bean>
+    
+    <bean id="databaseCommandExecutor" class="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>    
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
     	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>

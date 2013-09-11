@@ -2,7 +2,7 @@ package com.leon.ws.rfq.search;
 
 import java.util.List;
 
-public interface SearchManagerDao 
+interface SearchManagerDao 
 {
 	boolean delete(String owner, String key);
 	boolean updatePrivacy(String owner, String key, Boolean isPrivate);

@@ -26,6 +26,8 @@ public class OptionPriceResult
 		sb.append(theta);
 		sb.append("\nRho=");
 		sb.append(rho);
+		sb.append("\nPrice=");
+		sb.append(price);		
 		return sb.toString();
 	}
 	
@@ -40,12 +42,24 @@ public class OptionPriceResult
 		OptionPriceResult res = (OptionPriceResult) o;
 		
 		return this.delta == res.delta && this.gamma == res.gamma && this.vega == res.vega 
-				&& this.theta == res.theta && this.rho == res.rho;  
+				&& this.theta == res.theta && this.rho == res.rho && this.price == res.price;  
 	}
 	
 	public int hashCode()
 	{
 		int result = 17;
+		long value = Double.doubleToLongBits(delta);
+		result = 37 * result + (int) (value ^ value >>> 32);
+		value = Double.doubleToLongBits(gamma);
+		result = 37 * result + (int) (value ^ value >>> 32);
+		value = Double.doubleToLongBits(theta);
+		result = 37 * result + (int) (value ^ value >>> 32); 
+		value = Double.doubleToLongBits(vega);
+		result = 37 * result + (int) (value ^ value >>> 32); 
+		value = Double.doubleToLongBits(rho);
+		result = 37 * result + (int) (value ^ value >>> 32);
+		value = Double.doubleToLongBits(price);
+		result = 37 * result + (int) (value ^ value >>> 32); 		
 		return result;
 	}	
 	
