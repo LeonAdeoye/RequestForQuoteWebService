@@ -42,8 +42,8 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="holidayDao" ref="holidayDao"/>
     </bean> 
     
-    <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoJdbcImpl">
-    	<property name="dataSource" ref="dataSource"/>
+    <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
     
     <bean id="clientManagerDao" class="com.leon.ws.rfq.client.ClientManagerDaoImpl">

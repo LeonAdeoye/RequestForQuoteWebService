@@ -10,14 +10,14 @@ import javax.jws.WebService;
 public interface SearchController 
 {
 	@WebMethod
-	void delete(@WebParam(name="owner") String owner, @WebParam(name="key") String key);
+	boolean delete(@WebParam(name="owner") String owner, @WebParam(name="key") String key);
 
 	@WebMethod
-	void updatePrivacy(@WebParam(name="owner") String owner, @WebParam(name="key") String key, 
+	boolean updatePrivacy(@WebParam(name="owner") String owner, @WebParam(name="key") String key, 
 			@WebParam(name="isPrivate") Boolean isPrivate);	
 	
 	@WebMethod
-	void save(@WebParam(name="owner") String owner, @WebParam(name="key")String key, 
+	boolean save(@WebParam(name="owner") String owner, @WebParam(name="key")String key, 
 			@WebParam(name="controlName") String controlName, @WebParam(name="controlValue") String controlValue, 
 			@WebParam(name="isPrivate") Boolean isPrivate, @WebParam(name="isFilter") Boolean isFilter);
 	

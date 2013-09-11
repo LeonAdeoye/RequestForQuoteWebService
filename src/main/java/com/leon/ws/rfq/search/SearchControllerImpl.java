@@ -3,7 +3,6 @@ package com.leon.ws.rfq.search;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.Oneway;
 
 @WebService(serviceName="SearchController", endpointInterface="com.leon.ws.rfq.search.SearchController")
 public class SearchControllerImpl implements SearchController
@@ -18,24 +17,21 @@ public class SearchControllerImpl implements SearchController
 	public SearchControllerImpl() {}
 	
 	@WebMethod
-	@Oneway
-	public void delete(String owner, String key)
+	public boolean delete(String owner, String key)
 	{
-		dao.delete(owner, key);
+		return dao.delete(owner, key);
 	}
 	
 	@WebMethod
-	@Oneway
-	public void updatePrivacy(String owner, String key, Boolean isPrivate)
+	public boolean updatePrivacy(String owner, String key, Boolean isPrivate)
 	{
-		dao.updatePrivacy(owner, key, isPrivate);
+		return dao.updatePrivacy(owner, key, isPrivate);
 	}	
 	
 	@WebMethod
-	@Oneway
-	public void save(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
+	public boolean save(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
 	{
-		dao.save(owner, key, controlName, controlValue, isPrivate, isFilter);
+		return dao.save(owner, key, controlName, controlValue, isPrivate, isFilter);
 	}
 	
 	@WebMethod
