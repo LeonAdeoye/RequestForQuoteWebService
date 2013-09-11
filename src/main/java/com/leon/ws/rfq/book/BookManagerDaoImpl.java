@@ -46,7 +46,8 @@ public final class BookManagerDaoImpl implements BookManagerDao
 		
 	public List<BookDetail> getAll()
 	{		
-		ParameterizedRowMapper<BookDetail> booksRowMapper = new ParameterizedRowMapper<BookDetail>() {
+		ParameterizedRowMapper<BookDetail> booksRowMapper = new ParameterizedRowMapper<BookDetail>()
+		{
 			public BookDetail mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				return new BookDetail(rs.getString("bookCode"), rs.getString("entity"), rs.getString("isValid").equals("Y"));					

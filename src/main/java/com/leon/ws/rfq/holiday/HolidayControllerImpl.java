@@ -14,15 +14,15 @@ public class HolidayControllerImpl implements HolidayController
 	}	
 
 	@Override
-	public void delete(String location, Calendar holidayDate)
+	public boolean delete(String location, Calendar holidayDate)
 	{
-		dao.delete(location, holidayDate);		
+		return dao.delete(location, holidayDate);		
 	}
 
 	@Override
-	public void save(String location, Calendar holidayDate, String updatedByUser)
+	public boolean save(String location, Calendar holidayDate, String updatedByUser)
 	{
-		dao.save(location, holidayDate, updatedByUser);		
+		return dao.save(location, holidayDate, updatedByUser);		
 	}
 
 	@Override

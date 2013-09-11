@@ -9,18 +9,18 @@ import javax.jws.WebService;
 public interface ClientController 
 {
 	@WebMethod
-	void delete(@WebParam(name="identifier") int identifier);
+	boolean delete(@WebParam(name="identifier") int identifier);
 	
 	@WebMethod
-	void save(@WebParam(name="name")String name, 
+	boolean save(@WebParam(name="name")String name, 
 					@WebParam(name="tier")int tier);
 	
 	@WebMethod
-	void updateTier(@WebParam(name="identifier") int identifier,
+	boolean updateTier(@WebParam(name="identifier") int identifier,
 							@WebParam(name="tier")int tier);
 	
 	@WebMethod
-	void updateValidity(@WebParam(name="identifier") int identifier,
+	boolean updateValidity(@WebParam(name="identifier") int identifier,
 							@WebParam(name="isValid")boolean isValid);	
 	
 	@WebMethod

@@ -7,4 +7,5 @@ public interface GenericDatabaseCommandExecutor<T>
 {
 	public boolean executePreparedStatement(String preparedStatement, Object...  params);
 	public List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper);
+	public List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object...  params);
 }

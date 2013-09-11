@@ -10,10 +10,10 @@ import javax.jws.WebService;
 public interface HolidayController 
 {
 	@WebMethod
-	void delete(@WebParam(name="location") String location, @WebParam(name="holidayDate") Calendar holidayDate);
+	boolean delete(@WebParam(name="location") String location, @WebParam(name="holidayDate") Calendar holidayDate);
 	
 	@WebMethod
-	void save(@WebParam(name="location")String location,
+	boolean save(@WebParam(name="location")String location,
 					@WebParam(name="holidayDate") Calendar holidayDate,
 					@WebParam(name="addedByUser") String addedByUser);
 	
