@@ -18,7 +18,7 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 		try
 		{
 			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement: ", preparedStatement);
+				logger.debug("Executing prepared statement: {}", preparedStatement);
 			
 			getSimpleJdbcTemplate().update(preparedStatement, params);
 			return true;
@@ -26,7 +26,7 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 		}
 		catch(Exception exception)
 		{
-			logger.error("Exception throw when executing the prepared statement: ", exception);
+			logger.error("Exception thrown when executing the prepared statement: ", exception);
 		}
 		return false;
 	}
@@ -37,13 +37,13 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 		try
 		{
 			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: ", preparedStatement);
+				logger.debug("Executing prepared statement to retreive a result set: {} ", preparedStatement);
 			
 			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper);
 		}
 		catch(Exception exception)
 		{
-			logger.error("Exception throw when getting a result set from a the prepared statement: ", exception);
+			logger.error("Exception thrown when getting a result set from a the prepared statement: ", exception);
 		}
 		return new LinkedList<T>();
 	}
@@ -54,14 +54,48 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 		try
 		{
 			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: ", preparedStatement);
+				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
 			
 			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper, params);
 		}
 		catch(Exception exception)
 		{
-			logger.error("Exception throw when getting a result set from a the prepared statement: ", exception);
+			logger.error("Exception thrown when getting a result set from a the prepared statement: ", exception);
 		}
 		return new LinkedList<T>();
 	}
+	
+	@Override
+	public T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper)
+	{
+		try
+		{
+			if(logger.isDebugEnabled())
+				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
+			
+			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper);
+		}
+		catch(Exception exception)
+		{
+			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
+		}
+		return null;
+	}	
+	
+	@Override
+	public T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
+	{
+		try
+		{
+			if(logger.isDebugEnabled())
+				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
+			
+			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper, params);
+		}
+		catch(Exception exception)
+		{
+			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
+		}
+		return null;
+	}	
 }

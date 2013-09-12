@@ -23,7 +23,8 @@ public class ChatMessageImpl implements ChatMessage
 		this.requestForQuoteId = -1;
 		this.sequenceId = -1;
 		
-		logger.debug("MessageImpl object instantiated = > " +  this.toString());
+		if(logger.isDebugEnabled())
+			logger.debug("MessageImpl object instantiated = > " +  this.toString());
 	}
 		
 	public ChatMessageImpl(String owner, String content, String timeStamp, 
@@ -35,7 +36,8 @@ public class ChatMessageImpl implements ChatMessage
 		this.requestForQuoteId = requestForQuoteId;
 		this.sequenceId = sequenceId;
 		
-		logger.debug("MessageImpl object instantiated = > " +  this.toString());
+		if(logger.isDebugEnabled())
+			logger.debug("MessageImpl object instantiated = > " +  this.toString());
 	}
 	
 	public String getOwner()

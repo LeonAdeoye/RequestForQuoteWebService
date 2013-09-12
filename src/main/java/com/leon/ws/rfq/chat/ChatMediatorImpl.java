@@ -37,8 +37,9 @@ public class ChatMediatorImpl implements ChatMediator
 	{
 		if(isParticipantRegistered(requestForQuoteId, owner))
 		{
-			ChatMessage newlySavedMessage = dao.save(requestForQuoteId, owner, content);							
-			communicator.sendToClients(String.format("%s=%s", NEW_CHAT_MESSAGE, newlySavedMessage));			
+			ChatMessage newlySavedMessage = dao.save(requestForQuoteId, owner, content);
+			if(newlySavedMessage != null)
+				communicator.sendToClients(String.format("%s=%s", NEW_CHAT_MESSAGE, newlySavedMessage));			
 		}			
 		else
 			logger.error("Participant: {} in chatroom: {} is NOT registered. Message undelivered.", requestForQuoteId, owner);

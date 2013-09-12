@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration Scan="Time" ScanPeriod="5 minutes">
  
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
@@ -8,28 +8,28 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>c:\development\logs\Pricing.log</file>
+		<file>.\logs\Pricing.log</file>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
 		</layout>
 	</appender>
 
 	<appender name="DAO_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>c:\development\logs\dao.log</file>      
+		<file>.\logs\dao.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	<appender name="CHAT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>c:\development\logs\chat.log</file>      
+		<file>.\logs\chat.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	   	<appender name="COMM_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>c:\development\logs\communication.log</file>      
+		<file>.\logs\communication.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
 		</encoder>
@@ -37,15 +37,19 @@
 	     
 	<logger name="com.leon.ws.rfq.option.model" level="TRACE"/>
 	
-	<logger name="DaoLogger" level="TRACE">
+	<logger name="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl" level="TRACE">
 		<appender-ref ref="DAO_LOG_FILE" />           
 	</logger>
 	
-	<logger name="ChatLogger" level="TRACE">
+	<logger name="com.leon.ws.rfq.chat.ChatMediatorImpl" level="TRACE">
 		<appender-ref ref="CHAT_LOG_FILE" />           
 	</logger>
 	
-	<logger name="CommunicationLogger" level="TRACE">
+	<logger name="com.leon.ws.rfq.chat.ChatMessageImpl" level="TRACE">
+		<appender-ref ref="CHAT_LOG_FILE" />           
+	</logger>	
+	
+	<logger name="com.leon.ws.rfq.communicator.ClientCommunicatorImpl" level="TRACE">
 		<appender-ref ref="COMM_LOG_FILE" />           
 	</logger>		
    

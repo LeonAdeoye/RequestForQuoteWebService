@@ -54,8 +54,8 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
     
-    <bean id="chatMessageDao" class="com.leon.ws.rfq.chat.ChatMessageDaoJdbcImpl">
-    	<property name="dataSource" ref="dataSource"/>
+    <bean id="chatMessageDao" class="com.leon.ws.rfq.chat.ChatMessageDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
     
     <bean id="holidayDao" class="com.leon.ws.rfq.holiday.HolidayDaoImpl">
