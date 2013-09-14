@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration Scan="Time" ScanPeriod="5 minutes">
+	
+	<property name="LOG_DIR" value="c:\development\git\RequestForQuoteWebService" />
  
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
@@ -8,28 +10,28 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>.\logs\Pricing.log</file>
+		<file>${LOG_DIR}\logs\Pricing.log</file>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
 		</layout>
 	</appender>
 
 	<appender name="DAO_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>.\logs\dao.log</file>      
+		<file>${LOG_DIR}\logs\dao.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	<appender name="CHAT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>.\logs\chat.log</file>      
+		<file>${LOG_DIR}\logs\chat.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	   	<appender name="COMM_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>.\logs\communication.log</file>      
+		<file>${LOG_DIR}\logs\communication.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>

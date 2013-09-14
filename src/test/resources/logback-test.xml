@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+	<property name="LOG_DIR" value="c:\development\git\RequestForQuoteWebService" />
  
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
-    </layout>
-  </appender>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
+		</layout>
+	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-	  <file>.\logs\test.log</file>
-	  <layout class="ch.qos.logback.classic.PatternLayout">
-	    <Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
-	  </layout>
+		<file>${LOG_DIR}\logs\test.log</file>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
+		</layout>
 	</appender>  
    
-  <logger name="com.leon.ws.rfq.option.model" level="TRACE"/>
+  	<logger name="com.leon.ws.rfq.option.model" level="TRACE"/>
    
- 
-  <root level="debug">
-    <appender-ref ref="STDOUT" />
-    <appender-ref ref="FILE" />
-  </root>
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
 </configuration>
