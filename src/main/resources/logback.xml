@@ -17,21 +17,21 @@
 	<appender name="DAO_LOG_FILE" class="ch.qos.logback.core.FileAppender">
 		<file>.\logs\dao.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
-			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	<appender name="CHAT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
 		<file>.\logs\chat.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
-			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	   	<appender name="COMM_LOG_FILE" class="ch.qos.logback.core.FileAppender">
 		<file>.\logs\communication.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
-			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>    
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender> 
 	     

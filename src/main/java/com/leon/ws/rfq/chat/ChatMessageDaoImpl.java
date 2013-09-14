@@ -42,7 +42,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 	
 	public ChatMessage save(int requestForQuoteId, String owner, String content)
 	{				
-		return databaseExecutor.getSingleResult(SAVE, new ChatMessageParameterizedRowMapper(), owner, content);
+		return databaseExecutor.getSingleResult(SAVE, new ChatMessageParameterizedRowMapper(), requestForQuoteId, owner, content);
 	}
 
 	public List<ChatMessageImpl> get(int requestForQuoteId, int fromThisSequenceId)
@@ -51,7 +51,7 @@ public class ChatMessageDaoImpl implements ChatMessageDao
 		{
 			public ChatMessageImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new ChatMessageImpl(rs.getString("owner"), rs.getString("content"), rs.getString("createTime"),
+				return new ChatMessageImpl(rs.getString("owner"), rs.getString("content"), rs.getString("timeStamp"),
 						rs.getInt("requestForQuoteId"), rs.getInt("sequenceId"));
 			}				
 		};		
