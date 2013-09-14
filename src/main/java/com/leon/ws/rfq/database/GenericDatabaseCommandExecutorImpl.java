@@ -17,8 +17,8 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	{
 		try
 		{
-			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement: {}", preparedStatement);
+			if(logger.isInfoEnabled())
+				logger.info("Executing prepared statement: {} with params: {}.", preparedStatement, params);
 			
 			getSimpleJdbcTemplate().update(preparedStatement, params);
 			return true;
@@ -36,8 +36,8 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	{
 		try
 		{
-			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: {} ", preparedStatement);
+			if(logger.isInfoEnabled())
+				logger.info("Executing prepared statement to retreive a result set: {}.", preparedStatement);
 			
 			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper);
 		}
@@ -53,8 +53,8 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	{
 		try
 		{
-			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
+			if(logger.isInfoEnabled())
+				logger.info("Executing prepared statement to retreive a result set:  {} with params: {}.", preparedStatement, params);
 			
 			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper, params);
 		}
@@ -70,8 +70,8 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	{
 		try
 		{
-			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
+			if(logger.isInfoEnabled())
+				logger.info("Executing prepared statement to retreive a result set: {}", preparedStatement);
 			
 			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper);
 		}
@@ -87,8 +87,8 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	{
 		try
 		{
-			if(logger.isDebugEnabled())
-				logger.debug("Executing prepared statement to retreive a result set: {}", preparedStatement);
+			if(logger.isInfoEnabled())
+				logger.info("Executing prepared statement to retreive a result set:  {} with params: {}", preparedStatement, params);
 			
 			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper, params);
 		}

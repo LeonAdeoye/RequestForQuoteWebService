@@ -49,8 +49,9 @@ public class ChatMediatorImpl implements ChatMediator
 	public ChatMessageListImpl registerParticipant(int requestForQuoteId, String newParticipantName)
 	{
 		if(chatRooms.containsKey(requestForQuoteId))
-		{			
-			logger.debug("New participant: {} added to chatroom with requestForQuote Id: {}.", newParticipantName, requestForQuoteId);
+		{
+			if(logger.isInfoEnabled())
+				logger.info("New participant: {} added to chatroom with requestForQuote Id: {}.", newParticipantName, requestForQuoteId);
 			
 			Set<String> participants = chatRooms.get(requestForQuoteId);
 			if(!participants.contains(newParticipantName))
@@ -58,7 +59,8 @@ public class ChatMediatorImpl implements ChatMediator
 		}
 		else
 		{
-			logger.debug("Chatroom opened for requestForQuote Id: {} and participant: {}.", requestForQuoteId, newParticipantName);
+			if(logger.isInfoEnabled())
+				logger.info("Chatroom opened for requestForQuote Id: {} and participant: {}.", requestForQuoteId, newParticipantName);
 			
 			Set<String> participants = new HashSet<String>();
 			participants.add(newParticipantName);

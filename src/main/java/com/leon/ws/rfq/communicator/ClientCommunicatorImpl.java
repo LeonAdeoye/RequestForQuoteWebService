@@ -42,8 +42,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 			{
 				serverSocket.bind(new InetSocketAddress(ipAddress, portNumber));
 				
-				if(logger.isDebugEnabled())
-					logger.debug(String.format("server socket has been opened and is bound to %s using port %d", ipAddress, portNumber));
+				if(logger.isInfoEnabled())
+					logger.info(String.format("server socket has been opened and is bound to %s using port %d", ipAddress, portNumber));
 				
 				// Sleep to allow the binding to complete
 				sleep(2000);				
@@ -63,8 +63,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 	@Override
 	public void run()
 	{
-		if(logger.isDebugEnabled())
-			logger.debug(String.format("Waiting for new clients on thread with name [%s] and id [%d]", 
+		if(logger.isInfoEnabled())
+			logger.info(String.format("Waiting for new clients on thread with name [%s] and id [%d]", 
 					Thread.currentThread().getName(), Thread.currentThread().getId()));
 		
 		while(true)
@@ -92,8 +92,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 		{
 			String clientAddress = newClient.getRemoteAddress().toString();
 			
-			if(logger.isDebugEnabled())
-					logger.debug(String.format("New client connected from remote address %s", clientAddress));
+			if(logger.isInfoEnabled())
+				logger.info(String.format("New client connected from remote address %s", clientAddress));
 			
 			lockObject.lock();
 			if(!mapOfClients.containsKey(clientAddress))
@@ -124,8 +124,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 				{
 					try
 					{
-						if(logger.isDebugEnabled())
-							logger.debug(String.format("Sending message [%s] to client at this addres [%s] on thread with name [%s] and id [%d]", message, address, Thread.currentThread().getName(),  Thread.currentThread().getId()));
+						if(logger.isInfoEnabled())
+							logger.info(String.format("Sending message [%s] to client at this addres [%s] on thread with name [%s] and id [%d]", message, address, Thread.currentThread().getName(),  Thread.currentThread().getId()));
 						
 						client.write(ByteBuffer.wrap(String.format("%03d%s", message.length(), message).getBytes())).get();
 					}
