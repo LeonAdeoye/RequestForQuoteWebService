@@ -32,23 +32,6 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 	}
 
 	@Override
-	public List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper)
-	{
-		try
-		{
-			if(logger.isInfoEnabled())
-				logger.info("Executing prepared statement to retreive a result set: {}.", preparedStatement);
-			
-			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper);
-		}
-		catch(Exception exception)
-		{
-			logger.error("Exception thrown when getting a result set from a the prepared statement: ", exception);
-		}
-		return new LinkedList<T>();
-	}
-
-	@Override
 	public List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
 	{
 		try
@@ -64,23 +47,6 @@ public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport 
 		}
 		return new LinkedList<T>();
 	}
-	
-	@Override
-	public T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper)
-	{
-		try
-		{
-			if(logger.isInfoEnabled())
-				logger.info("Executing prepared statement to retreive a result set: {}", preparedStatement);
-			
-			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper);
-		}
-		catch(Exception exception)
-		{
-			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
-		}
-		return null;
-	}	
 	
 	@Override
 	public T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
