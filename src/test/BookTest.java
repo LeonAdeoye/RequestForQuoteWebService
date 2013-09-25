@@ -13,7 +13,7 @@ import com.leon.ws.rfq.book.BookController;
 
 public class BookTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(ChatTest.class);
+	private static Logger logger = LoggerFactory.getLogger(BookTest.class);
 	private BookController bookController;
 
 	public BookTest(String name)
