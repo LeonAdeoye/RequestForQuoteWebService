@@ -22,5 +22,5 @@ public interface RequestController
 	RequestDetailListImpl getTodaysRequest();
 	
 	@WebMethod
-	RequestDetailListImpl getRequestsWithCriteria();	
+	RequestDetailListImpl getRequestsMatchingCriteria();	
 }

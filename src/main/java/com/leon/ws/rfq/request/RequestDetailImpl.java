@@ -19,7 +19,7 @@ public class RequestDetailImpl
 		this.identifier = identifier;
 		this.bookCode = bookCode;
 		
-		logger.debug("RequestDetail object instantiated = > " +  this);
+		logger.debug("RequestDetailImpl object instantiated = > " +  this);
 	}
 	
 	public RequestDetailImpl() {} 
@@ -29,7 +29,7 @@ public class RequestDetailImpl
 		return this.request;
 	}
 	
-	public void setName(String request)
+	public void setRequest(String request)
 	{
 		this.request = request;
 	}

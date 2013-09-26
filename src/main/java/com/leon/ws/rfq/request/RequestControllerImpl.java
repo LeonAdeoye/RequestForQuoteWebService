@@ -33,7 +33,7 @@ public class RequestControllerImpl implements RequestController
 	}
 	
 	@WebMethod
-	public RequestDetailListImpl getRequestsWithCriteria()
+	public RequestDetailListImpl getRequestsMatchingCriteria()
 	{
 		return null;
 	}
