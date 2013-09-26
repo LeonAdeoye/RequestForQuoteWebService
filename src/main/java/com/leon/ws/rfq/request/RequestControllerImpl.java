@@ -27,7 +27,7 @@ public class RequestControllerImpl implements RequestController
 	}
 	
 	@WebMethod
-	public RequestDetailListImpl getTodaysRequest()
+	public RequestDetailListImpl getRequestsForToday()
 	{
 		return null;
 	}

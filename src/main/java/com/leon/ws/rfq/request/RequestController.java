@@ -19,7 +19,7 @@ public interface RequestController
 	RequestDetailImpl getRequest(@WebParam(name="identifier") int identifier);
 	
 	@WebMethod
-	RequestDetailListImpl getTodaysRequest();
+	RequestDetailListImpl getRequestsForToday();
 	
 	@WebMethod
 	RequestDetailListImpl getRequestsMatchingCriteria();	

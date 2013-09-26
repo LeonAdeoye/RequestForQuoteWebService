@@ -81,7 +81,7 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	<jaxws:endpoint 	  id="searchCriteriaController"	  implementor="#searchController"	  address="/SearchCriteria" />
 	<jaxws:endpoint 	  id="clientMaintenanceController"	  implementor="#clientController"	  address="/ClientMaintenance" />
 	<jaxws:endpoint 	  id="bookMaintenanceController"	  implementor="#bookController"	  address="/BookMaintenance" />
-	<jaxws:endpoint 	  id="chatController"	  implementor="#chatMediator"	  address="/Chat" />
+	<jaxws:endpoint 	  id="chatController"	  				implementor="#chatMediator"	  address="/Chat" />
 	<jaxws:endpoint 	  id="holidayMaintenanceController"	  implementor="#holidayController"	  address="/HolidayMaintenance" />
 	<jaxws:endpoint 	  id="requestMaintenanceController"	  implementor="#requestController"	  address="/RequestMaintenance" />
 </beans>
