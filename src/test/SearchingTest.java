@@ -3,11 +3,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.junit.*; 
+
 import com.leon.ws.rfq.search.SearchController;
-import com.leon.ws.rfq.search.SearchCriterion;
+import com.leon.ws.rfq.search.SearchCriterionImpl;
 
 public class SearchingTest extends TestCase
 {
@@ -46,23 +50,23 @@ public class SearchingTest extends TestCase
 		searcher.save("bob", "bob", "bob", "bob", true, true);			
 		searcher.save("bob", "bob", "ethan", "ethan", true, true);
 		
-		List<SearchCriterion> startList = searcher.get("bob", "bob");
+		List<SearchCriterionImpl> startList = searcher.get("bob", "bob");
 		assertEquals("List size of newly added criteria does not match expectations!", 2, startList.size());
 				
 		searcher.delete("bob", "bob");
-		List<SearchCriterion> endList = searcher.get("bob", "bob");
+		List<SearchCriterionImpl> endList = searcher.get("bob", "bob");
 		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());				
 	}
 	
 	public void test_saveAndDelete_AddValidCriterion_RetrievedCriterionJustAddedShouldMatchExpected()
 	{
 		searcher.save("bob", "bob", "bob", "bob", true, true);
-		List<SearchCriterion> list = searcher.get("bob", "bob");		
-		SearchCriterion expectedCriterion = new SearchCriterion("bob", "bob", "bob", "bob", true, true);						
+		List<SearchCriterionImpl> list = searcher.get("bob", "bob");		
+		SearchCriterionImpl expectedCriterion = new SearchCriterionImpl("bob", "bob", "bob", "bob", true, true);						
 		assertTrue("Newly added criteria does not match expectations!", list.contains(expectedCriterion));
 		
 		searcher.delete("bob", "bob");
-		List<SearchCriterion> endList = searcher.get("bob", "bob");
+		List<SearchCriterionImpl> endList = searcher.get("bob", "bob");
 		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());				
 		
 	}	
