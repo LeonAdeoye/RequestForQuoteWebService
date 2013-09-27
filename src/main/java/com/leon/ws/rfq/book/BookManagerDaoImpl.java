@@ -12,19 +12,19 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	private static final String SAVE = "CALL books_SAVE (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL books_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL books_SELECT_ALL";
-	private GenericDatabaseCommandExecutor<BookDetail> databaseExecutor;
+	private GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor;
 	
 	BookManagerDaoImpl()
 	{
 		
 	}
 	
-	BookManagerDaoImpl(GenericDatabaseCommandExecutor<BookDetail> databaseExecutor)
+	BookManagerDaoImpl(GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 	
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<BookDetail> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}	
@@ -44,13 +44,13 @@ public final class BookManagerDaoImpl implements BookManagerDao
 		return  databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, bookCode, isValid ? "Y" : "N");
 	}	
 		
-	public List<BookDetail> getAll()
+	public List<BookDetailImpl> getAll()
 	{		
-		ParameterizedRowMapper<BookDetail> booksRowMapper = new ParameterizedRowMapper<BookDetail>()
+		ParameterizedRowMapper<BookDetailImpl> booksRowMapper = new ParameterizedRowMapper<BookDetailImpl>()
 		{
-			public BookDetail mapRow(ResultSet rs, int rowNum) throws SQLException
+			public BookDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new BookDetail(rs.getString("bookCode"), rs.getString("entity"), rs.getString("isValid").equals("Y"));					
+				return new BookDetailImpl(rs.getString("bookCode"), rs.getString("entity"), rs.getString("isValid").equals("Y"));					
 			}				
 		};
 		

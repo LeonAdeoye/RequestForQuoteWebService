@@ -5,15 +5,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@XmlRootElement(name="BookDetail")
-public class BookDetail 
+@XmlRootElement(name="BookDetailImpl")
+public class BookDetailImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(BookDetail.class);
+	private static Logger logger = LoggerFactory.getLogger(BookDetailImpl.class);
 	private String bookCode;
 	private boolean isValid;
 	private String entity;
 
-	public BookDetail(String bookCode, String entity, boolean isValid)
+	public BookDetailImpl(String bookCode, String entity, boolean isValid)
 	{
 		this.bookCode = bookCode;
 		this.entity = entity;
@@ -22,7 +22,7 @@ public class BookDetail
 		logger.debug("BookDetail object instantiated = > " +  this);
 	}
 	
-	public BookDetail() {} 
+	public BookDetailImpl() {} 
 	
 	public String getBookCode()
 	{

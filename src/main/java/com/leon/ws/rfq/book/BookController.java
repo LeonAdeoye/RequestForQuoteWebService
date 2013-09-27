@@ -22,6 +22,6 @@ public interface BookController
 							@WebParam(name="isValid") boolean isValid);	
 	
 	@WebMethod
-	List<BookDetail> getAll();
+	List<BookDetailImpl> getAll();
 }
 

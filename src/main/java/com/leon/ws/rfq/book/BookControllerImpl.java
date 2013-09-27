@@ -35,7 +35,7 @@ public class BookControllerImpl implements BookController
 	}
 	
 	@WebMethod
-	public List<BookDetail> getAll()
+	public List<BookDetailImpl> getAll()
 	{
         return dao.getAll();        
 	}
