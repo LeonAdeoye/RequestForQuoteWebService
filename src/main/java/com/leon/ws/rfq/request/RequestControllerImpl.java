@@ -11,10 +11,10 @@ public class RequestControllerImpl implements RequestController
 	public RequestControllerImpl() {}
 
 	@WebMethod
-	public boolean save(RequestDetailImpl requestDetail)
+	public int save(RequestDetailImpl requestDetail)
 	{
 		// TODO Auto-generated method stub
-		return false;
+		return 1;
 	}
 
 	@WebMethod

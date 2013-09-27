@@ -9,7 +9,7 @@ import com.leon.ws.rfq.search.SearchCriteriaImpl;
 public interface RequestController
 {
 	@WebMethod
-	boolean save(@WebParam(name="requestDetail") RequestDetailImpl requestDetail);
+	int save(@WebParam(name="requestDetail") RequestDetailImpl requestDetail);
 	
 	@WebMethod
 	boolean update(@WebParam(name="requestDetail") RequestDetailImpl requestDetail);	
