@@ -19,7 +19,7 @@ public class BookDetailImpl
 		this.entity = entity;
 		this.isValid = isValid;
 		
-		logger.debug("BookDetail object instantiated = > " +  this);
+		logger.debug("BookDetailImpl object instantiated = > " +  this);
 	}
 	
 	public BookDetailImpl() {} 

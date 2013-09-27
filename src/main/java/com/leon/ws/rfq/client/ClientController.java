@@ -24,5 +24,5 @@ public interface ClientController
 							@WebParam(name="isValid")boolean isValid);	
 	
 	@WebMethod
-	List<ClientDetail> getAll();
+	List<ClientDetailImpl> getAll();
 }

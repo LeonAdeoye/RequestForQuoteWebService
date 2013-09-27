@@ -5,22 +5,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@XmlRootElement(name="Holiday")
-public class Holiday 
+@XmlRootElement(name="HolidayImpl")
+public class HolidayImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(Holiday.class);
+	private static Logger logger = LoggerFactory.getLogger(HolidayImpl.class);
 	private String location;
 	private Date holidayDate;
 
-	public Holiday(String location, Date holidayDate)
+	public HolidayImpl(String location, Date holidayDate)
 	{
 		this.location = location;
 		this.holidayDate = holidayDate;
 		
-		logger.debug("Holiday object instantiated = > " +  this);
+		logger.debug("HolidayImpl object instantiated = > " +  this);
 	}
 	
-	public Holiday() {} 
+	public HolidayImpl() {} 
 	
 	public String getLocation()
 	{
@@ -59,10 +59,10 @@ public class Holiday
 		if(this == o)
 			return true;
 		
-		if(!(o instanceof Holiday))
+		if(!(o instanceof HolidayImpl))
 			return false;
 		
-		Holiday param = (Holiday) o;
+		HolidayImpl param = (HolidayImpl) o;
 		
 		return 	this.location.equals(param.location) &&
 				this.holidayDate.equals(param.holidayDate);				

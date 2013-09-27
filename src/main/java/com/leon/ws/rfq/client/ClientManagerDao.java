@@ -6,7 +6,7 @@ interface ClientManagerDao
 {
 	boolean delete(int identifier);
 	boolean save(String name, int tier);
-	List<ClientDetail> getAll();
+	List<ClientDetailImpl> getAll();
 	boolean updateTier(int identifier, int tier);
 	boolean updateValidity(int identifier, boolean isValid);
 }

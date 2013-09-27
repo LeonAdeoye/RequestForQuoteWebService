@@ -13,19 +13,19 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";	
-	private GenericDatabaseCommandExecutor<ClientDetail> databaseExecutor;
+	private GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor;
 	
 	ClientManagerDaoImpl()
 	{
 		
 	}
 	
-	ClientManagerDaoImpl(GenericDatabaseCommandExecutor<ClientDetail> databaseExecutor)
+	ClientManagerDaoImpl(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 	
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<ClientDetail> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -50,13 +50,13 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 		return databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, identifier, isValid ? "Y" : "N");
 	}	
 		
-	public List<ClientDetail> getAll()
+	public List<ClientDetailImpl> getAll()
 	{	
-		ParameterizedRowMapper<ClientDetail> clientsRowMapper = new ParameterizedRowMapper<ClientDetail>() 
+		ParameterizedRowMapper<ClientDetailImpl> clientsRowMapper = new ParameterizedRowMapper<ClientDetailImpl>() 
 		{
-			public ClientDetail mapRow(ResultSet rs, int rowNum) throws SQLException
+			public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new ClientDetail(rs.getString("name"), rs.getInt("identifier"), rs.getInt("tier"), rs.getString("isValid").equals("Y"));					
+				return new ClientDetailImpl(rs.getString("name"), rs.getInt("identifier"), rs.getInt("tier"), rs.getString("isValid").equals("Y"));					
 			}				
 		};
 		

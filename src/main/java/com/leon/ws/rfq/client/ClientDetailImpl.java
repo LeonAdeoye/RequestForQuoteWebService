@@ -5,26 +5,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@XmlRootElement(name="ClientDetail")
-public class ClientDetail 
+@XmlRootElement(name="ClientDetailImpl")
+public class ClientDetailImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(ClientDetail.class);
+	private static Logger logger = LoggerFactory.getLogger(ClientDetailImpl.class);
 	private String name;
 	private int identifier;
 	private boolean isValid;
 	private int tier;
 
-	public ClientDetail(String name, int identifier, int tier, boolean isValid)
+	public ClientDetailImpl(String name, int identifier, int tier, boolean isValid)
 	{
 		this.name = name;
 		this.identifier = identifier;
 		this.tier = tier;
 		this.isValid = isValid;
 		
-		logger.debug("ClientDetail object instantiated = > " +  this);
+		logger.debug("ClientDetailImpl object instantiated = > " +  this);
 	}
 	
-	public ClientDetail() {} 
+	public ClientDetailImpl() {} 
 	
 	public String getName()
 	{

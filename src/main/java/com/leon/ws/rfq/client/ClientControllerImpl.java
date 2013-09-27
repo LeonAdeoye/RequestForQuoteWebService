@@ -41,7 +41,7 @@ public class ClientControllerImpl implements ClientController
 	}
 	
 	@WebMethod
-	public List<ClientDetail> getAll()
+	public List<ClientDetailImpl> getAll()
 	{
         return dao.getAll();        
 	}

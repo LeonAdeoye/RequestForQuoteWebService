@@ -26,13 +26,13 @@ public class HolidayControllerImpl implements HolidayController
 	}
 
 	@Override
-	public List<Holiday> getAll()
+	public List<HolidayImpl> getAll()
 	{
 		return dao.getAll();
 	}
 	
 	@Override
-	public List<Holiday> get(String location)
+	public List<HolidayImpl> get(String location)
 	{
 		return dao.get(location);
 	}	

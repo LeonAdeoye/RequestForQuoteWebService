@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import com.leon.ws.rfq.holiday.Holiday;
+import com.leon.ws.rfq.holiday.HolidayImpl;
 import com.leon.ws.rfq.holiday.HolidayController;
 
 import java.util.GregorianCalendar;
@@ -50,7 +50,7 @@ public class HolidayTest extends TestCase
 	public void test_addOneValidHolidayToLiverpool_LiverpoolHolidaysIncrementedByOne()
 	{	
 		holidayController.save("TEST_LOCATION", new GregorianCalendar(2013, 10, 26), "testuser");
-		List<Holiday> after = holidayController.get("TEST_LOCATION");
+		List<HolidayImpl> after = holidayController.get("TEST_LOCATION");
 		assertEquals("Test holiday not saved for TEST_LOCATION", 1, after.size());
 		
 		holidayController.delete("TEST_LOCATION", new GregorianCalendar(2013, 10, 26));

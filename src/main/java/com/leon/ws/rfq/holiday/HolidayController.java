@@ -18,8 +18,8 @@ public interface HolidayController
 					@WebParam(name="addedByUser") String addedByUser);
 	
 	@WebMethod
-	List<Holiday> getAll();
+	List<HolidayImpl> getAll();
 	
 	@WebMethod
-	List<Holiday> get(@WebParam(name="location")String location);
+	List<HolidayImpl> get(@WebParam(name="location")String location);
 }

@@ -13,19 +13,19 @@ public class HolidayDaoImpl implements HolidayDao
 	private static final String SELECT_ALL = "CALL holidays_SELECT_ALL";
 	private static final String GET = "CALL holidays_GET (?)";
 	private static final String DELETE = "CALL holidays_DELETE (?, ?)";
-	private GenericDatabaseCommandExecutor<Holiday> databaseExecutor;
+	private GenericDatabaseCommandExecutor<HolidayImpl> databaseExecutor;
 	
 	HolidayDaoImpl()
 	{
 		
 	}
 	
-	HolidayDaoImpl(GenericDatabaseCommandExecutor<Holiday> databaseExecutor)
+	HolidayDaoImpl(GenericDatabaseCommandExecutor<HolidayImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 	
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<Holiday> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<HolidayImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}	
@@ -43,13 +43,13 @@ public class HolidayDaoImpl implements HolidayDao
 	}
 
 	@Override
-	public List<Holiday> getAll()
+	public List<HolidayImpl> getAll()
 	{	
-		ParameterizedRowMapper<Holiday> holidaysRowMapper = new ParameterizedRowMapper<Holiday>() 
+		ParameterizedRowMapper<HolidayImpl> holidaysRowMapper = new ParameterizedRowMapper<HolidayImpl>() 
 		{
-			public Holiday mapRow(ResultSet rs, int rowNum) throws SQLException
+			public HolidayImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new Holiday(rs.getString("location"), rs.getDate("holidayDate"));					
+				return new HolidayImpl(rs.getString("location"), rs.getDate("holidayDate"));					
 			}				
 		};
 		
@@ -57,13 +57,13 @@ public class HolidayDaoImpl implements HolidayDao
 	}
 
 	@Override
-	public List<Holiday> get(String location)
+	public List<HolidayImpl> get(String location)
 	{
-		ParameterizedRowMapper<Holiday> holidaysRowMapper = new ParameterizedRowMapper<Holiday>() 
+		ParameterizedRowMapper<HolidayImpl> holidaysRowMapper = new ParameterizedRowMapper<HolidayImpl>() 
 		{
-			public Holiday mapRow(ResultSet rs, int rowNum) throws SQLException
+			public HolidayImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new Holiday(rs.getString("location"), rs.getDate("holidayDate"));					
+				return new HolidayImpl(rs.getString("location"), rs.getDate("holidayDate"));					
 			}				
 		};
 		
