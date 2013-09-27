@@ -13,19 +13,19 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 	private static final String SELECT_ALL = "CALL searches_SELECT_ALL";
 	private static final String GET = "CALL searches_GET (?, ?)";
 	private static final String UPDATE_PRIVACY = "CALL searches_UPDATE_PRIVACY (?, ?, ?)";	
-	private GenericDatabaseCommandExecutor<SearchCriterion> databaseExecutor;
+	private GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor;
 	
 	SearchManagerDaoImpl()
 	{
 		
 	}
 	
-	SearchManagerDaoImpl(GenericDatabaseCommandExecutor<SearchCriterion> databaseExecutor)
+	SearchManagerDaoImpl(GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 	
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<SearchCriterion> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -45,13 +45,13 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 		return databaseExecutor.executePreparedStatement(SAVE, owner, key, controlName, controlValue, isPrivate ? "Y" : "N",  isFilter ? "Y" : "N");
 	}
 	
-	public List<SearchCriterion> getAll()
+	public List<SearchCriterionImpl> getAll()
 	{		
-		ParameterizedRowMapper<SearchCriterion> criteriaRowMapper = new ParameterizedRowMapper<SearchCriterion>() 
+		ParameterizedRowMapper<SearchCriterionImpl> criteriaRowMapper = new ParameterizedRowMapper<SearchCriterionImpl>() 
 		{
-			public SearchCriterion mapRow(ResultSet rs, int rowNum) throws SQLException
+			public SearchCriterionImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new SearchCriterion(rs.getString("owner"), rs.getString("keyValue"), rs.getString("controlName"), 
+				return new SearchCriterionImpl(rs.getString("owner"), rs.getString("keyValue"), rs.getString("controlName"), 
 						rs.getString("controlValue"), rs.getString("isPrivate").equals("Y"), rs.getString("isFilter").equals("Y"));					
 			}				
 		};
@@ -59,13 +59,13 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 		return databaseExecutor.getResultSet(SELECT_ALL, criteriaRowMapper);	
 	}
 	
-	public List<SearchCriterion> get(String owner, String key)
+	public List<SearchCriterionImpl> get(String owner, String key)
 	{	
-		ParameterizedRowMapper<SearchCriterion> criteriaRowMapper = new ParameterizedRowMapper<SearchCriterion>() 
+		ParameterizedRowMapper<SearchCriterionImpl> criteriaRowMapper = new ParameterizedRowMapper<SearchCriterionImpl>() 
 		{
-			public SearchCriterion mapRow(ResultSet rs, int rowNum) throws SQLException
+			public SearchCriterionImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				return new SearchCriterion(rs.getString("owner"), rs.getString("keyValue"), rs.getString("controlName"), 
+				return new SearchCriterionImpl(rs.getString("owner"), rs.getString("keyValue"), rs.getString("controlName"), 
 						rs.getString("controlValue"), rs.getString("isPrivate").equals("Y"), rs.getString("isFilter").equals("Y"));					
 			}				
 		};

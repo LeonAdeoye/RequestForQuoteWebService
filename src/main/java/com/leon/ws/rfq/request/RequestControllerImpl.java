@@ -3,38 +3,54 @@ package com.leon.ws.rfq.request;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import com.leon.ws.rfq.search.SearchCriteriaImpl;
+
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
 public class RequestControllerImpl implements RequestController
 {
 	public RequestControllerImpl() {}
-	
+
 	@WebMethod
-	public boolean save(int identifier, String request, String bookCode)
+	public boolean save(RequestDetailImpl requestDetail)
 	{
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
+
 	@WebMethod
-	public boolean update(int identifier, String bookCode)
+	public boolean update(RequestDetailImpl requestDetail)
 	{
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
+
 	@WebMethod
-	public RequestDetailImpl getRequest(int identifier)
+	public RequestDetailImpl getRequest(int identifier, boolean rePrice)
 	{
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@WebMethod
-	public RequestDetailListImpl getRequestsForToday()
+	public RequestDetailListImpl getRequestsForToday(boolean rePrice)
 	{
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@WebMethod
-	public RequestDetailListImpl getRequestsMatchingCriteria()
+	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(
+			SearchCriteriaImpl criteria, boolean rePrice)
 	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@WebMethod
+	public RequestDetailListImpl getRequestsMatchingExistingCriteria(
+			String criteriaOwner, String criteriaKey, boolean rePrice)
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

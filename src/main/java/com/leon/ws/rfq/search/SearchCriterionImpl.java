@@ -4,10 +4,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@XmlRootElement(name="SearchCriterion")
-public class SearchCriterion 
+@XmlRootElement(name="SearchCriterionImpl")
+public class SearchCriterionImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(SearchCriterion.class);
+	private static Logger logger = LoggerFactory.getLogger(SearchCriterionImpl.class);
 	private String controlName;
 	private String controlValue;
 	private String owner;
@@ -15,7 +15,7 @@ public class SearchCriterion
 	private Boolean isFilter;
 	private String key;
 	
-	public SearchCriterion(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
+	public SearchCriterionImpl(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
 	{
 		this.owner = owner;
 		this.key = key;
@@ -27,7 +27,7 @@ public class SearchCriterion
 		logger.debug("Criterion instantiated = > " +  this.toString());
 	}
 	
-	public SearchCriterion() {}	
+	public SearchCriterionImpl() {}	
 	
 	public String getOwner()
 	{
@@ -112,10 +112,10 @@ public class SearchCriterion
 		if(this == o)
 			return true;
 		
-		if(!(o instanceof SearchCriterion))
+		if(!(o instanceof SearchCriterionImpl))
 			return false;
 		
-		SearchCriterion criterion = (SearchCriterion) o;
+		SearchCriterionImpl criterion = (SearchCriterionImpl) o;
 		
 		return this.owner.equals(criterion.owner) && this.key.equals(criterion.key) && this.controlName.equals(criterion.controlName) 
 				&& this.controlValue.equals(criterion.controlValue) && this.isFilter == criterion.isFilter && this.isPrivate == criterion.isPrivate;

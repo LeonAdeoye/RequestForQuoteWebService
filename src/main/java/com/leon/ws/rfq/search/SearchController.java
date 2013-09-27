@@ -22,8 +22,8 @@ public interface SearchController
 			@WebParam(name="isPrivate") Boolean isPrivate, @WebParam(name="isFilter") Boolean isFilter);
 	
 	@WebMethod
-	List<SearchCriterion> getAll();
+	List<SearchCriterionImpl> getAll();
 
 	@WebMethod
-	List<SearchCriterion> get(@WebParam(name="owner") String owner, @WebParam(name="key")String key);	
+	List<SearchCriterionImpl> get(@WebParam(name="owner") String owner, @WebParam(name="key")String key);	
 }

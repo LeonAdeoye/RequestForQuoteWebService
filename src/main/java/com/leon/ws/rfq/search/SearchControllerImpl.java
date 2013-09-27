@@ -35,13 +35,13 @@ public class SearchControllerImpl implements SearchController
 	}
 	
 	@WebMethod
-	public List<SearchCriterion> getAll()
+	public List<SearchCriterionImpl> getAll()
 	{
         return dao.getAll();        
 	}
 	
 	@WebMethod
-	public List<SearchCriterion> get(String owner, String key)
+	public List<SearchCriterionImpl> get(String owner, String key)
 	{
 		return dao.get(owner, key);
 	}	

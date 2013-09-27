@@ -1,28 +1,29 @@
 package com.leon.ws.rfq.request;
 
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@XmlRootElement(name="RequestDetailImpl")
+@XmlRootElement(name="RequestDetailImpl", namespace = "com.leon.ws.rfq.request")
 public class RequestDetailImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(RequestDetailImpl.class);
 	private String request;
 	private int identifier;
 	private String bookCode;
-
-
-	public RequestDetailImpl(String request, int identifier, String bookCode)
+	private ArrayList<OptionDetailImpl> legs;
+	
+	public RequestDetailImpl() {}
+	
+	public OptionDetailListImpl getLegs()
 	{
-		this.request = request;
-		this.identifier = identifier;
-		this.bookCode = bookCode;
-		
-		logger.debug("RequestDetailImpl object instantiated = > " +  this);
+		OptionDetailListImpl optionlegs =  new OptionDetailListImpl();
+		optionlegs.setOptionDetailList(legs);
+		return optionlegs;
 	}
 	
-	public RequestDetailImpl() {} 
+	public void setLegs(OptionDetailListImpl optionLegs)
+	{
+		this.legs = optionLegs.getOptionDetailList();
+	}
 	
 	public String getRequest()
 	{
@@ -63,13 +64,24 @@ public class RequestDetailImpl
 		buf.append(", Identifier: ");
 		buf.append(this.identifier);
 		buf.append(", Book code: ");
-		buf.append(this.bookCode);		
+		buf.append(this.bookCode);
+		
+		if(legs != null && legs.size() > 0)
+		{
+			buf.append(", Legs: \n");
+			for(OptionDetailImpl leg : this.legs)
+			{
+				if(leg != null)
+					buf.append(leg.toString() + "\n");
+			}			
+		}
+		
 		return buf.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o)
-	{
+	{		
 		if(this == o)
 			return true;
 		
@@ -78,7 +90,18 @@ public class RequestDetailImpl
 		
 		RequestDetailImpl param = (RequestDetailImpl) o;
 		
-		return 	this.identifier == param.identifier &&	
+		boolean isEqual = false;
+		
+		if(legs != null)
+		{
+			for(OptionDetailImpl leg : this.legs)
+			{
+				// TODO - check each leg and compare against param's legs
+				isEqual = leg.equals(leg);
+			}					
+		}		
+		
+		return 	isEqual && this.identifier == param.identifier &&	
 				this.request.equals(param.request) &&
 				this.bookCode.equals(param.bookCode);
 	}
@@ -90,6 +113,15 @@ public class RequestDetailImpl
 		result = 37 * result + (int) identifier;
 		result = 37 * result + (request == null ? 0 : request.hashCode());
 		result = 37 * result + (bookCode == null ? 0 : bookCode.hashCode());
+		
+		if(legs != null)
+		{
+			for(OptionDetailImpl leg : this.legs)
+			{
+				if(leg != null )
+					result = 37 * result + leg.hashCode();
+			}					
+		}
 		return result;
 	}	
 }
