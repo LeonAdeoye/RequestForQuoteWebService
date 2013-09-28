@@ -162,6 +162,11 @@ public class RequestDetailImpl
 		return this.notionalCurrency;
 	}
 	
+	public void setNotionalCurrency(String notionalCurrency)
+	{
+		this.notionalCurrency = notionalCurrency;
+	}	
+	
 	public GregorianCalendar getTradeDate()
 	{
 		return this.tradeDate;
@@ -407,6 +412,11 @@ public class RequestDetailImpl
 		return this.premiumSettlementDaysOverride;
 	}
 	
+	public void setPremiumSettlementDaysOverride(int premiumSettlementDaysOverride)
+	{
+		this.premiumSettlementDaysOverride = premiumSettlementDaysOverride;
+	}	
+	
 	public String getSalesCreditCurrency()
 	{
 		return this.salesCreditCurrency;
@@ -422,7 +432,7 @@ public class RequestDetailImpl
 		return this.salesCreditPercentage;
 	}
 	
-	public void setsalesCreditPercentage(BigDecimal salesCreditPercentage)
+	public void setSalesCreditPercentage(BigDecimal salesCreditPercentage)
 	{
 		this.salesCreditPercentage = salesCreditPercentage;
 	}
