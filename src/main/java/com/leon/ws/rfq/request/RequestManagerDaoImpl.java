@@ -29,15 +29,86 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 	@Override
 	public int save(RequestDetailImpl request, String savedByUser)
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
-		return databaseExecutor.executePreparedStatement(UPDATE, request.getIdentifier(), request.getRequest(), request.getBookCode(), 
-				request.getClientId(),  updatedByUser);
+		return databaseExecutor.executePreparedStatement(UPDATE, 
+				request.getIdentifier(), 
+				request.getRequest(), 
+				request.getBookCode(), 
+				request.getClientId(),  
+				request.getIsOTC(), 
+				request.getStatus(),
+
+				request.getTradeDate(), 
+				request.getExpiryDate(),
+								
+				request.getLotSize(),
+				request.getMultiplier(), 
+				request.getContracts(), 
+				request.getQuantity(), 
+				
+				request.getNotionalMillions(),
+				request.getNotionalFXRate(), 
+				request.getNotionalCurrency(), 
+				
+				request.getDelta(), 
+				request.getGamma(),
+				request.getVega(), 
+				request.getTheta(), 
+				request.getRho(), 
+				
+				request.getDeltaNotional(), 
+				request.getGammaNotional(),
+				request.getVegaNotional(), 
+				request.getThetaNotional(), 
+				request.getRhoNotional(), 
+				
+				request.getDeltaShares(),
+				request.getGammaShares(), 
+				request.getVegaShares(), 
+				request.getThetaShares(), 
+				request.getRhoShares(),
+				
+				request.getAskFinalAmount(), 
+				request.getAskFinalPercentage(), 
+				request.getAskImpliedVol(), 
+				request.getAskPremiumAmount(),
+				request.getAskPremiumPercentage(), 
+				
+				request.getBidFinalAmount(), 
+				request.getBidFinalPercentage(), 
+				request.getBidImpliedVol(),
+				request.getBidPremiumAmount(), 
+				request.getBidPremiumPercentage(), 
+				
+				request.getPremiumAmount(), 
+				request.getPremiumPercentage(),
+				request.getImpliedVol(),
+				
+				request.getSalesCreditAmount(),
+				request.getSalesCreditPercentage(),
+				request.getSalesCreditCurrency(),
+				request.getSalesCreditFXRate(),
+				
+				request.getPremiumSettlementCurrency(),
+				request.getPremiumSettlementDate(),
+				request.getPremiumSettlementDaysOverride(),
+				request.getPremiumSettlementFXRate(),
+				
+				request.getSalesComment(),
+				request.getTraderComment(),
+				request.getClientComment(),
+				
+				request.getHedgePrice(),
+				request.getHedgeType(),
+				request.getTotalPremium(),
+				request.getPickedUpBy(),
+								
+				updatedByUser);
 	}
 
 	@Override

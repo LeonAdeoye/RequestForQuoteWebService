@@ -11,17 +11,22 @@ public class RequestDetailImpl
 {
 	private String request;	
 	private String bookCode;
-	private String notionalCurrency;
-	
 	private int identifier;
 	private int clientId;
+	private boolean isOTC;
+    private String status;	
+	
 	private int lotSize;
 	private int multiplier;
 	private int contracts;
 	private int quantity;
-	
+    
+	private GregorianCalendar tradeDate;
+	private GregorianCalendar expiryDate;    
+    
 	private BigDecimal notionalMillions;
 	private BigDecimal notionalFXRate;
+	private String notionalCurrency;
 	
     private BigDecimal delta;
     private BigDecimal gamma;
@@ -51,9 +56,6 @@ public class RequestDetailImpl
     private BigDecimal salesCreditFXRate;
     private String salesCreditCurrency;
     
-    private boolean isOTC;
-    private String status;
-    
     private BigDecimal bidImpliedVol;
     private BigDecimal bidPremiumPercentage;
     private BigDecimal bidPremiumAmount;
@@ -77,10 +79,7 @@ public class RequestDetailImpl
     private String pickedUpBy;
     private String hedgeType;
     private BigDecimal hedgePrice;
-    private BigDecimal totalPremium;    
-	
-	private GregorianCalendar tradeDate;
-	private GregorianCalendar expiryDate;
+    private BigDecimal totalPremium;
 	
 	private ArrayList<OptionDetailImpl> legs;
 	
@@ -218,7 +217,7 @@ public class RequestDetailImpl
 		return this.quantity;
 	}
 	
-	public void getQuantity(int quantity)
+	public void setQuantity(int quantity)
 	{
 		this.quantity = quantity;
 	}
