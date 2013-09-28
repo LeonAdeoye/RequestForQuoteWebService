@@ -34,7 +34,9 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="clientManagerDao" ref="clientManagerDao"/>
     </bean>
     
-    <bean id="requestController" class="com.leon.ws.rfq.request.RequestControllerImpl"/>    
+    <bean id="requestController" class="com.leon.ws.rfq.request.RequestControllerImpl">
+    	<property name="requestManagerDao" ref="requestManagerDao"/>
+    <bean/>    
     
     <bean id="bookController" class="com.leon.ws.rfq.book.BookControllerImpl">
     	<property name="bookManagerDao" ref="bookManagerDao"/>
@@ -63,6 +65,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     <bean id="holidayDao" class="com.leon.ws.rfq.holiday.HolidayDaoImpl">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
+    
+    <bean id="RequestManagerDao" class="com.leon.ws.rfq.request.RequestManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>    
     
     <bean id="databaseCommandExecutor" class="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl">
     	<property name="dataSource" ref="dataSource"/>
