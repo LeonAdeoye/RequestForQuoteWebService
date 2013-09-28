@@ -6,7 +6,7 @@ import com.leon.ws.rfq.search.SearchCriteriaImpl;
 public class RequestManagerDaoImpl implements RequestManagerDao
 {
 	private static final String SAVE = "CALL request_SAVE (?, ?, ?)";
-	private static final String UPDATE = "CALL request_UPDATE (?, ?)";
+	private static final String UPDATE = "CALL request_UPDATE (?, ?, ?)";
 	private static final String GET = "CALL request_GET";
 	private static final String SELECT_ALL = "CALL requests_SELECT_ALL";
 	private GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor;
@@ -27,17 +27,17 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 	}	
 
 	@Override
-	public int save(RequestDetailImpl request)
+	public int save(RequestDetailImpl request, String savedByUser)
 	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean update(RequestDetailImpl request)
+	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return databaseExecutor.executePreparedStatement(UPDATE, request.getIdentifier(), request.getRequest(), request.getBookCode(), 
+				request.getClientId(),  updatedByUser);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.leon.ws.rfq.request;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
@@ -17,15 +18,15 @@ public class RequestControllerImpl implements RequestController
 	}	
 
 	@WebMethod
-	public int save(RequestDetailImpl requestDetail)
+	public int save(RequestDetailImpl requestDetail, String savedByUser)
 	{
-		return dao.save(requestDetail);
+		return dao.save(requestDetail, savedByUser);
 	}
 
 	@WebMethod
-	public boolean update(RequestDetailImpl requestDetail)
+	public boolean update(RequestDetailImpl requestDetail, String updatedByUser)
 	{
-		return dao.update(requestDetail);
+		return dao.update(requestDetail, updatedByUser);
 	}
 
 	@WebMethod

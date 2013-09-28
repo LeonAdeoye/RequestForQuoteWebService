@@ -3,16 +3,17 @@ package com.leon.ws.rfq.request;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 
 @WebService(name="RequestController")
 public interface RequestController
 {
 	@WebMethod
-	int save(@WebParam(name="requestDetail") RequestDetailImpl requestDetail);
+	int save(@WebParam(name="requestDetail") RequestDetailImpl requestDetail, @WebParam(name="savedByUser") String savedByUser);
 	
 	@WebMethod
-	boolean update(@WebParam(name="requestDetail") RequestDetailImpl requestDetail);	
+	boolean update(@WebParam(name="requestDetail") RequestDetailImpl requestDetail, @WebParam(name="updatedByUser") String updatedByUser);	
 	
 	@WebMethod
 	RequestDetailImpl getRequest(@WebParam(name="identifier") int identifier, @WebParam(name="rePrice") boolean rePrice);
