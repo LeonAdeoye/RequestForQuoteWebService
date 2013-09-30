@@ -687,6 +687,68 @@ public class RequestDetailImpl
 		buf.append(this.identifier);
 		buf.append(", Book code: ");
 		buf.append(this.bookCode);
+
+		buf.append(", Delta: ");
+		buf.append(this.delta);
+		buf.append(", Gamma: ");
+		buf.append(this.gamma);
+		buf.append(", Vega: ");
+		buf.append(this.vega);
+		buf.append(", Theta: ");
+		buf.append(this.theta);
+		buf.append(", Rho: ");
+		buf.append(this.rho);
+		
+		buf.append(", Delta notional: ");
+		buf.append(this.deltaNotional);
+		buf.append(", Gamma notional: ");
+		buf.append(this.gammaNotional);
+		buf.append(", Vega notional: ");
+		buf.append(this.vegaNotional);
+		buf.append(", Theta notional: ");
+		buf.append(this.thetaNotional);
+		buf.append(", Rho notional: ");
+		buf.append(this.rhoNotional);
+		
+		buf.append(", Delta Shares: ");
+		buf.append(this.deltaShares);
+		buf.append(", Gamma shares: ");
+		buf.append(this.gammaShares);
+		buf.append(", Vega shares: ");
+		buf.append(this.vegaShares);
+		buf.append(", Theta shares: ");
+		buf.append(this.thetaShares);
+		buf.append(", Rho shares: ");
+		buf.append(this.rhoShares);
+		
+		buf.append(", Bid final amount: ");
+		buf.append(this.bidFinalAmount);
+		buf.append(", Bid final percentage: ");
+		buf.append(this.bidFinalPercentage);
+		buf.append(", Bid implied vol: ");
+		buf.append(this.bidImpliedVol);
+		buf.append(", Bid premium amount: ");
+		buf.append(this.bidPremiumAmount);
+		buf.append(", Bid premium percentage: ");
+		buf.append(this.bidPremiumPercentage);	
+		
+		buf.append(", Ask final amount: ");
+		buf.append(this.askFinalAmount);
+		buf.append(", Ask final percentage: ");
+		buf.append(this.askFinalPercentage);
+		buf.append(", Ask implied vol: ");
+		buf.append(this.askImpliedVol);
+		buf.append(", Ask premium amount: ");
+		buf.append(this.askPremiumAmount);
+		buf.append(", Ask premium percentage: ");
+		buf.append(this.askPremiumPercentage);	
+		
+		buf.append(", Is OTC: ");
+		buf.append(this.isOTC);
+		buf.append(", ClientId: ");
+		buf.append(this.clientId);
+		buf.append(", Status: ");
+		buf.append(this.status);		
 		
 		if(legs != null && legs.size() > 0)
 		{
@@ -738,6 +800,22 @@ public class RequestDetailImpl
 				this.thetaNotional.equals(param.thetaNotional) &&
 				this.vegaNotional.equals(param.vegaNotional) &&
 				this.rhoNotional.equals(param.rhoNotional) &&
+				
+				this.bidFinalAmount.equals(param.bidFinalAmount) &&
+				this.bidFinalPercentage.equals(param.bidFinalPercentage) &&
+				this.bidImpliedVol.equals(param.bidImpliedVol) &&
+				this.bidPremiumAmount.equals(param.bidPremiumAmount) &&
+				this.bidPremiumPercentage.equals(param.bidPremiumPercentage) &&
+				
+				this.askFinalAmount.equals(param.askFinalAmount) &&
+				this.askFinalPercentage.equals(param.askFinalPercentage) &&
+				this.askImpliedVol.equals(param.askImpliedVol) &&
+				this.askPremiumAmount.equals(param.askPremiumAmount) &&
+				this.askPremiumPercentage.equals(param.askPremiumPercentage) &&
+
+				this.impliedVol.equals(param.impliedVol) &&
+				this.premiumAmount.equals(param.premiumAmount) &&
+				this.premiumPercentage.equals(param.premiumPercentage) &&				
 				
 				this.deltaShares.equals(param.deltaShares) &&
 				this.gammaShares.equals(param.gammaShares) &&
