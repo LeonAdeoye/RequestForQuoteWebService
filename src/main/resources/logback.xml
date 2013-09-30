@@ -10,28 +10,35 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}\logs\Pricing.log</file>
+		<file>c:\development\git\RequestForQuoteWebService\logs\Pricing.log</file>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
 		</layout>
 	</appender>
 
 	<appender name="DAO_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}\logs\dao.log</file>      
+		<file>c:\development\git\RequestForQuoteWebService\logs\dao.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
 	<appender name="CHAT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}\logs\chat.log</file>      
+		<file>c:\development\git\RequestForQuoteWebService\logs\chat.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
 	</appender>
 	
-	   	<appender name="COMM_LOG_FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}\logs\communication.log</file>      
+	<appender name="COMM_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+		<file>c:\development\git\RequestForQuoteWebService\logs\communication.log</file>      
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
+		</encoder>
+	</appender>
+	
+	 <appender name="CONTROLLERS_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+		<file>c:\development\git\RequestForQuoteWebService\logs\controllers.log</file>      
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
@@ -54,6 +61,30 @@
 	<logger name="com.leon.ws.rfq.communicator.ClientCommunicatorImpl" level="TRACE">
 		<appender-ref ref="COMM_LOG_FILE" />           
 	</logger>		
+
+	<logger name="com.leon.ws.rfq.request.RequestControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.search.SearchControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.holiday.HolidayControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.client.ClientControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.book.BookControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.chat.ChatMediatorImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>	
    
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
