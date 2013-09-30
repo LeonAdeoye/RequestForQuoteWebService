@@ -756,7 +756,7 @@ public class RequestDetailImpl
 			for(OptionDetailImpl leg : this.legs)
 			{
 				if(leg != null)
-					buf.append(leg.toString() + "\n");
+					buf.append(leg.toString() + " \n");
 			}			
 		}
 		
