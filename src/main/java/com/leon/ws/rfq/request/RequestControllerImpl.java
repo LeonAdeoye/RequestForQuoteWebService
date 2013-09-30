@@ -5,7 +5,6 @@ import javax.jws.WebService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
@@ -16,6 +15,7 @@ public class RequestControllerImpl implements RequestController
 	public RequestControllerImpl() {}
 	
 	private RequestManagerDao dao;
+	//OptionPricingModelContext context = null;
 	
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
@@ -50,10 +50,28 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			
+			/*foreach(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
+			{
+				rePrice(optionLeg);		       
+			}*/
 		}
 		
 		return request;
+	}
+	
+	private OptionDetailImpl rePrice(OptionDetailImpl optionLeg)
+	{
+        /*context.setSrike(optionLeg.getStrike().doubleValue());
+        context.setInterestRate(interestRate.doubleValue());
+        context.setUnderlyingPrice(underlyingPrice.doubleValue());
+        context.setVolatility(volatility.doubleValue());
+        context.setDaysToExpiry(daysToExpiry.doubleValue());
+        context.setDayCountConvention(dayCountConvention.doubleValue());       
+        context.setToCall(isCall);
+        context.setToEuropean(isEuropean);
+        
+        OptionPriceResult result = context.calculate();*/
+        return null;
 	}
 
 	@WebMethod
@@ -67,7 +85,10 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			
+			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			{
+				rePrice(optionLeg);		       
+			}*/
 		}
 		
 		return requests;
@@ -85,7 +106,10 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			
+			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			{
+				rePrice(optionLeg);		       
+			}*/
 		}
 		
 		return requests;
@@ -104,7 +128,10 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			
+			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			{
+				rePrice(optionLeg);		       
+			}*/
 		}
 		
 		return requests;
