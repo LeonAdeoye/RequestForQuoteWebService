@@ -15,19 +15,19 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	OptionPricingModelContext context = null;
 	
 	public OptionPricingControllerImpl()
-	{
-		if(logger.isDebugEnabled())
-			logger.debug("constructor => default model:{}", context.getModel().toString());
+	{		
+		context = new OptionPricingModelContext(new BlackScholesModelImpl());
 		
-		context = new OptionPricingModelContext(new BlackScholesModelImpl());		
+		if(logger.isDebugEnabled())
+			logger.debug("constructor => default model:{}", context.getModel().toString());		
 	}
 	
 	public OptionPricingControllerImpl(OptionPricingModel model)
-	{
-		if(logger.isDebugEnabled())		
-			logger.debug("constructor => setting model:{}", context.getModel().toString());
-		
+	{		
 		context = new OptionPricingModelContext(model);
+		
+		if(logger.isDebugEnabled())		
+			logger.debug("constructor => setting model:{}", context.getModel().toString());		
 	}
 	
 	@WebMethod(exclude=true)
