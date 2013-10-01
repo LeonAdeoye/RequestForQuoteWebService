@@ -160,5 +160,35 @@ public class OptionDetailImpl
 		result = 37 * result + (theta == null ? 0 : theta.hashCode());
 		result = 37 * result + (rho == null ? 0 : rho.hashCode());		
 		return result;
+	}
+
+	public BigDecimal getStrike()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public BigDecimal getDaysToExpiry()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public BigDecimal getDayCountConvention()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getUnderlyingRIC()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getCurrency()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

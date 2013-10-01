@@ -11,19 +11,23 @@ import org.slf4j.LoggerFactory;
 endpointInterface="com.leon.ws.rfq.option.model.OptionPricingController")
 public class OptionPricingControllerImpl implements OptionPricingController
 {
-	static final Logger LOG = LoggerFactory.getLogger(OptionPricingControllerImpl.class);
+	static final Logger logger = LoggerFactory.getLogger(OptionPricingControllerImpl.class);
 	OptionPricingModelContext context = null;
 	
 	public OptionPricingControllerImpl()
 	{
-		context = new OptionPricingModelContext(new BlackScholesModelImpl());
-		LOG.debug("OptionPricingControllerImpl::constructor => model:{}", context.getModel().toString());
+		if(logger.isDebugEnabled())
+			logger.debug("constructor => default model:{}", context.getModel().toString());
+		
+		context = new OptionPricingModelContext(new BlackScholesModelImpl());		
 	}
 	
 	public OptionPricingControllerImpl(OptionPricingModel model)
 	{
+		if(logger.isDebugEnabled())		
+			logger.debug("constructor => setting model:{}", context.getModel().toString());
+		
 		context = new OptionPricingModelContext(model);
-		LOG.debug("OptionPricingControllerImpl::constructor => model:{}", context.getModel().toString());
 	}
 	
 	@WebMethod(exclude=true)
@@ -31,7 +35,9 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	{		
 		if(context != null)
 		{
-			LOG.debug("OptionPricingControllerImpl::setModel => model:{}", model.toString());
+			if(logger.isDebugEnabled())		
+				logger.debug("setting to model:{}", model.toString());
+			
 			context.setModel(model);
 		}
 	}
@@ -55,13 +61,15 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	@Oneway
 	public void parameterize(BigDecimal strike,	BigDecimal volatility, BigDecimal underlyingPrice, BigDecimal daysToExpiry,
 			BigDecimal interestRate, boolean isCall, boolean isEuropean, BigDecimal dayCountConvention)
-	{
-		LOG.debug("OptionPricingControllerImpl::parameterize => strike{}, interestRate:{}, underlyingPrice:{}, " +
-				"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toString(), interestRate.toString(), 
-				underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), (isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));
-		
+	{ 		
 		if(context != null)
 		{
+			if(logger.isDebugEnabled())			
+				logger.debug("option pricer parameterizing with values => strike:{}, interestRate:{}, underlyingPrice:{}, " +
+					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toPlainString(), interestRate.toPlainString(), 
+					underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), 
+					(isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));
+			
 	        context.setSrike(strike.doubleValue());
 	        context.setInterestRate(interestRate.doubleValue());
 	        context.setUnderlyingPrice(underlyingPrice.doubleValue());
@@ -71,20 +79,22 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	        context.setToCall(isCall);
 	        context.setToEuropean(isEuropean);
 		}
-		else
-			LOG.error("OptionPricingControllerImpl::parameterize => context is null!");
+		else if(logger.isErrorEnabled())
+			logger.error("Pricing context is null! Cannot price.");
 	}
 	
 	@WebMethod
 	public OptionPriceResult calculate(BigDecimal strike,	BigDecimal volatility, BigDecimal underlyingPrice, BigDecimal daysToExpiry,
 			BigDecimal interestRate, boolean isCall, boolean isEuropean, BigDecimal dayCountConvention)
-	{
-		LOG.debug("OptionPricingControllerImpl::parameterize => strike{}, interestRate:{}, underlyingPrice:{}, " +
-				"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toString(), interestRate.toString(), 
-				underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), (isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));
-		
+	{		
 		if(context != null)
 		{
+			if(logger.isDebugEnabled())	
+				logger.debug("Option price calculation with parameters => strike:{}, interestRate:{}, underlyingPrice:{}, " +
+					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toPlainString(), interestRate.toPlainString(), 
+					underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), 
+					(isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));			
+			
 	        context.setSrike(strike.doubleValue());
 	        context.setInterestRate(interestRate.doubleValue());
 	        context.setUnderlyingPrice(underlyingPrice.doubleValue());
@@ -100,11 +110,12 @@ public class OptionPricingControllerImpl implements OptionPricingController
 			}
 			catch(Exception e)
 			{
-				LOG.error("OptionPricingControllerImpl::calculate => Exception:{}, Message:{}", e.toString(), e.getMessage());
+				if(logger.isErrorEnabled())
+					logger.error("Failed to calculate option price => Exception thrown.", e);
 			}	        
 		}
-		else
-			LOG.error("OptionPricingControllerImpl::parameterize => context is null!");
+		else if(logger.isErrorEnabled())
+			logger.error("Pricing context is null! Cannot price");
 		
 		return null;
 	}
@@ -112,15 +123,18 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	@WebMethod
 	public OptionPriceResultSet calculateRange(String rangeKey,	BigDecimal startValue, BigDecimal endValue,	BigDecimal increment)
 	{
-		LOG.debug("OptionPricingControllerImpl::calculateRange => rangeKey:{}, startValue:{}, endValue:{}, increment:{}",
-					rangeKey, startValue.toPlainString(), endValue.toPlainString(), increment.toPlainString());
 		try
 		{
+			if(logger.isDebugEnabled())	
+				logger.debug("Calculating range => rangeKey:{}, startValue:{}, endValue:{}, increment:{}",
+						rangeKey, startValue.toPlainString(), endValue.toPlainString(), increment.toPlainString());			
+			
 			return context.calculateRange(rangeKey, startValue.doubleValue(), endValue.doubleValue(), increment.doubleValue());
 		}
 		catch(Exception e)
 		{
-			LOG.error("OptionPricingControllerImpl::calculateRange => Exception:{}, Message:{}", e.toString(), e.getMessage());
+			if(logger.isErrorEnabled())
+				logger.error("Failed to calculate range => Exception thrown", e);
 		}
 		return null; 
 	}

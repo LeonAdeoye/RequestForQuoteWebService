@@ -5,6 +5,11 @@ import javax.jws.WebService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.leon.ws.rfq.marketdata.MarketDataService;
+import com.leon.ws.rfq.option.model.OptionPriceResult;
+import com.leon.ws.rfq.option.model.OptionPricingController;
+import com.leon.ws.rfq.parametric.ParametricDataService;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
@@ -15,11 +20,23 @@ public class RequestControllerImpl implements RequestController
 	public RequestControllerImpl() {}
 	
 	private RequestManagerDao dao;
-	//OptionPricingModelContext context = null;
+	private OptionPricingController optionPricer;
+	private MarketDataService marketDataService;
+	private ParametricDataService parametricDataService;
 	
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
 		this.dao = dao;
+	}
+	
+	public void setMarketDataService(MarketDataService marketDataService)
+	{
+		this.marketDataService = marketDataService;
+	}
+	
+	public void setParametricDataService(ParametricDataService parametricDataService)
+	{
+		this.parametricDataService = parametricDataService;
 	}	
 
 	@WebMethod
@@ -50,28 +67,30 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			/*foreach(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
+			for(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
 			{
-				rePrice(optionLeg);		       
-			}*/
+				rePriceWithLatestData(optionLeg);		       
+			}	
 		}
 		
 		return request;
 	}
 	
-	private OptionDetailImpl rePrice(OptionDetailImpl optionLeg)
+	private OptionDetailImpl rePriceWithLatestData(OptionDetailImpl optionLeg)
 	{
-        /*context.setSrike(optionLeg.getStrike().doubleValue());
-        context.setInterestRate(interestRate.doubleValue());
-        context.setUnderlyingPrice(underlyingPrice.doubleValue());
-        context.setVolatility(volatility.doubleValue());
-        context.setDaysToExpiry(daysToExpiry.doubleValue());
-        context.setDayCountConvention(dayCountConvention.doubleValue());       
-        context.setToCall(isCall);
-        context.setToEuropean(isEuropean);
-        
-        OptionPriceResult result = context.calculate();*/
-        return null;
+       
+        OptionPriceResult result = optionPricer.calculate(
+        		optionLeg.getStrike(), 
+        		parametricDataService.getVolatility(optionLeg.getUnderlyingRIC()), 
+        		marketDataService.getUnderlyingPrice(optionLeg.getUnderlyingRIC()), 
+        		optionLeg.getDaysToExpiry(), 
+        		parametricDataService.getInterestRate(optionLeg.getCurrency()), 
+        		optionLeg.getIsCall(), 
+        		optionLeg.getIsEuropean(), 
+        		optionLeg.getDayCountConvention());
+
+        	optionLeg.setDelta(result.getDelta());
+        	return optionLeg;
 	}
 
 	@WebMethod
@@ -85,10 +104,13 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			for(RequestDetailImpl request : requests.getRequestDetailList())
 			{
-				rePrice(optionLeg);		       
-			}*/
+				for(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
+				{
+					rePriceWithLatestData(optionLeg);		       
+				}			
+			}
 		}
 		
 		return requests;
@@ -106,10 +128,13 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			for(RequestDetailImpl request : requests.getRequestDetailList())
 			{
-				rePrice(optionLeg);		       
-			}*/
+				for(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
+				{
+					rePriceWithLatestData(optionLeg);		       
+				}			
+			}
 		}
 		
 		return requests;
@@ -128,10 +153,13 @@ public class RequestControllerImpl implements RequestController
 		
 		if(rePrice)
 		{
-			/*foreach(OptionDetailImpl optionLeg : request.getLegs())
+			for(RequestDetailImpl request : requests.getRequestDetailList())
 			{
-				rePrice(optionLeg);		       
-			}*/
+				for(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
+				{
+					rePriceWithLatestData(optionLeg);		       
+				}			
+			}
 		}
 		
 		return requests;

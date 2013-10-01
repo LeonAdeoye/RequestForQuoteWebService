@@ -9,8 +9,8 @@
 		</layout>
 	</appender>
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>c:\development\git\RequestForQuoteWebService\logs\Pricing.log</file>
+	<appender name="WEB_SERVICE_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+		<file>c:\development\git\RequestForQuoteWebService\logs\web_service.log</file>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>%d{HH:mm:ss}[%-5level]:%msg%n</Pattern>
 		</layout>
@@ -44,8 +44,6 @@
 		</encoder>
 	</appender> 
 	     
-	<logger name="com.leon.ws.rfq.option.model" level="TRACE"/>
-	
 	<logger name="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl" level="TRACE">
 		<appender-ref ref="DAO_LOG_FILE" />           
 	</logger>
@@ -84,11 +82,18 @@
 	
 	<logger name="com.leon.ws.rfq.chat.ChatMediatorImpl" level="TRACE">
 		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.option.model.OptionPricingControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="org.apache.cxf.service.invoker.AbstractInvoker" level="DEBUG">
+		<appender-ref ref="WEB_SERVICE_LOG_FILE" />           
 	</logger>	
    
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
 	</root>
 	
 </configuration>
