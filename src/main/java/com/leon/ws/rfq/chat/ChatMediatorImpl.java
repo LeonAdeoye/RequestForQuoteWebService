@@ -20,7 +20,7 @@ import com.leon.ws.rfq.communicator.ClientCommunicator;
 public class ChatMediatorImpl implements ChatMediator
 {
 	private static Logger logger = LoggerFactory.getLogger(ChatMediatorImpl.class);	
-	private Map<Integer, Set<String>> chatRooms = new HashMap<Integer, Set<String>>();
+	private Map<Integer, Set<String>> chatRooms = new HashMap<>();
 	private static final String NEW_CHAT_MESSAGE = "NewChatMessage";
 	private final ClientCommunicator communicator;	
 	private ChatMessageDao dao;

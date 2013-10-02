@@ -21,7 +21,7 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 	private AsynchronousChannelGroup channelGroup;
 	private AsynchronousServerSocketChannel serverSocket;
 	private Lock lockObject = new ReentrantLock(true); // with fair ordering policy
-	private Map<String, AsynchronousSocketChannel> mapOfClients =  new ConcurrentSkipListMap<String, AsynchronousSocketChannel>();
+	private Map<String, AsynchronousSocketChannel> mapOfClients =  new ConcurrentSkipListMap<>();
 	private int portNumber;
 	private String ipAddress;
 	
