@@ -82,7 +82,7 @@ public class RequestControllerImpl implements RequestController
         OptionPriceResult result = optionPricer.calculate(
         		optionLeg.getStrike(), 
         		parametricDataService.getVolatility(optionLeg.getUnderlyingRIC()), 
-        		marketDataService.getUnderlyingPrice(optionLeg.getUnderlyingRIC()), 
+        		marketDataService.getMidPrice(optionLeg.getUnderlyingRIC()), 
         		optionLeg.getDaysToExpiry(), 
         		parametricDataService.getInterestRate(optionLeg.getCurrency()), 
         		optionLeg.getIsCall(), 

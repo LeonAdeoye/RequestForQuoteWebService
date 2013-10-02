@@ -4,7 +4,15 @@ import java.math.BigDecimal;
 
 public interface MarketDataService
 {
-
-	BigDecimal getUnderlyingPrice(String underlyingRIC);
-
+	BigDecimal getMidPrice(String underlyingRIC);
+	void setMidPrice(String underlyingRIC, BigDecimal mid);
+	
+	BigDecimal getAskPrice(String underlyingRIC);
+	void setAskPrice(String underlyingRIC, BigDecimal ask);
+	
+	BigDecimal getBidPrice(String underlyingRIC);
+	void setBidPrice(String underlyingRIC, BigDecimal bid);	
+	
+	BigDecimal getClosePrice(String underlyingRIC);
+	void setClosePrice(String underlyingRIC, BigDecimal close);	
 }
