@@ -1,40 +1,39 @@
 package com.leon.ws.rfq.parametric;
 
-import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class ParametericDataServiceImpl implements ParametricDataService
 {
-	Map<String, BigDecimal> volatilities = new ConcurrentSkipListMap<>();
-	Map<String, BigDecimal> interestRates = new ConcurrentSkipListMap<>();
+	private Map<String, Double> volatilities = new ConcurrentSkipListMap<>();
+	private Map<String, Double> interestRates = new ConcurrentSkipListMap<>();
 	
 	@Override
-	public BigDecimal getVolatility(String underlyingRIC)
+	public double getVolatility(String underlyingRIC)
 	{
 		if(volatilities.containsKey(underlyingRIC))
-			return new BigDecimal(volatilities.get(underlyingRIC).toPlainString());
+			return volatilities.get(underlyingRIC);
 		else
-			return new BigDecimal(0);
+			return 0;
 	}
 	
 	@Override
-	public void setVolatility(String underlyingRIC, BigDecimal volatility)
+	public void setVolatility(String underlyingRIC, double volatility)
 	{
 		volatilities.put(underlyingRIC, volatility);
 	}
 
 	@Override
-	public BigDecimal getInterestRate(String currency)
+	public double getInterestRate(String currency)
 	{
 		if(interestRates.containsKey(currency))
-			return new BigDecimal(interestRates.get(currency).toPlainString());
+			return interestRates.get(currency);
 		else
-			return new BigDecimal(0);
+			return 0;
 	}
 	
 	@Override
-	public void setInterestRate(String currency, BigDecimal interestRate)
+	public void setInterestRate(String currency, double interestRate)
 	{
 		interestRates.put(currency, interestRate);
 	}	

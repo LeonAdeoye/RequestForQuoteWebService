@@ -3,7 +3,6 @@ package com.leon.ws.rfq.option.model;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.Oneway;
-import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,23 +58,23 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	
 	@WebMethod
 	@Oneway
-	public void parameterize(BigDecimal strike,	BigDecimal volatility, BigDecimal underlyingPrice, BigDecimal daysToExpiry,
-			BigDecimal interestRate, boolean isCall, boolean isEuropean, BigDecimal dayCountConvention)
+	public void parameterize(double strike,	double volatility, double underlyingPrice, double daysToExpiry,
+			double interestRate, boolean isCall, boolean isEuropean, double dayCountConvention)
 	{ 		
 		if(context != null)
 		{
 			if(logger.isDebugEnabled())			
 				logger.debug("option pricer parameterizing with values => strike:{}, interestRate:{}, underlyingPrice:{}, " +
-					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toPlainString(), interestRate.toPlainString(), 
-					underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), 
+					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike, interestRate, 
+					underlyingPrice, volatility, daysToExpiry, dayCountConvention, 
 					(isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));
 			
-	        context.setSrike(strike.doubleValue());
-	        context.setInterestRate(interestRate.doubleValue());
-	        context.setUnderlyingPrice(underlyingPrice.doubleValue());
-	        context.setVolatility(volatility.doubleValue());
-	        context.setDaysToExpiry(daysToExpiry.doubleValue());
-	        context.setDayCountConvention(dayCountConvention.doubleValue());       
+	        context.setSrike(strike);
+	        context.setInterestRate(interestRate);
+	        context.setUnderlyingPrice(underlyingPrice);
+	        context.setVolatility(volatility);
+	        context.setDaysToExpiry(daysToExpiry);
+	        context.setDayCountConvention(dayCountConvention);       
 	        context.setToCall(isCall);
 	        context.setToEuropean(isEuropean);
 		}
@@ -84,23 +83,23 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	}
 	
 	@WebMethod
-	public OptionPriceResult calculate(BigDecimal strike,	BigDecimal volatility, BigDecimal underlyingPrice, BigDecimal daysToExpiry,
-			BigDecimal interestRate, boolean isCall, boolean isEuropean, BigDecimal dayCountConvention)
+	public OptionPriceResult calculate(double strike,	double volatility, double underlyingPrice, double daysToExpiry,
+			double interestRate, boolean isCall, boolean isEuropean, double dayCountConvention)
 	{		
 		if(context != null)
 		{
 			if(logger.isDebugEnabled())	
 				logger.debug("Option price calculation with parameters => strike:{}, interestRate:{}, underlyingPrice:{}, " +
-					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike.toPlainString(), interestRate.toPlainString(), 
-					underlyingPrice.toPlainString(), volatility.toPlainString(), daysToExpiry.toPlainString(), dayCountConvention.toPlainString(), 
+					"volatility:{}, daysToExpiry:{}, dayCountConvention:{}, isCall:{}, isEuropean:{}", strike, interestRate, 
+					underlyingPrice, volatility, daysToExpiry, dayCountConvention, 
 					(isCall ? "TRUE" : "FALSE"), (isEuropean ? "TRUE" : "FALSE"));			
 			
-	        context.setSrike(strike.doubleValue());
-	        context.setInterestRate(interestRate.doubleValue());
-	        context.setUnderlyingPrice(underlyingPrice.doubleValue());
-	        context.setVolatility(volatility.doubleValue());
-	        context.setDaysToExpiry(daysToExpiry.doubleValue());
-	        context.setDayCountConvention(dayCountConvention.doubleValue());       
+	        context.setSrike(strike);
+	        context.setInterestRate(interestRate);
+	        context.setUnderlyingPrice(underlyingPrice);
+	        context.setVolatility(volatility);
+	        context.setDaysToExpiry(daysToExpiry);
+	        context.setDayCountConvention(dayCountConvention);       
 	        context.setToCall(isCall);
 	        context.setToEuropean(isEuropean);
 	        
@@ -121,15 +120,15 @@ public class OptionPricingControllerImpl implements OptionPricingController
 	}
 	
 	@WebMethod
-	public OptionPriceResultSet calculateRange(String rangeKey,	BigDecimal startValue, BigDecimal endValue,	BigDecimal increment)
+	public OptionPriceResultSet calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
 	{
 		try
 		{
 			if(logger.isDebugEnabled())	
 				logger.debug("Calculating range => rangeKey:{}, startValue:{}, endValue:{}, increment:{}",
-						rangeKey, startValue.toPlainString(), endValue.toPlainString(), increment.toPlainString());			
+						rangeKey, startValue, endValue, increment);			
 			
-			return context.calculateRange(rangeKey, startValue.doubleValue(), endValue.doubleValue(), increment.doubleValue());
+			return context.calculateRange(rangeKey, startValue, endValue, increment);
 		}
 		catch(Exception e)
 		{

@@ -2,8 +2,11 @@ package com.leon.ws.rfq.request;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 
@@ -33,63 +36,63 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setContracts(rs.getInt("contracts")); 
 			request.setQuantity(rs.getInt("quantity")); //12
 			
-			request.setNotionalMillions(rs.getBigDecimal("notionalMillions"));
-			request.setNotionalFXRate(rs.getBigDecimal("notionalFXRate"));
+			request.setNotionalMillions(rs.getDouble("notionalMillions"));
+			request.setNotionalFXRate(rs.getDouble("notionalFXRate"));
 			request.setNotionalCurrency(rs.getString("notionalCurrency")); //15
 			
-			request.setDelta(rs.getBigDecimal("delta")); 
-			request.setGamma(rs.getBigDecimal("gamma"));
-			request.setVega(rs.getBigDecimal("vega")); 
-			request.setTheta(rs.getBigDecimal("theta")); 
-			request.setRho(rs.getBigDecimal("rho")); //20
+			request.setDelta(rs.getDouble("delta")); 
+			request.setGamma(rs.getDouble("gamma"));
+			request.setVega(rs.getDouble("vega")); 
+			request.setTheta(rs.getDouble("theta")); 
+			request.setRho(rs.getDouble("rho")); //20
 			
-			request.setDeltaNotional(rs.getBigDecimal("deltaNotional")); 
-			request.setGammaNotional(rs.getBigDecimal("gammaNotional"));
-			request.setVegaNotional(rs.getBigDecimal("vegaNotional")); 
-			request.setThetaNotional(rs.getBigDecimal("thetaNotional")); 
-			request.setRhoNotional(rs.getBigDecimal("rhoNotional")); //25
+			request.setDeltaNotional(rs.getDouble("deltaNotional")); 
+			request.setGammaNotional(rs.getDouble("gammaNotional"));
+			request.setVegaNotional(rs.getDouble("vegaNotional")); 
+			request.setThetaNotional(rs.getDouble("thetaNotional")); 
+			request.setRhoNotional(rs.getDouble("rhoNotional")); //25
 			
-			request.setDeltaShares(rs.getBigDecimal("deltaShares")); 
-			request.setGammaShares(rs.getBigDecimal("gammaShares"));
-			request.setVegaShares(rs.getBigDecimal("vegaShares")); 
-			request.setThetaShares(rs.getBigDecimal("thetaShares")); 
-			request.setRhoShares(rs.getBigDecimal("rhoShares")); //30
+			request.setDeltaShares(rs.getDouble("deltaShares")); 
+			request.setGammaShares(rs.getDouble("gammaShares"));
+			request.setVegaShares(rs.getDouble("vegaShares")); 
+			request.setThetaShares(rs.getDouble("thetaShares")); 
+			request.setRhoShares(rs.getDouble("rhoShares")); //30
 			
-			request.setAskFinalAmount(rs.getBigDecimal("askFinalAmount")); 
-			request.setAskFinalPercentage(rs.getBigDecimal("askFinalPercentage")); 
-			request.setAskImpliedVol(rs.getBigDecimal("askImpliedVol"));
-			request.setAskPremiumAmount(rs.getBigDecimal("askPremiumAmount"));
-			request.setAskPremiumPercentage(rs.getBigDecimal("askPremiumPercentage")); //35
+			request.setAskFinalAmount(rs.getDouble("askFinalAmount")); 
+			request.setAskFinalPercentage(rs.getDouble("askFinalPercentage")); 
+			request.setAskImpliedVol(rs.getDouble("askImpliedVol"));
+			request.setAskPremiumAmount(rs.getDouble("askPremiumAmount"));
+			request.setAskPremiumPercentage(rs.getDouble("askPremiumPercentage")); //35
 			
-			request.setBidFinalAmount(rs.getBigDecimal("bidFinalAmount")); 
-			request.setBidFinalPercentage(rs.getBigDecimal("bidFinalPercentage")); 
-			request.setBidImpliedVol(rs.getBigDecimal("bidImpliedVol"));
-			request.setBidPremiumAmount(rs.getBigDecimal("bidPremiumAmount")); 
-			request.setBidPremiumPercentage(rs.getBigDecimal("bidPremiumPercentage")); //40
+			request.setBidFinalAmount(rs.getDouble("bidFinalAmount")); 
+			request.setBidFinalPercentage(rs.getDouble("bidFinalPercentage")); 
+			request.setBidImpliedVol(rs.getDouble("bidImpliedVol"));
+			request.setBidPremiumAmount(rs.getDouble("bidPremiumAmount")); 
+			request.setBidPremiumPercentage(rs.getDouble("bidPremiumPercentage")); //40
 			
-			request.setPremiumAmount(rs.getBigDecimal("premiumAmount"));
-			request.setPremiumPercentage(rs.getBigDecimal("premiumPercentage"));
-			request.setImpliedVol(rs.getBigDecimal("impliedVol")); //43
+			request.setPremiumAmount(rs.getDouble("premiumAmount"));
+			request.setPremiumPercentage(rs.getDouble("premiumPercentage"));
+			request.setImpliedVol(rs.getDouble("impliedVol")); //43
 			
-			request.setSalesCreditAmount(rs.getBigDecimal("salesCreditAmount"));
-			request.setSalesCreditPercentage(rs.getBigDecimal("salesCreditPercentage"));
+			request.setSalesCreditAmount(rs.getDouble("salesCreditAmount"));
+			request.setSalesCreditPercentage(rs.getDouble("salesCreditPercentage"));
 			request.setSalesCreditCurrency(rs.getString("salesCreditCurrency"));
-			request.setSalesCreditFXRate(rs.getBigDecimal("salesCreditFXRate")); //47
+			request.setSalesCreditFXRate(rs.getDouble("salesCreditFXRate")); //47
 			
 			request.setPremiumSettlementCurrency(rs.getString("premiumSettlementCurrency"));
 			GregorianCalendar premiumSettlementDate = new GregorianCalendar();
 			premiumSettlementDate.setTime(rs.getDate("premiumSettlementDate"));
 			request.setPremiumSettlementDate(premiumSettlementDate);			
 			request.setPremiumSettlementDaysOverride(rs.getInt("premiumSettlementDaysOverride"));
-			request.setPremiumSettlementFXRate(rs.getBigDecimal("premiumSettlementFXRate")); //51
+			request.setPremiumSettlementFXRate(rs.getDouble("premiumSettlementFXRate")); //51
 			
 			request.setSalesComment(rs.getString("salesComment"));
 			request.setTraderComment(rs.getString("traderComment"));
 			request.setClientComment(rs.getString("clientComment")); //54
 			
-			request.setHedgePrice(rs.getBigDecimal("hedgePrice"));
+			request.setHedgePrice(rs.getDouble("hedgePrice"));
 			request.setHedgeType(rs.getString("hedgeType"));
-			request.setTotalPremium(rs.getBigDecimal("totalPremium"));
+			request.setTotalPremium(rs.getDouble("totalPremium"));
 			request.setPickedUpBy(rs.getString("pickedUpBy")); //58			
 						
 			return request;
@@ -112,9 +115,13 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 								+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 								+ "?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
 	
-	private static final String GET = "CALL request_GET";
+	private static final String GET = "CALL request_GET (?)";
 	
-	private static final String SELECT_ALL = "CALL requests_SELECT_ALL";
+	private static final String SELECT_TODAY = "CALL requests_SELECT_TODAY";
+	
+	private static final String SELECT_WITH_ADHOC_CRITERIA = "CALL requests_SELECT_WITH_ADHOC_CRITERIA";
+	
+	private static final String SELECT_WITH_EXISTING_CRITERIA = "CALL requests_SELECT_WITH_EXISTING_CRITERIA (?, ?)";
 	
 	private GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor;
 	
@@ -299,29 +306,46 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 	@Override
 	public RequestDetailImpl getRequest(int identifier)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return databaseExecutor.getSingleResult(GET, new RequestParameterizedRowMapper(), identifier);
 	}
 
 	@Override
 	public RequestDetailListImpl getRequestsForToday()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		RequestDetailListImpl requestsForToday = new RequestDetailListImpl();
+		
+		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) databaseExecutor
+				.getResultSet(SELECT_TODAY, new RequestParameterizedRowMapper());
+		
+		requestsForToday.setRequestDetailList(resultSet);
+		
+		return requestsForToday;
 	}
 
 	@Override
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		RequestDetailListImpl requestsMatchingAdhocCriteria = new RequestDetailListImpl();
+		
+		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) databaseExecutor
+				.getResultSet(SELECT_WITH_ADHOC_CRITERIA, new RequestParameterizedRowMapper());
+		
+		requestsMatchingAdhocCriteria.setRequestDetailList(resultSet);
+		
+		return requestsMatchingAdhocCriteria;
 	}
 
 	@Override
 	public RequestDetailListImpl getRequestsMatchingExistingCriteria(String criteriaOwner, String criteriaKey)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		RequestDetailListImpl requestsMatchingExistingCriteria = new RequestDetailListImpl();
+		
+		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) databaseExecutor
+				.getResultSet(SELECT_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey);
+		
+		requestsMatchingExistingCriteria.setRequestDetailList(resultSet);
+		
+		return requestsMatchingExistingCriteria;
 	}
 
 }

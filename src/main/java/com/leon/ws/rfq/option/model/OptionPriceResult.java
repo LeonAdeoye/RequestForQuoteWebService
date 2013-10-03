@@ -1,7 +1,6 @@
 package com.leon.ws.rfq.option.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.math.BigDecimal;
 
 @XmlRootElement(name="OptionPriceResult")
 public class OptionPriceResult
@@ -63,63 +62,63 @@ public class OptionPriceResult
 		return result;
 	}	
 	
-	public void setDelta(BigDecimal delta)
+	public void setDelta(double delta)
 	{
-		this.delta = delta.doubleValue();
+		this.delta = delta;
 	}
 	
-	public BigDecimal getDelta()
+	public double getDelta()
 	{
-		return new BigDecimal(this.delta);
+		return this.delta;
 	}
 	
-	public void setGamma(BigDecimal gamma)
+	public void setGamma(double gamma)
 	{
-		this.gamma = gamma.doubleValue();
+		this.gamma = gamma;
 	}
 	
-	public BigDecimal getGamma()
+	public double getGamma()
 	{
-		return new BigDecimal(this.gamma);
+		return this.gamma;
 	}
 	
-	public void setTheta(BigDecimal theta)
+	public void setTheta(double theta)
 	{
-		this.theta = theta.doubleValue();
+		this.theta = theta;
 	}
 	
-	public BigDecimal getTheta()
+	public double getTheta()
 	{
-		return new BigDecimal(this.theta);
+		return this.theta;
 	}
 	
-	public void setVega(BigDecimal vega)
+	public void setVega(double vega)
 	{
-		this.vega = vega.doubleValue();
+		this.vega = vega;
 	}
 	
-	public BigDecimal getVega()
+	public double getVega()
 	{
-		return new BigDecimal(this.vega);
+		return this.vega;
 	}
 	
-	public void setRho(BigDecimal rho)
+	public void setRho(double rho)
 	{
-		this.rho = rho.doubleValue();
+		this.rho = rho;
 	}
 	
-	public BigDecimal getRho()
+	public double getRho()
 	{
-		return new BigDecimal(this.rho);
+		return this.rho;
 	}
 	
-	public void setPrice(BigDecimal price)
+	public void setPrice(double price)
 	{
-		this.price = price.doubleValue();
+		this.price = price;
 	}
 	
-	public BigDecimal getPrice()
+	public double getPrice()
 	{
-		return new BigDecimal(this.price);
+		return this.price;
 	}	
 }

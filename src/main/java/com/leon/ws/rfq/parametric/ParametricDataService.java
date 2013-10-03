@@ -1,12 +1,10 @@
 package com.leon.ws.rfq.parametric;
 
-import java.math.BigDecimal;
-
 public interface ParametricDataService
 {
-	BigDecimal getVolatility(String  underlyingRIC);
-	BigDecimal getInterestRate(String currency);
+	double getVolatility(String  underlyingRIC);
+	double getInterestRate(String currency);
 	
-	void setVolatility(String underlyingRIC, BigDecimal volatility);
-	void setInterestRate(String currency, BigDecimal interestRate);
+	void setVolatility(String underlyingRIC, double volatility);
+	void setInterestRate(String currency, double interestRate);
 }

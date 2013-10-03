@@ -1,7 +1,5 @@
 package com.leon.ws.rfq.request;
 
-import java.math.BigDecimal;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="OptionDetailImpl", namespace = "com.leon.ws.rfq.request")
@@ -11,11 +9,11 @@ public class OptionDetailImpl
 	private boolean isCall;
 	private boolean isEuropean;
 	
-    private BigDecimal delta;
-    private BigDecimal gamma;
-    private BigDecimal theta;
-    private BigDecimal vega;
-    private BigDecimal rho;	
+    private double delta;
+    private double gamma;
+    private double theta;
+    private double vega;
+    private double rho;	
 	
 	public OptionDetailImpl() {}
 	
@@ -49,52 +47,52 @@ public class OptionDetailImpl
 		this.isEuropean = isEuropean;
 	}
 	
-	public BigDecimal getDelta()
+	public double getDelta()
 	{
 		return this.delta;
 	}
 	
-	public void setDelta(BigDecimal delta)
+	public void setDelta(double delta)
 	{
 		this.delta = delta;
 	}
 	
-	public BigDecimal getGamma()
+	public double getGamma()
 	{
 		return this.gamma;
 	}
 	
-	public void setGamma(BigDecimal gamma)
+	public void setGamma(double gamma)
 	{
 		this.gamma = gamma;
 	}
 	
-	public BigDecimal getTheta()
+	public double getTheta()
 	{
 		return this.theta;
 	}
 	
-	public void setTheta(BigDecimal theta)
+	public void setTheta(double theta)
 	{
 		this.theta = theta;
 	}
 	
-	public BigDecimal getVega()
+	public double getVega()
 	{
 		return this.vega;
 	}
 	
-	public void setVega(BigDecimal vega)
+	public void setVega(double vega)
 	{
 		this.vega = vega;
 	}
 	
-	public BigDecimal getRho()
+	public double getRho()
 	{
 		return this.rho;
 	}
 	
-	public void setRho(BigDecimal rho)
+	public void setRho(double rho)
 	{
 		this.rho = rho;
 	}
@@ -140,11 +138,11 @@ public class OptionDetailImpl
 				this.isCall == param.isCall &&
 				this.isEuropean == param.isEuropean &&
 				
-				this.delta.equals(param.delta) &&
-				this.gamma.equals(param.gamma) &&
-				this.theta.equals(param.theta) &&
-				this.vega.equals(param.vega) &&
-				this.rho.equals(param.rho);
+				this.delta == param.delta &&
+				this.gamma == param.gamma &&
+				this.theta == param.theta &&
+				this.vega == param.vega &&
+				this.rho == param.rho;
 	}
 	
 	@Override
@@ -154,41 +152,41 @@ public class OptionDetailImpl
 		result = 37 * result + (int) legId;
 		result = 37 * result + (isCall ? 0 : 1);
 		result = 37 * result + (isEuropean ? 0 : 1);
-		result = 37 * result + (delta == null ? 0 : delta.hashCode());
+		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
 		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
 		result = 37 * result + (vega == null ? 0 : vega.hashCode());
 		result = 37 * result + (theta == null ? 0 : theta.hashCode());
-		result = 37 * result + (rho == null ? 0 : rho.hashCode());		
+		result = 37 * result + (rho == null ? 0 : rho.hashCode());	*/	
 		return result;
 	}
 
-	public BigDecimal getStrike()
+	public double getStrike()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
-	public BigDecimal getDaysToExpiry()
+	public double getDaysToExpiry()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
-	public BigDecimal getDayCountConvention()
+	public double getDayCountConvention()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	public String getUnderlyingRIC()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	public String getCurrency()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}	
 }

@@ -1,6 +1,5 @@
 package com.leon.ws.rfq.request;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -24,53 +23,53 @@ public class RequestDetailImpl
 	private GregorianCalendar tradeDate;
 	private GregorianCalendar expiryDate;    
     
-	private BigDecimal notionalMillions;
-	private BigDecimal notionalFXRate;
+	private double notionalMillions;
+	private double notionalFXRate;
 	private String notionalCurrency;
 	
-    private BigDecimal delta;
-    private BigDecimal gamma;
-    private BigDecimal theta;
-    private BigDecimal vega;
-    private BigDecimal rho;
+    private double delta;
+    private double gamma;
+    private double theta;
+    private double vega;
+    private double rho;
 
-    private BigDecimal deltaNotional; 
-    private BigDecimal gammaNotional; 
-    private BigDecimal thetaNotional;
-    private BigDecimal vegaNotional; 
-    private BigDecimal rhoNotional; 
+    private double deltaNotional; 
+    private double gammaNotional; 
+    private double thetaNotional;
+    private double vegaNotional; 
+    private double rhoNotional; 
 
-    private BigDecimal deltaShares; 
-    private BigDecimal gammaShares; 
-    private BigDecimal thetaShares; 
-    private BigDecimal vegaShares; 
-    private BigDecimal rhoShares;
+    private double deltaShares; 
+    private double gammaShares; 
+    private double thetaShares; 
+    private double vegaShares; 
+    private double rhoShares;
     
     private String premiumSettlementCurrency;
     private GregorianCalendar premiumSettlementDate;
     private int premiumSettlementDaysOverride;    
-    private BigDecimal premiumSettlementFXRate;
+    private double premiumSettlementFXRate;
     
-    private BigDecimal salesCreditAmount;
-    private BigDecimal salesCreditPercentage;
-    private BigDecimal salesCreditFXRate;
+    private double salesCreditAmount;
+    private double salesCreditPercentage;
+    private double salesCreditFXRate;
     private String salesCreditCurrency;
     
-    private BigDecimal bidImpliedVol;
-    private BigDecimal bidPremiumPercentage;
-    private BigDecimal bidPremiumAmount;
-    private BigDecimal bidFinalAmount;
-    private BigDecimal bidFinalPercentage;
+    private double bidImpliedVol;
+    private double bidPremiumPercentage;
+    private double bidPremiumAmount;
+    private double bidFinalAmount;
+    private double bidFinalPercentage;
     
-    private BigDecimal impliedVol;
-    private BigDecimal premiumAmount;
-    private BigDecimal premiumPercentage;
+    private double impliedVol;
+    private double premiumAmount;
+    private double premiumPercentage;
     
-    private BigDecimal askImpliedVol;
-    private BigDecimal askPremiumPercentage;
-    private BigDecimal askPremiumAmount;
-    private BigDecimal askFinalAmount;
-    private BigDecimal askFinalPercentage;
+    private double askImpliedVol;
+    private double askPremiumPercentage;
+    private double askPremiumAmount;
+    private double askFinalAmount;
+    private double askFinalPercentage;
     
     private String salesComment;
     private String traderComment;
@@ -78,8 +77,8 @@ public class RequestDetailImpl
     
     private String pickedUpBy;
     private String hedgeType;
-    private BigDecimal hedgePrice;
-    private BigDecimal totalPremium;
+    private double hedgePrice;
+    private double totalPremium;
 	
 	private ArrayList<OptionDetailImpl> legs;
 	
@@ -137,22 +136,22 @@ public class RequestDetailImpl
 		this.clientId = clientId;
 	}
 	
-	public BigDecimal getNotionalMillions()
+	public double getNotionalMillions()
 	{
 		return this.notionalMillions;
 	}
 	
-	public void setNotionalMillions(BigDecimal notionalMillions)
+	public void setNotionalMillions(double notionalMillions)
 	{
 		this.notionalMillions = notionalMillions;
 	}
 	
-	public BigDecimal getNotionalFXRate()
+	public double getNotionalFXRate()
 	{
 		return this.notionalFXRate;
 	}
 	
-	public void setNotionalFXRate(BigDecimal notionalFXRate)
+	public void setNotionalFXRate(double notionalFXRate)
 	{
 		this.notionalFXRate = notionalFXRate;
 	}	
@@ -227,152 +226,152 @@ public class RequestDetailImpl
 		this.quantity = quantity;
 	}
 	
-	public BigDecimal getDeltaShares()
+	public double getDeltaShares()
 	{
 		return this.deltaShares;
 	}
 	
-	public void setDeltaShares(BigDecimal deltaShares)
+	public void setDeltaShares(double deltaShares)
 	{
 		this.deltaShares = deltaShares;
 	}
 	
-	public BigDecimal getGammaShares()
+	public double getGammaShares()
 	{
 		return this.gammaShares;
 	}
 	
-	public void setGammaShares(BigDecimal gammaShares)
+	public void setGammaShares(double gammaShares)
 	{
 		this.gammaShares = gammaShares;
 	}
 	
-	public BigDecimal getThetaShares()
+	public double getThetaShares()
 	{
 		return this.thetaShares;
 	}
 	
-	public void setThetaShares(BigDecimal thetaShares)
+	public void setThetaShares(double thetaShares)
 	{
 		this.thetaShares = thetaShares;
 	}
 	
-	public BigDecimal getVegaShares()
+	public double getVegaShares()
 	{
 		return this.vegaShares;
 	}
 	
-	public void setVegaShares(BigDecimal vegaShares)
+	public void setVegaShares(double vegaShares)
 	{
 		this.vegaShares = vegaShares;
 	}
 	
-	public BigDecimal getRhoShares()
+	public double getRhoShares()
 	{
 		return this.rhoShares;
 	}
 	
-	public void setRhoShares(BigDecimal rhoShares)
+	public void setRhoShares(double rhoShares)
 	{
 		this.rhoShares = rhoShares;
 	}
 	
-	public BigDecimal getDeltaNotional()
+	public double getDeltaNotional()
 	{
 		return this.deltaNotional;
 	}
 	
-	public void setDeltaNotional(BigDecimal deltaNotional)
+	public void setDeltaNotional(double deltaNotional)
 	{
 		this.deltaNotional = deltaNotional;
 	}
 	
-	public BigDecimal getGammaNotional()
+	public double getGammaNotional()
 	{
 		return this.gammaNotional;
 	}
 	
-	public void setGammaNotional(BigDecimal gammaNotional)
+	public void setGammaNotional(double gammaNotional)
 	{
 		this.gammaNotional = gammaNotional;
 	}
 	
-	public BigDecimal getThetaNotional()
+	public double getThetaNotional()
 	{
 		return this.thetaNotional;
 	}
 	
-	public void setThetaNotional(BigDecimal thetaNotional)
+	public void setThetaNotional(double thetaNotional)
 	{
 		this.thetaNotional = thetaNotional;
 	}
 	
-	public BigDecimal getVegaNotional()
+	public double getVegaNotional()
 	{
 		return this.vegaNotional;
 	}
 	
-	public void setVegaNotional(BigDecimal vegaNotional)
+	public void setVegaNotional(double vegaNotional)
 	{
 		this.vegaNotional = vegaNotional;
 	}
 	
-	public BigDecimal getRhoNotional()
+	public double getRhoNotional()
 	{
 		return this.rhoNotional;
 	}
 	
-	public void setRhoNotional(BigDecimal rhoNotional)
+	public void setRhoNotional(double rhoNotional)
 	{
 		this.rhoNotional = rhoNotional;
 	}	
 
-	public BigDecimal getDelta()
+	public double getDelta()
 	{
 		return this.delta;
 	}
 	
-	public void setDelta(BigDecimal delta)
+	public void setDelta(double delta)
 	{
 		this.delta = delta;
 	}
 	
-	public BigDecimal getGamma()
+	public double getGamma()
 	{
 		return this.gamma;
 	}
 	
-	public void setGamma(BigDecimal gamma)
+	public void setGamma(double gamma)
 	{
 		this.gamma = gamma;
 	}
 	
-	public BigDecimal getTheta()
+	public double getTheta()
 	{
 		return this.theta;
 	}
 	
-	public void setTheta(BigDecimal theta)
+	public void setTheta(double theta)
 	{
 		this.theta = theta;
 	}
 	
-	public BigDecimal getVega()
+	public double getVega()
 	{
 		return this.vega;
 	}
 	
-	public void setVega(BigDecimal vega)
+	public void setVega(double vega)
 	{
 		this.vega = vega;
 	}
 	
-	public BigDecimal getRho()
+	public double getRho()
 	{
 		return this.rho;
 	}
 	
-	public void setRho(BigDecimal rho)
+	public void setRho(double rho)
 	{
 		this.rho = rho;
 	}
@@ -397,12 +396,12 @@ public class RequestDetailImpl
 		this.premiumSettlementDate = premiumSettlementDate;
 	}
 	
-	public BigDecimal getPremiumSettlementFXRate()
+	public double getPremiumSettlementFXRate()
 	{
 		return this.premiumSettlementFXRate;
 	}
 	
-	public void setPremiumSettlementFXRate(BigDecimal premiumSettlementFXRate)
+	public void setPremiumSettlementFXRate(double premiumSettlementFXRate)
 	{
 		this.premiumSettlementFXRate = premiumSettlementFXRate;
 	}
@@ -427,162 +426,162 @@ public class RequestDetailImpl
 		this.salesCreditCurrency = salesCreditCurrency;
 	}
 	
-	public BigDecimal getSalesCreditPercentage()
+	public double getSalesCreditPercentage()
 	{
 		return this.salesCreditPercentage;
 	}
 	
-	public void setSalesCreditPercentage(BigDecimal salesCreditPercentage)
+	public void setSalesCreditPercentage(double salesCreditPercentage)
 	{
 		this.salesCreditPercentage = salesCreditPercentage;
 	}
 	
-	public BigDecimal getSalesCreditFXRate()
+	public double getSalesCreditFXRate()
 	{
 		return this.salesCreditFXRate;
 	}
 	
-	public void setSalesCreditFXRate(BigDecimal salesCreditFXRate)
+	public void setSalesCreditFXRate(double salesCreditFXRate)
 	{
 		this.salesCreditFXRate = salesCreditFXRate;
 	}
 	
-	public BigDecimal getSalesCreditAmount()
+	public double getSalesCreditAmount()
 	{
 		return this.salesCreditAmount;
 	}
 		
-	public void setSalesCreditAmount(BigDecimal salesCreditAmount)
+	public void setSalesCreditAmount(double salesCreditAmount)
 	{
 		this.salesCreditAmount = salesCreditAmount;
 	}
 	
-	public BigDecimal getBidImpliedVol()
+	public double getBidImpliedVol()
 	{
 		return this.bidImpliedVol;
 	}
 		
-	public void setBidImpliedVol(BigDecimal bidImpliedVol)
+	public void setBidImpliedVol(double bidImpliedVol)
 	{
 		this.bidImpliedVol = bidImpliedVol;
 	}
 	
-	public BigDecimal getBidPremiumAmount()
+	public double getBidPremiumAmount()
 	{
 		return this.bidPremiumAmount;
 	}
 		
-	public void setBidPremiumAmount(BigDecimal bidPremiumAmount)
+	public void setBidPremiumAmount(double bidPremiumAmount)
 	{
 		this.bidPremiumAmount = bidPremiumAmount;
 	}	
 	
-	public BigDecimal getBidPremiumPercentage()
+	public double getBidPremiumPercentage()
 	{
 		return this.bidPremiumPercentage;
 	}
 		
-	public void setBidPremiumPercentage(BigDecimal bidPremiumPercentage)
+	public void setBidPremiumPercentage(double bidPremiumPercentage)
 	{
 		this.bidPremiumPercentage = bidPremiumPercentage;
 	}
 	
-	public BigDecimal getBidFinalAmount()
+	public double getBidFinalAmount()
 	{
 		return this.bidFinalAmount;
 	}
 		
-	public void setBidFinalAmount(BigDecimal bidFinalAmount)
+	public void setBidFinalAmount(double bidFinalAmount)
 	{
 		this.bidFinalAmount = bidFinalAmount;
 	}
 	
-	public BigDecimal getBidFinalPercentage()
+	public double getBidFinalPercentage()
 	{
 		return this.bidFinalPercentage;
 	}
 		
-	public void setBidFinalPercentage(BigDecimal bidFinalPercentage)
+	public void setBidFinalPercentage(double bidFinalPercentage)
 	{
 		this.bidFinalPercentage = bidFinalPercentage;
 	}	
 	
-	public BigDecimal getAskImpliedVol()
+	public double getAskImpliedVol()
 	{
 		return this.askImpliedVol;
 	}
 		
-	public void setAskImpliedVol(BigDecimal askImpliedVol)
+	public void setAskImpliedVol(double askImpliedVol)
 	{
 		this.askImpliedVol = askImpliedVol;
 	}
 	
-	public BigDecimal getAskPremiumAmount()
+	public double getAskPremiumAmount()
 	{
 		return this.askPremiumAmount;
 	}
 		
-	public void setAskPremiumAmount(BigDecimal askPremiumAmount)
+	public void setAskPremiumAmount(double askPremiumAmount)
 	{
 		this.askPremiumAmount = askPremiumAmount;
 	}	
 	
-	public BigDecimal getAskPremiumPercentage()
+	public double getAskPremiumPercentage()
 	{
 		return this.askPremiumPercentage;
 	}
 		
-	public void setAskPremiumPercentage(BigDecimal askPremiumPercentage)
+	public void setAskPremiumPercentage(double askPremiumPercentage)
 	{
 		this.askPremiumPercentage = askPremiumPercentage;
 	}
 	
-	public BigDecimal getAskFinalAmount()
+	public double getAskFinalAmount()
 	{
 		return this.askFinalAmount;
 	}
 		
-	public void setAskFinalAmount(BigDecimal askFinalAmount)
+	public void setAskFinalAmount(double askFinalAmount)
 	{
 		this.askFinalAmount = askFinalAmount;
 	}
 	
-	public BigDecimal getAskFinalPercentage()
+	public double getAskFinalPercentage()
 	{
 		return this.askFinalPercentage;
 	}
 		
-	public void setAskFinalPercentage(BigDecimal askFinalPercentage)
+	public void setAskFinalPercentage(double askFinalPercentage)
 	{
 		this.askFinalPercentage = askFinalPercentage;
 	}
 	
-	public BigDecimal getImpliedVol()
+	public double getImpliedVol()
 	{
 		return this.impliedVol;
 	}
 		
-	public void setImpliedVol(BigDecimal impliedVol)
+	public void setImpliedVol(double impliedVol)
 	{
 		this.impliedVol = impliedVol;
 	}
 	
-	public BigDecimal getPremiumAmount()
+	public double getPremiumAmount()
 	{
 		return this.premiumAmount;
 	}
 		
-	public void setPremiumAmount(BigDecimal premiumAmount)
+	public void setPremiumAmount(double premiumAmount)
 	{
 		this.premiumAmount = premiumAmount;
 	}	
 	
-	public BigDecimal getPremiumPercentage()
+	public double getPremiumPercentage()
 	{
 		return this.premiumPercentage;
 	}
 		
-	public void setPremiumPercentage(BigDecimal premiumPercentage)
+	public void setPremiumPercentage(double premiumPercentage)
 	{
 		this.premiumPercentage = premiumPercentage;
 	}
@@ -637,22 +636,22 @@ public class RequestDetailImpl
 		this.clientComment = clientComment;
 	}
 	
-	public BigDecimal getHedgePrice()
+	public double getHedgePrice()
 	{
 		return this.hedgePrice;
 	}
 		
-	public void setHedgePrice(BigDecimal hedgePrice)
+	public void setHedgePrice(double hedgePrice)
 	{
 		this.hedgePrice = hedgePrice;
 	}
 	
-	public BigDecimal getTotalPremium()
+	public double getTotalPremium()
 	{
 		return this.totalPremium;
 	}
 		
-	public void setTotalPremium(BigDecimal totalPremium)
+	public void setTotalPremium(double totalPremium)
 	{
 		this.totalPremium = totalPremium;
 	}
@@ -786,42 +785,42 @@ public class RequestDetailImpl
 		}		
 		
 		return 	isEqual && this.identifier == param.identifier &&	
-				this.request.equals(param.request) &&
-				this.bookCode.equals(param.bookCode) &&
+				this.request == param.request &&
+				this.bookCode == param.bookCode &&
 				
-				this.delta.equals(param.delta) &&
-				this.gamma.equals(param.gamma) &&
-				this.theta.equals(param.theta) &&
-				this.vega.equals(param.vega) &&
-				this.rho.equals(param.rho) &&
+				this.delta == param.delta &&
+				this.gamma == param.gamma &&
+				this.theta == param.theta &&
+				this.vega == param.vega &&
+				this.rho == param.rho &&
 				
-				this.deltaNotional.equals(param.deltaNotional) &&
-				this.gammaNotional.equals(param.gammaNotional) &&
-				this.thetaNotional.equals(param.thetaNotional) &&
-				this.vegaNotional.equals(param.vegaNotional) &&
-				this.rhoNotional.equals(param.rhoNotional) &&
+				this.deltaNotional == param.deltaNotional &&
+				this.gammaNotional == param.gammaNotional &&
+				this.thetaNotional == param.thetaNotional &&
+				this.vegaNotional == param.vegaNotional &&
+				this.rhoNotional == param.rhoNotional &&
 				
-				this.bidFinalAmount.equals(param.bidFinalAmount) &&
-				this.bidFinalPercentage.equals(param.bidFinalPercentage) &&
-				this.bidImpliedVol.equals(param.bidImpliedVol) &&
-				this.bidPremiumAmount.equals(param.bidPremiumAmount) &&
-				this.bidPremiumPercentage.equals(param.bidPremiumPercentage) &&
+				this.bidFinalAmount == param.bidFinalAmount &&
+				this.bidFinalPercentage == param.bidFinalPercentage &&
+				this.bidImpliedVol == param.bidImpliedVol &&
+				this.bidPremiumAmount == param.bidPremiumAmount &&
+				this.bidPremiumPercentage == param.bidPremiumPercentage &&
 				
-				this.askFinalAmount.equals(param.askFinalAmount) &&
-				this.askFinalPercentage.equals(param.askFinalPercentage) &&
-				this.askImpliedVol.equals(param.askImpliedVol) &&
-				this.askPremiumAmount.equals(param.askPremiumAmount) &&
-				this.askPremiumPercentage.equals(param.askPremiumPercentage) &&
+				this.askFinalAmount == param.askFinalAmount &&
+				this.askFinalPercentage == param.askFinalPercentage &&
+				this.askImpliedVol == param.askImpliedVol &&
+				this.askPremiumAmount == param.askPremiumAmount &&
+				this.askPremiumPercentage == param.askPremiumPercentage &&
 
-				this.impliedVol.equals(param.impliedVol) &&
-				this.premiumAmount.equals(param.premiumAmount) &&
-				this.premiumPercentage.equals(param.premiumPercentage) &&				
+				this.impliedVol == param.impliedVol &&
+				this.premiumAmount == param.premiumAmount &&
+				this.premiumPercentage == param.premiumPercentage &&				
 				
-				this.deltaShares.equals(param.deltaShares) &&
-				this.gammaShares.equals(param.gammaShares) &&
-				this.thetaShares.equals(param.thetaShares) &&
-				this.vegaShares.equals(param.vegaShares) &&
-				this.rhoShares.equals(param.rhoShares);				
+				this.deltaShares == param.deltaShares &&
+				this.gammaShares == param.gammaShares &&
+				this.thetaShares == param.thetaShares &&
+				this.vegaShares == param.vegaShares &&
+				this.rhoShares == param.rhoShares;				
 	}
 	
 	@Override
@@ -832,7 +831,7 @@ public class RequestDetailImpl
 		result = 37 * result + (request == null ? 0 : request.hashCode());
 		result = 37 * result + (bookCode == null ? 0 : bookCode.hashCode());
 		
-		result = 37 * result + (delta == null ? 0 : delta.hashCode());
+		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
 		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
 		result = 37 * result + (vega == null ? 0 : vega.hashCode());
 		result = 37 * result + (theta == null ? 0 : theta.hashCode());
@@ -864,7 +863,7 @@ public class RequestDetailImpl
 		
 		result = 37 * result + (impliedVol == null ? 0 : impliedVol.hashCode());
 		result = 37 * result + (premiumPercentage == null ? 0 : premiumPercentage.hashCode());
-		result = 37 * result + (premiumAmount == null ? 0 : premiumAmount.hashCode());		
+		result = 37 * result + (premiumAmount == null ? 0 : premiumAmount.hashCode());*/		
 		
 		if(legs != null)
 		{

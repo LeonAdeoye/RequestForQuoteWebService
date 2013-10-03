@@ -11,6 +11,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<bean id="blackScholesModel" class="com.leon.ws.rfq.option.model.BlackScholesModelImpl"/>
 	
+	<bean id="marketDataService" class="com.leon.ws.rfq.marketdata.MarketDataServiceImpl"/>
+	
+	<bean id="parametricDataService" class="com.leon.ws.rfq.parametric.ParametricDataServiceImpl"/>
+	
 	<bean id="clientCommunicator" class="com.leon.ws.rfq.communicator.ClientCommunicatorImpl"
 		init-method="initialize" destroy-method="dispose">
 		<constructor-arg value="127.0.0.1"/>

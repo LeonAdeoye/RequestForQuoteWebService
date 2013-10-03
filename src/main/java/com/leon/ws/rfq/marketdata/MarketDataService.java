@@ -1,18 +1,20 @@
 package com.leon.ws.rfq.marketdata;
 
-import java.math.BigDecimal;
-
 public interface MarketDataService
 {
-	BigDecimal getMidPrice(String underlyingRIC);
-	void setMidPrice(String underlyingRIC, BigDecimal mid);
+	double getMidPrice(String underlyingRIC);
+	void setMidPrice(String underlyingRIC, double mid);
 	
-	BigDecimal getAskPrice(String underlyingRIC);
-	void setAskPrice(String underlyingRIC, BigDecimal ask);
+	double getAskPrice(String underlyingRIC);
+	void setAskPrice(String underlyingRIC, double ask);
 	
-	BigDecimal getBidPrice(String underlyingRIC);
-	void setBidPrice(String underlyingRIC, BigDecimal bid);	
+	double getBidPrice(String underlyingRIC);
+	void setBidPrice(String underlyingRIC, double bid);	
 	
-	BigDecimal getClosePrice(String underlyingRIC);
-	void setClosePrice(String underlyingRIC, BigDecimal close);	
+	double getClosePrice(String underlyingRIC);
+	void setClosePrice(String underlyingRIC, double close);
+	
+	void clearAll();	
+	void clearPricesForUnderlying(String underlyingRIC);
+	int size();
 }

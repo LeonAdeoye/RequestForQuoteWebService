@@ -6,8 +6,6 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
-import java.math.BigDecimal;
-
  
 public class BlackScholesModelImpl implements OptionPricingModel
 {
@@ -50,12 +48,12 @@ public class BlackScholesModelImpl implements OptionPricingModel
 	                e = exp(-interestRate * timeToExpiryInYears);
 	                t = sqrt(timeToExpiryInYears);
                                                  
-            		optionResult.setPrice(new BigDecimal(this.calculateOptionPrice(underlyingPrice, strike, timeToExpiryInYears, interestRate)));                       
-            		optionResult.setDelta(new BigDecimal(this.calculateOptionDelta()));                       
-            		optionResult.setGamma(new BigDecimal(this.calculateOptionGamma(underlyingPrice, volatility)));                       
-            		optionResult.setVega(new BigDecimal(this.calculateOptionVega(underlyingPrice)));                       
-            		optionResult.setRho(new BigDecimal(this.calculateOptionRho(strike, timeToExpiryInYears, interestRate)));                                              
-            		optionResult.setTheta(new BigDecimal(this.calculateOptionTheta(underlyingPrice, strike, interestRate, volatility)));
+            		optionResult.setPrice(this.calculateOptionPrice(underlyingPrice, strike, timeToExpiryInYears, interestRate));                       
+            		optionResult.setDelta(this.calculateOptionDelta());                       
+            		optionResult.setGamma(this.calculateOptionGamma(underlyingPrice, volatility));                       
+            		optionResult.setVega(this.calculateOptionVega(underlyingPrice));                       
+            		optionResult.setRho(this.calculateOptionRho(strike, timeToExpiryInYears, interestRate));                                              
+            		optionResult.setTheta(this.calculateOptionTheta(underlyingPrice, strike, interestRate, volatility));
             		
                     return optionResult;
                 }
