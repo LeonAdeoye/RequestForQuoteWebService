@@ -47,81 +47,81 @@ public class MarketDataServiceTest extends TestCase
 	@Test
 	public void test_setMidPrice_validMidPrice_OnlyOneUnderlyingRICEntryCreated()
 	{
-		marketDataService.setMidPrice("TEST_RIC", 1972);
+		marketDataService.setMidPrice("TEST_RIC", 1972.0);
 		assertEquals("Mid price was not added", 1, marketDataService.size());
 	}
 	
 	@Test
 	public void test_setAskPrice_validAskPrice_OnlyOneUnderlyingRICEntryCreated()
 	{
-		marketDataService.setAskPrice("TEST_RIC", 1972);
+		marketDataService.setAskPrice("TEST_RIC", 1972.0);
 		assertEquals("Ask price was not added", 1, marketDataService.size());
 	}
 	
 	@Test
 	public void test_setBidPrice_validClosePrice_OnlyOneUnderlyingRICEntryCreated()
 	{
-		marketDataService.setBidPrice("TEST_RIC", 1972);
+		marketDataService.setBidPrice("TEST_RIC", 1972.0);
 		assertEquals("Ask price was not added", 1, marketDataService.size());
 	}
 	
 	@Test
 	public void test_setClosePrice_validClosePrice_OnlyOneUnderlyingRICEntryCreated()
 	{
-		marketDataService.setClosePrice("TEST_RIC", 1972);
+		marketDataService.setClosePrice("TEST_RIC", 1972.0);
 		assertEquals("Close price was not added", 1, marketDataService.size());
 	}
 	
 	@Test
 	public void test_setMidPrice__validMidPriceExists_MidPriceReturned()
 	{
-		marketDataService.setMidPrice("TEST_RIC", 1972);
-		assertEquals("Mid price was not added", 1972, marketDataService.getMidPrice("TEST_RIC"));
+		marketDataService.setMidPrice("TEST_RIC", 1972.0);
+		assertEquals("Mid price was not added", 1972.0, marketDataService.getMidPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_setAskPrice_validAskPriceExists_AskPriceReturned()
 	{
-		marketDataService.setAskPrice("TEST_RIC", 1972);
-		assertEquals("Ask price was not added", 1972, marketDataService.getAskPrice("TEST_RIC"));
+		marketDataService.setAskPrice("TEST_RIC", 1972.0);
+		assertEquals("Ask price was not added", 1972.0, marketDataService.getAskPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_setBidPrice_validBidPriceExists_BidPriceReturned()
 	{
-		marketDataService.setBidPrice("TEST_RIC", 1972);
-		assertEquals("Bid price was not added", 1972, marketDataService.getBidPrice("TEST_RIC"));
+		marketDataService.setBidPrice("TEST_RIC", 1972.0);
+		assertEquals("Bid price was not added", 1972.0, marketDataService.getBidPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_getClosePrice_validClosePriceExists_ClosePriceReturned()
 	{
-		marketDataService.setClosePrice("TEST_RIC", 1972);
-		assertEquals("Close price was not added", 1972, marketDataService.getClosePrice("TEST_RIC"));
+		marketDataService.setClosePrice("TEST_RIC", 1972.0);
+		assertEquals("Close price was not added", 1972.0, marketDataService.getClosePrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_getMidPrice_underlyingRICDoesNotExist_zeroReturned()
 	{
-		assertEquals("Zero not returned", 0, marketDataService.getMidPrice("TEST_RIC"));
+		assertEquals("Zero not returned", 0.0, marketDataService.getMidPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_getAskPrice_underlyingRICDoesNotExist_zeroReturned()
 	{
-		assertEquals("Zero not returned", 0, marketDataService.getAskPrice("TEST_RIC"));
+		assertEquals("Zero not returned", 0.0, marketDataService.getAskPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_getBidPrice_underlyingRICDoesNotExist_zeroReturned()
 	{
-		assertEquals("Zero not returned", 0, marketDataService.getBidPrice("TEST_RIC"));
+		assertEquals("Zero not returned", 0.0, marketDataService.getBidPrice("TEST_RIC"));
 	}
 	
 	@Test
 	public void test_getClosePrice_underlyingRICDoesNotExist_zeroReturned()
 	{
-		assertEquals("Zero not returned", 0, marketDataService.getClosePrice("TEST_RIC"));
+		assertEquals("Zero not returned", 0.0, marketDataService.getClosePrice("TEST_RIC"));
 	}	
 		
 	@After

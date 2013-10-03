@@ -13,7 +13,9 @@ public class MarketDataServiceImpl implements MarketDataService
 		double bid = 0;
 		double mid = 0;
 		double close = 0;
-	}	
+	}
+	
+	public MarketDataServiceImpl() {}
 	
 	/**
 	 * Returns the mid price of an underlying product using the underlying RIC as the lookup key.

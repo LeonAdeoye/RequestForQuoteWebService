@@ -3,10 +3,12 @@ package com.leon.ws.rfq.parametric;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class ParametericDataServiceImpl implements ParametricDataService
+public class ParametricDataServiceImpl implements ParametricDataService
 {
 	private Map<String, Double> volatilities = new ConcurrentSkipListMap<>();
 	private Map<String, Double> interestRates = new ConcurrentSkipListMap<>();
+	
+	public ParametricDataServiceImpl() {}
 	
 	@Override
 	public double getVolatility(String underlyingRIC)
