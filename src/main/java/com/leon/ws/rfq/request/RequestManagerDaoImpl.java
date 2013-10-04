@@ -3,6 +3,7 @@ package com.leon.ws.rfq.request;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -24,11 +25,13 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setIsOTC(rs.getBoolean("isOTC"));
 			request.setStatus(rs.getString("status")); //6
 
+			// TODO
 			GregorianCalendar tradeDate = new GregorianCalendar();
-			tradeDate.setTime(rs.getDate("tradeDate"));
-			request.setTradeDate(tradeDate);			
+			tradeDate.setTime(rs.getDate("tradeDate") != null ? rs.getDate("tradeDate") : new Date());
+			request.setTradeDate(tradeDate);
+			// TODO
 			GregorianCalendar expiryDate = new GregorianCalendar();
-			expiryDate.setTime(rs.getDate("expiryDate"));
+			expiryDate.setTime(rs.getDate("expiryDate") != null ? rs.getDate("tradeDate") : new Date());
 			request.setExpiryDate(expiryDate); //8
 			
 			request.setLotSize(rs.getInt("lotSize"));
@@ -80,8 +83,9 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setSalesCreditFXRate(rs.getDouble("salesCreditFXRate")); //47
 			
 			request.setPremiumSettlementCurrency(rs.getString("premiumSettlementCurrency"));
+			// TODO
 			GregorianCalendar premiumSettlementDate = new GregorianCalendar();
-			premiumSettlementDate.setTime(rs.getDate("premiumSettlementDate"));
+			premiumSettlementDate.setTime(rs.getDate("premiumSettlementDate") != null ? rs.getDate("tradeDate") : new Date());			
 			request.setPremiumSettlementDate(premiumSettlementDate);			
 			request.setPremiumSettlementDaysOverride(rs.getInt("premiumSettlementDaysOverride"));
 			request.setPremiumSettlementFXRate(rs.getDouble("premiumSettlementFXRate")); //51
@@ -105,7 +109,7 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 								+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 								+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 								+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-								+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
+								+ "?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String UPDATE = 
 			"CALL request_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
@@ -144,7 +148,6 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 	public int save(RequestDetailImpl request, String savedByUser)
 	{
 		RequestDetailImpl result = databaseExecutor.getSingleResult(SAVE, new RequestParameterizedRowMapper(), 
-				request.getIdentifier(), 
 				request.getRequest(), 
 				request.getBookCode(), 
 				request.getClientId(),  
