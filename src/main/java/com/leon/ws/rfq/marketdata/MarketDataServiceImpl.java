@@ -18,6 +18,15 @@ public class MarketDataServiceImpl implements MarketDataService
 	public MarketDataServiceImpl() {}
 	
 	/**
+	 * Initializes the service.
+	 *
+	 */	
+	public void initialize()
+	{
+		
+	}
+	
+	/**
 	 * Returns the mid price of an underlying product using the underlying RIC as the lookup key.
 	 *
 	 * @param  underlyingRIC	the RIC of the underlying product used as key to retrieve the mid price

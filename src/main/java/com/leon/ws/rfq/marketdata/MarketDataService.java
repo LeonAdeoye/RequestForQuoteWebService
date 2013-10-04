@@ -2,6 +2,8 @@ package com.leon.ws.rfq.marketdata;
 
 public interface MarketDataService
 {
+	void initialize();
+	
 	double getMidPrice(String underlyingRIC);
 	void setMidPrice(String underlyingRIC, double mid);
 	
