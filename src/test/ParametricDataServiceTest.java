@@ -6,11 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 import com.leon.ws.rfq.parametric.ParametricDataService;
-
 import junit.framework.TestCase;
-
 
 public class ParametricDataServiceTest extends TestCase
 {
@@ -75,10 +72,18 @@ public class ParametricDataServiceTest extends TestCase
 	public void test_setInterestRate_AddMultipleValidRates_InterestRateIsReturnedWithMatchingValue()
 	{
 		parametricDataService.setInterestRate("TEST_CURRENCY1", 1972.0);
-		parametricDataService.setInterestRate("TEST_CURRENCY2", 2610.0);
+		parametricDataService.setInterestRate("TEST_CURRENCY2", 1026.0);
 		assertEquals("interest rate was not added", 1972.0, parametricDataService.getInterestRate("TEST_CURRENCY1"));
-	}	
-			
+	}
+	
+	@Test
+	public void test_setVolatility_AddMultipleValidVols_VolatilityIsReturnedWithMatchingValue()
+	{
+		parametricDataService.setVolatility("TEST_RIC1", 0.1972);
+		parametricDataService.setVolatility("TEST_RIC2", 0.1026);
+		assertEquals("Volatiltiy was not added", 0.1972, parametricDataService.getVolatility("TEST_RIC1"));
+	}
+					
 	@After
 	public void tearDown()
 	{
