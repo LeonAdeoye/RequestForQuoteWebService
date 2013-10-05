@@ -1,7 +1,6 @@
 package com.leon.ws.rfq.request;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,8 +19,8 @@ public class RequestDetailImpl
 	private int contracts;
 	private int quantity;
     
-	private GregorianCalendar tradeDate;
-	private GregorianCalendar expiryDate;    
+	private String tradeDate;
+	private String expiryDate;    
     
 	private double notionalMillions;
 	private double notionalFXRate;
@@ -46,7 +45,7 @@ public class RequestDetailImpl
     private double rhoShares;
     
     private String premiumSettlementCurrency;
-    private GregorianCalendar premiumSettlementDate;
+    private String premiumSettlementDate;
     private int premiumSettlementDaysOverride;    
     private double premiumSettlementFXRate;
     
@@ -166,22 +165,22 @@ public class RequestDetailImpl
 		this.notionalCurrency = notionalCurrency;
 	}	
 	
-	public GregorianCalendar getTradeDate()
+	public String getTradeDate()
 	{
 		return this.tradeDate;
 	}
 	
-	public void setTradeDate(GregorianCalendar tradeDate)
+	public void setTradeDate(String tradeDate)
 	{
 		this.tradeDate = tradeDate;
 	}
 	
-	public GregorianCalendar getExpiryDate()
+	public String getExpiryDate()
 	{
 		return this.expiryDate;
 	}
 	
-	public void setExpiryDate(GregorianCalendar expiryDate)
+	public void setExpiryDate(String expiryDate)
 	{
 		this.expiryDate = expiryDate;
 	}
@@ -386,12 +385,12 @@ public class RequestDetailImpl
 		this.premiumSettlementCurrency = premiumSettlementCurrency;
 	}
 	
-	public GregorianCalendar getPremiumSettlementDate()
+	public String getPremiumSettlementDate()
 	{
 		return this.premiumSettlementDate;
 	}
 	
-	public void setPremiumSettlementDate(GregorianCalendar premiumSettlementDate)
+	public void setPremiumSettlementDate(String premiumSettlementDate)
 	{
 		this.premiumSettlementDate = premiumSettlementDate;
 	}

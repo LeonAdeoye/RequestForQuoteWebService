@@ -88,6 +88,10 @@
 		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
 	</logger>
 	
+	<logger name="com.leon.ws.rfq.utilities" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>	
+	
 	<logger name="org.apache.cxf.service.invoker.AbstractInvoker" level="DEBUG">
 		<appender-ref ref="WEB_SERVICE_LOG_FILE" />           
 	</logger>	

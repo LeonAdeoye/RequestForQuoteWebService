@@ -2,17 +2,16 @@ package com.leon.ws.rfq.request;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
+import com.leon.ws.rfq.utilities.UtilityMethods;
 
 public class RequestManagerDaoImpl implements RequestManagerDao
-{
+{	
 	private class RequestParameterizedRowMapper implements ParameterizedRowMapper<RequestDetailImpl>
 	{
 		public RequestDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -25,14 +24,11 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setIsOTC(rs.getBoolean("isOTC"));
 			request.setStatus(rs.getString("status")); //6
 
-			// TODO
-			GregorianCalendar tradeDate = new GregorianCalendar();
-			tradeDate.setTime(rs.getDate("tradeDate") != null ? rs.getDate("tradeDate") : new Date());
-			request.setTradeDate(tradeDate);
-			// TODO
-			GregorianCalendar expiryDate = new GregorianCalendar();
-			expiryDate.setTime(rs.getDate("expiryDate") != null ? rs.getDate("tradeDate") : new Date());
-			request.setExpiryDate(expiryDate); //8
+			DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+			if(rs.getDate("tradeDate") != null)
+				request.setTradeDate(df.format(rs.getDate("tradeDate")));
+			if(rs.getDate("expiryDate") != null)
+				request.setExpiryDate(df.format(rs.getDate("expiryDate"))); //8			
 			
 			request.setLotSize(rs.getInt("lotSize"));
 			request.setMultiplier(rs.getInt("multiplier")); 
@@ -80,13 +76,12 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setSalesCreditAmount(rs.getDouble("salesCreditAmount"));
 			request.setSalesCreditPercentage(rs.getDouble("salesCreditPercentage"));
 			request.setSalesCreditCurrency(rs.getString("salesCreditCurrency"));
-			request.setSalesCreditFXRate(rs.getDouble("salesCreditFXRate")); //47
+			request.setSalesCreditFXRate(rs.getDouble("salesCreditFXRate")); //47			
+			
+			if(rs.getDate("premiumSettlementDate") != null)
+				request.setTradeDate(df.format(rs.getDate("premiumSettlementDate")));
 			
 			request.setPremiumSettlementCurrency(rs.getString("premiumSettlementCurrency"));
-			// TODO
-			GregorianCalendar premiumSettlementDate = new GregorianCalendar();
-			premiumSettlementDate.setTime(rs.getDate("premiumSettlementDate") != null ? rs.getDate("tradeDate") : new Date());			
-			request.setPremiumSettlementDate(premiumSettlementDate);			
 			request.setPremiumSettlementDaysOverride(rs.getInt("premiumSettlementDaysOverride"));
 			request.setPremiumSettlementFXRate(rs.getDouble("premiumSettlementFXRate")); //51
 			
@@ -142,11 +137,13 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
-	}	
+	}
+	
+	
 
 	@Override
 	public int save(RequestDetailImpl request, String savedByUser)
-	{
+	{  	
 		RequestDetailImpl result = databaseExecutor.getSingleResult(SAVE, new RequestParameterizedRowMapper(), 
 				request.getRequest(), 
 				request.getBookCode(), 
@@ -154,8 +151,8 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 				request.getIsOTC(), 
 				request.getStatus(), //6
 
-				request.getTradeDate(), 
-				request.getExpiryDate(), //8
+				UtilityMethods.convertToDate(request.getTradeDate()),
+				UtilityMethods.convertToDate(request.getExpiryDate()),
 								
 				request.getLotSize(),
 				request.getMultiplier(), 
@@ -206,7 +203,7 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 				request.getSalesCreditFXRate(), //47
 				
 				request.getPremiumSettlementCurrency(),
-				request.getPremiumSettlementDate(),
+				UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
 				request.getPremiumSettlementDaysOverride(),
 				request.getPremiumSettlementFXRate(), //51
 				
