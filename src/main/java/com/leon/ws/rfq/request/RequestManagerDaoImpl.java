@@ -79,7 +79,7 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 			request.setSalesCreditFXRate(rs.getDouble("salesCreditFXRate")); //47			
 			
 			if(rs.getDate("premiumSettlementDate") != null)
-				request.setTradeDate(df.format(rs.getDate("premiumSettlementDate")));
+				request.setPremiumSettlementDate(df.format(rs.getDate("premiumSettlementDate")));
 			
 			request.setPremiumSettlementCurrency(rs.getString("premiumSettlementCurrency"));
 			request.setPremiumSettlementDaysOverride(rs.getInt("premiumSettlementDaysOverride"));
@@ -235,8 +235,8 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 				request.getIsOTC(), 
 				request.getStatus(), //6
 
-				request.getTradeDate(), 
-				request.getExpiryDate(), //8
+				UtilityMethods.convertToDate(request.getTradeDate()), 
+				UtilityMethods.convertToDate(request.getExpiryDate()), //8
 								
 				request.getLotSize(),
 				request.getMultiplier(), 
@@ -287,7 +287,7 @@ public class RequestManagerDaoImpl implements RequestManagerDao
 				request.getSalesCreditFXRate(), //47
 				
 				request.getPremiumSettlementCurrency(),
-				request.getPremiumSettlementDate(),
+				UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
 				request.getPremiumSettlementDaysOverride(),
 				request.getPremiumSettlementFXRate(), //51
 				
