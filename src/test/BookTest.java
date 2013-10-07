@@ -46,11 +46,11 @@ public class BookTest extends TestCase
 	@Test
 	public void test_saveAndDeleteBook_newBookAddedThenDeleted()
 	{
-		//assertTrue("Test book not saved", bookController.save("TEST_BOOK", "ENTITY", "TESTER"));
-
-		//assertTrue("Test book not deleted", bookController.delete("TEST_BOOK"));
+		//assertTrue("Test book not saved", bookController.save("TESTING_BOOK", "ENTITY", "TESTER"));
+		//assertTrue("Test book not deleted", bookController.delete("TESTING_BOOK"));
 		
-		assertTrue("Test book not deleted", true);
+		assertTrue("", true);
+		
 	}
 		
 	@After
