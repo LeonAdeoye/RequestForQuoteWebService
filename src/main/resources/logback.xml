@@ -42,6 +42,13 @@
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
 			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
 		</encoder>
+	</appender>
+	
+	<appender name="EVENTS_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+		<file>c:\development\git\RequestForQuoteWebService\logs\events.log</file>      
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">    
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %thread  %logger - %msg%n</Pattern>    
+		</encoder>
 	</appender> 
 	     
 	<logger name="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl" level="TRACE">
@@ -94,7 +101,11 @@
 	
 	<logger name="org.apache.cxf.service.invoker.AbstractInvoker" level="DEBUG">
 		<appender-ref ref="WEB_SERVICE_LOG_FILE" />           
-	</logger>	
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.events" level="DEBUG">
+		<appender-ref ref="EVENTS_LOG_FILE" />           
+	</logger>
    
 	<root level="info">
 		<appender-ref ref="STDOUT" />

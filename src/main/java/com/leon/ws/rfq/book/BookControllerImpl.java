@@ -1,21 +1,33 @@
 package com.leon.ws.rfq.book;
 
 import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+
+import com.leon.ws.rfq.events.NewBookEvent;
 
 
 @WebService(serviceName="BookController", endpointInterface="com.leon.ws.rfq.book.BookController")
-public class BookControllerImpl implements BookController
+public class BookControllerImpl implements BookController, ApplicationEventPublisherAware 
 {
 	private static Logger logger = LoggerFactory.getLogger(BookControllerImpl.class);
+	private ApplicationEventPublisher applicationEventPublisher;
 	private BookManagerDao dao;
 	
 	public void setBookManagerDao(BookManagerDao dao)
 	{
 		this.dao = dao;
+	}
+	
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
+	{
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 	
 	public BookControllerImpl() {}
@@ -35,7 +47,19 @@ public class BookControllerImpl implements BookController
 		if(logger.isDebugEnabled())
 			logger.debug("Received request from user " + savedByUser + " to save book with book code [" + bookCode + "] and entity [" + entity + "].");		
 		
-		return dao.save(bookCode, entity, savedByUser);
+		boolean isSaved = dao.save(bookCode, entity, savedByUser);
+		
+		try
+		{
+			if(isSaved)
+				this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true)));			
+		}
+		catch(Exception e)
+		{
+			logger.error("Error when publishing new book event. Exception raised: " + e);
+		}
+
+		return isSaved;
 	}
 		
 	@WebMethod
