@@ -48,16 +48,9 @@ public class BookControllerImpl implements BookController, ApplicationEventPubli
 			logger.debug("Received request from user " + savedByUser + " to save book with book code [" + bookCode + "] and entity [" + entity + "].");		
 		
 		boolean isSaved = dao.save(bookCode, entity, savedByUser);
-		
-		try
-		{
-			if(isSaved)
-				this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true)));			
-		}
-		catch(Exception e)
-		{
-			logger.error("Error when publishing new book event. Exception raised: " + e);
-		}
+
+		if(isSaved)
+			this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true)));
 
 		return isSaved;
 	}

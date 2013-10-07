@@ -51,11 +51,16 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 				return true;				
 			}
 			else
-				logger.error("server socket could not be opened!");			
+			{
+				if(logger.isErrorEnabled())
+					logger.error("server socket could not be opened!");
+			}
+							
 		}
 		catch(Exception ex)
 		{
-			logger.error(String.format("Exception raised:%s", ex));	
+			if(logger.isErrorEnabled())
+				logger.error(String.format("Exception raised:%s", ex));	
 		}
 		return false;
 	}
@@ -76,12 +81,15 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 			}
 			catch(java.util.concurrent.ExecutionException ex)
 			{
-				logger.error(String.format("ExecutionException raised:%s. Exiting run loop!", ex));
+				if(logger.isErrorEnabled())
+					logger.error(String.format("ExecutionException raised:%s. Exiting run loop!", ex));
+				
 				break;
 			}
 			catch(Exception ex)
 			{
-				logger.error(String.format("Exception raised:%s", ex));
+				if(logger.isErrorEnabled())
+					logger.error(String.format("Exception raised:%s", ex));
 			}			
 		}
 	}
@@ -102,7 +110,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 		}
 		catch(Exception ex)
 		{
-			logger.error(String.format("Exception raised:%s", ex));
+			if(logger.isErrorEnabled())
+				logger.error(String.format("Exception raised:%s", ex));
 		}			
 	}
 	
@@ -117,7 +126,9 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 				AsynchronousSocketChannel client = mapOfClients.get(address);
 				if(!client.isOpen())
 				{
-					logger.error(String.format("Client at remote address %s is no longer open!", address));
+					if(logger.isErrorEnabled())
+						logger.error(String.format("Client at remote address %s is no longer open!", address));
+					
 					mapOfClients.remove(address);
 				}
 				else
@@ -131,14 +142,17 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 					}
 					catch(Exception e)
 					{
-						logger.error(String.format("Client at remote address %s is no longer open!", address));
+						if(logger.isErrorEnabled())
+							logger.error(String.format("Client at remote address %s is no longer open!", address));
+						
 						mapOfClients.remove(address);						
 					}
 				}
 			}
 			catch(Exception ex)
 			{
-				logger.error(String.format("Exception raised:%s", ex));
+				if(logger.isErrorEnabled())
+					logger.error(String.format("Exception raised:%s", ex));
 			}
 		}
 		lockObject.unlock();
@@ -158,7 +172,8 @@ public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 		}
 		catch(Exception ex)
 		{
-			logger.error(String.format("Exception raised:%s", ex));				
+			if(logger.isErrorEnabled())
+				logger.error(String.format("Exception raised:%s", ex));				
 		}
 	}	
 }
