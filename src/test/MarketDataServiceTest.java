@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 public class MarketDataServiceTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(MarketDataServiceTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(MarketDataServiceTest.class);
 	private MarketDataService marketDataService;
 	
 	public MarketDataServiceTest(String name)

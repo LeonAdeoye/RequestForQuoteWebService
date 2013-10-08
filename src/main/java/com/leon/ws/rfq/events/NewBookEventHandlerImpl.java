@@ -9,7 +9,7 @@ import com.leon.ws.rfq.communicator.ClientCommunicator;
 
 public final class NewBookEventHandlerImpl implements ApplicationListener
 {
-	private static Logger logger = LoggerFactory.getLogger(NewBookEventHandlerImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(NewBookEventHandlerImpl.class);
 	private ClientCommunicator communicator = null;
 	
 	public NewBookEventHandlerImpl(ClientCommunicator communicator)

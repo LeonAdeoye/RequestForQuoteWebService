@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 @XmlRootElement(name="BookDetailImpl")
 public class BookDetailImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(BookDetailImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookDetailImpl.class);
 	private String bookCode;
 	private boolean isValid;
 	private String entity;

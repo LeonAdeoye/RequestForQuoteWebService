@@ -17,7 +17,7 @@ import com.leon.ws.rfq.events.PriceUpdateEvent;
 public class PriceSimulatorImpl extends Thread implements PriceSimulator,
 		ApplicationListener, ApplicationEventPublisherAware
 {
-	private static Logger logger = LoggerFactory.getLogger(PriceSimulatorImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PriceSimulatorImpl.class);
 	private Map<String, PriceGenerator> priceMap  = new HashMap<>();
 	private ApplicationEventPublisher applicationEventPublisher;
 	private final int sleepDurationMin;

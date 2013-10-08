@@ -1,22 +1,32 @@
 package com.leon.ws.rfq.utilities;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UtilityMethods
+public final class UtilityMethods
 {
-	private static Logger logger = LoggerFactory.getLogger(UtilityMethods.class);
+	private static final Logger logger = LoggerFactory.getLogger(UtilityMethods.class);
+	private final static DateFormat MMddyyyyFormat = new SimpleDateFormat("MM/dd/yyyy");
 	
+	/**
+	 * Converts a string date with a format of MM/dd/yyyy to an instance of java.sql.Date.
+	 *
+	 * @param  	dateToConvert 				the string to convert into a java.sql.Date instance.
+	 * @throws  IllegalArgumentException	if dateToConvert string is empty.
+	 * @return 								the java.sql.Date if it successfully converts the string otherwise null.
+	 */		
     public static java.sql.Date convertToDate(String dateToConvert) 
     {
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+    	if(dateToConvert.isEmpty())
+    		throw new IllegalArgumentException("dateToConvert");
+    	
         try
         {
-	        Date parsed = format.parse(dateToConvert);        
+	        java.util.Date parsed = MMddyyyyFormat.parse(dateToConvert);        
 	        return new java.sql.Date(parsed.getTime());
         }
         catch(ParseException pe)
@@ -27,3 +37,4 @@ public class UtilityMethods
         return null;
     }
 }
+

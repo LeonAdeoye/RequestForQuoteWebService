@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 public class ParametricDataServiceTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(ParametricDataServiceTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ParametricDataServiceTest.class);
 	private ParametricDataService parametricDataService;
 	
 	public ParametricDataServiceTest(String name)

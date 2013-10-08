@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 public class ChatTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(ChatTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatTest.class);
 	private ChatMediator chatMediator;
 
 	public ChatTest(String name)

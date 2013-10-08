@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 @XmlRootElement(name="ClientDetailImpl")
 public class ClientDetailImpl 
 {
-	private static Logger logger = LoggerFactory.getLogger(ClientDetailImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientDetailImpl.class);
 	private String name;
 	private int identifier;
 	private boolean isValid;

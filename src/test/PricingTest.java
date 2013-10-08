@@ -9,7 +9,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class PricingTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(PricingTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(PricingTest.class);
 	private OptionPricingController pricingController;
 	private OptionPriceResult result1;
 	private OptionPriceResult result2;	

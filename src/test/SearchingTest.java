@@ -15,7 +15,7 @@ import com.leon.ws.rfq.search.SearchCriterionImpl;
 
 public class SearchingTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(SearchingTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SearchingTest.class);
 	private SearchController searcher;
 	
 	public SearchingTest(String name)

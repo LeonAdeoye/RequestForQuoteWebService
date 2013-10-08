@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 {
-	private static Logger logger = LoggerFactory.getLogger(ClientCommunicatorImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientCommunicatorImpl.class);
 	private AsynchronousChannelGroup channelGroup;
 	private AsynchronousServerSocketChannel serverSocket;
 	private Lock lockObject = new ReentrantLock(true); // with fair ordering policy

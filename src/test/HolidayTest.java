@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 public class HolidayTest extends TestCase
 {
-	private static Logger logger = LoggerFactory.getLogger(HolidayTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(HolidayTest.class);
 	private HolidayController holidayController;
 
 	public HolidayTest(String name)

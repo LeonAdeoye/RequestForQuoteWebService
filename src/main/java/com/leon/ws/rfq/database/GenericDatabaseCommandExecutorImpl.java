@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor<T>
 {
-	private static Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
 	
 	@Override
 	public boolean executePreparedStatement(String preparedStatement,Object... params)
