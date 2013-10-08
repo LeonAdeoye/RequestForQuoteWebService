@@ -5,24 +5,28 @@ import javax.jws.WebService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 
+import com.leon.ws.rfq.events.PriceSimulatorRequestEvent;
 import com.leon.ws.rfq.marketdata.MarketDataService;
 import com.leon.ws.rfq.option.model.OptionPriceResult;
 import com.leon.ws.rfq.option.model.OptionPricingController;
 import com.leon.ws.rfq.parametric.ParametricDataService;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
+import com.leon.ws.rfq.simulation.PriceSimulator.PriceSimulatorRequestEnum;
 
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
-public class RequestControllerImpl implements RequestController
+public class RequestControllerImpl implements RequestController, ApplicationEventPublisherAware
 {
-	private static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);
-	
-	public RequestControllerImpl() {}
-	
+	private static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);	
 	private RequestManagerDao dao;
 	private OptionPricingController optionPricer;
 	private MarketDataService marketDataService;
 	private ParametricDataService parametricDataService;
+	private ApplicationEventPublisher applicationEventPublisher;
+	
+	public RequestControllerImpl() {}
 	
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
@@ -45,7 +49,13 @@ public class RequestControllerImpl implements RequestController
 		if(logger.isDebugEnabled())
 			logger.debug("Received request from user " + savedByUser + " to SAVE RFQ [" + requestDetail + "].");
 		
-		return dao.save(requestDetail, savedByUser);
+		int identifier = dao.save(requestDetail, savedByUser);
+		
+		if(identifier != -1)
+			this.applicationEventPublisher.publishEvent(new PriceSimulatorRequestEvent
+					(this, PriceSimulatorRequestEnum.ADD_UNDERLYING, "0001.HK", 100, 0.5)); // TODO
+		
+		return identifier;
 	}
 
 	@WebMethod
@@ -163,5 +173,11 @@ public class RequestControllerImpl implements RequestController
 		}
 		
 		return requests;
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
+	{
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }

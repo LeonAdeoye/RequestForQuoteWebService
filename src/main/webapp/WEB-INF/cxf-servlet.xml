@@ -23,6 +23,11 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 		<constructor-arg value="1972"/>
 	</bean>
 	
+	<bean id="priceSimulator" class="com.leon.ws.rfq.simulation.PriceSimulatorImpl"	init-method="initialize">
+		<constructor-arg value="500"/>
+		<constructor-arg value="2000"/>
+	</bean>	
+	
 	<bean id="optionPricer" class="com.leon.ws.rfq.option.model.OptionPricingControllerImpl">
 		<constructor-arg ref="blackScholesModel"/>
 	</bean>
@@ -36,18 +41,6 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	<bean id="newBookEventHandler" class="com.leon.ws.rfq.events.NewBookEventHandlerImpl">
 		<constructor-arg ref="clientCommunicator"/>
 	</bean>
-	
-	<!--<bean id="newRequestEventHandler" class="com.leon.ws.rfq.events.NewRequestEventHandlerImpl">
-		<constructor-arg ref="clientCommunicator"/>
-	</bean>
-	
-	<bean id="newHolidayEventHandler" class="com.leon.ws.rfq.events.NewHolidayEventHandlerImpl">
-		<constructor-arg ref="clientCommunicator"/>
-	</bean>
-	
-	<bean id="newSearchEventHandler" class="com.leon.ws.rfq.events.NewSearchEventHandlerImpl">
-		<constructor-arg ref="clientCommunicator"/>
-	</bean>-->
 	
 	<bean id="chatMediator" class="com.leon.ws.rfq.chat.ChatMediatorImpl">
 		<constructor-arg ref="clientCommunicator"/>
