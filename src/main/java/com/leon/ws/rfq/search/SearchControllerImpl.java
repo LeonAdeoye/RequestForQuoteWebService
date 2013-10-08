@@ -5,7 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService(serviceName="SearchController", endpointInterface="com.leon.ws.rfq.search.SearchController")
-public class SearchControllerImpl implements SearchController
+public final class SearchControllerImpl implements SearchController
 {
 	private SearchManagerDao dao;
 	

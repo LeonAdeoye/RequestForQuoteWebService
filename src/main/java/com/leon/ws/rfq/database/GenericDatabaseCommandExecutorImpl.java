@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor<T>
+public final class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor<T>
 {
 	private static final Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
 	

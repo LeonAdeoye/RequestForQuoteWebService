@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationListener;
 import com.leon.ws.rfq.events.PriceSimulatorRequestEvent;
 import com.leon.ws.rfq.events.PriceUpdateEvent;
 
-public class PriceSimulatorImpl extends Thread implements PriceSimulator,
+public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 		ApplicationListener, ApplicationEventPublisherAware
 {
 	private static final Logger logger = LoggerFactory.getLogger(PriceSimulatorImpl.class);

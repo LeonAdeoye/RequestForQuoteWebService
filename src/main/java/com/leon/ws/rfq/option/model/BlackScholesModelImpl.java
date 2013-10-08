@@ -7,7 +7,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
  
-public class BlackScholesModelImpl implements OptionPricingModel
+public final class BlackScholesModelImpl implements OptionPricingModel
 {
         // Variables for intermediate calculations
         private double d1 = 0.0;

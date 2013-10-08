@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 @WebService(serviceName="OptionPricingController", 
 endpointInterface="com.leon.ws.rfq.option.model.OptionPricingController")
-public class OptionPricingControllerImpl implements OptionPricingController
+public final class OptionPricingControllerImpl implements OptionPricingController
 {
 	static final Logger logger = LoggerFactory.getLogger(OptionPricingControllerImpl.class);
 	OptionPricingModelContext context = null;

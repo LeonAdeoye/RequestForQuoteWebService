@@ -10,7 +10,7 @@ import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
 import com.leon.ws.rfq.utilities.UtilityMethods;
 
-public class RequestManagerDaoImpl implements RequestManagerDao
+public final class RequestManagerDaoImpl implements RequestManagerDao
 {	
 	private class RequestParameterizedRowMapper implements ParameterizedRowMapper<RequestDetailImpl>
 	{

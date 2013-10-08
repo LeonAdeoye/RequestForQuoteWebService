@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.leon.ws.rfq.communicator.ClientCommunicator;
 
 @WebService(serviceName="ChatMediator", endpointInterface="com.leon.ws.rfq.chat.ChatMediator")
-public class ChatMediatorImpl implements ChatMediator
+public final class ChatMediatorImpl implements ChatMediator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ChatMediatorImpl.class);	
 	private Map<Integer, Set<String>> chatRooms = new HashMap<>();

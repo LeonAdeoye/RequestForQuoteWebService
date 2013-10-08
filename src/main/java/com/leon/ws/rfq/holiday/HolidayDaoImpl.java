@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 
-public class HolidayDaoImpl implements HolidayDao
+public final class HolidayDaoImpl implements HolidayDao
 {
 	private static final String SAVE = "CALL holidays_SAVE (?, ?, ?)";
 	private static final String SELECT_ALL = "CALL holidays_SELECT_ALL";

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="RequestDetailImpl", namespace = "com.leon.ws.rfq.request")
-public class RequestDetailImpl 
+public final class RequestDetailImpl 
 {
 	private String request;	
 	private String bookCode;

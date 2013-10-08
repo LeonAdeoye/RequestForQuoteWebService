@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @XmlRootElement(name="HolidayImpl")
-public class HolidayImpl 
+public final class HolidayImpl 
 {
 	private static final Logger logger = LoggerFactory.getLogger(HolidayImpl.class);
 	private String location;

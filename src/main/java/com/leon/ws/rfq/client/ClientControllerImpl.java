@@ -5,7 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService(serviceName="ClientController", endpointInterface="com.leon.ws.rfq.client.ClientController")
-public class ClientControllerImpl implements ClientController
+public final class ClientControllerImpl implements ClientController
 {
 	private ClientManagerDao dao;
 	

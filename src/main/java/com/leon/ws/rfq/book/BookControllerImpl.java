@@ -14,7 +14,7 @@ import com.leon.ws.rfq.events.NewBookEvent;
 
 
 @WebService(serviceName="BookController", endpointInterface="com.leon.ws.rfq.book.BookController")
-public class BookControllerImpl implements BookController, ApplicationEventPublisherAware 
+public final class BookControllerImpl implements BookController, ApplicationEventPublisherAware 
 {
 	private static Logger logger = LoggerFactory.getLogger(BookControllerImpl.class);
 	private ApplicationEventPublisher applicationEventPublisher;

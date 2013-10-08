@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import com.leon.ws.rfq.holiday.HolidayDao;
 
-public class HolidayControllerImpl implements HolidayController
+public final class HolidayControllerImpl implements HolidayController
 {	
 	private HolidayDao dao;
 	

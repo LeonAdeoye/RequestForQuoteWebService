@@ -3,7 +3,7 @@ package com.leon.ws.rfq.option.model;
 import java.util.HashMap;
 import java.util.Map;
  
-class OptionPricingModelContext
+final class  OptionPricingModelContext
 {
         private OptionPricingModel model = null;
         private Map<String, Double> input = new HashMap<String, Double>();

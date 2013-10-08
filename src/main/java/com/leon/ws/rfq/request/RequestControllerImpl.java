@@ -17,7 +17,7 @@ import com.leon.ws.rfq.search.SearchCriteriaImpl;
 import com.leon.ws.rfq.simulation.PriceSimulator.PriceSimulatorRequestEnum;
 
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
-public class RequestControllerImpl implements RequestController, ApplicationEventPublisherAware
+public final class RequestControllerImpl implements RequestController, ApplicationEventPublisherAware
 {
 	private final static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);	
 	private RequestManagerDao dao;

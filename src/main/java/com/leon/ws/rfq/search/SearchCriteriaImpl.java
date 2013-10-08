@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="SearchCriteriaImpl", namespace = "com.leon.ws.rfq.search")
-public class SearchCriteriaImpl
+public final class SearchCriteriaImpl
 {
 	@XmlElementWrapper(name = "SearchCriteriaImpl")
 	@XmlElement(name = "SearchCriterionImpl")

@@ -3,7 +3,7 @@ package com.leon.ws.rfq.option.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="OptionPriceResult")
-public class OptionPriceResult
+public final class OptionPriceResult
 {
 	private double delta;
 	private double gamma;

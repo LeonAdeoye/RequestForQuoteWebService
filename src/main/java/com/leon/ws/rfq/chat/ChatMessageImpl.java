@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 @XmlRootElement(name="ChatMessageImpl")
-public class ChatMessageImpl implements ChatMessage
+public final class ChatMessageImpl implements ChatMessage
 {
 	private static final Logger logger = LoggerFactory.getLogger(ChatMessageImpl.class);	
 	private String owner;

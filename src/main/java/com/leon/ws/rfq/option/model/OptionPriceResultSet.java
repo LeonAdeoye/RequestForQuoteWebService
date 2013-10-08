@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(namespace = "com.leon.ws.rfq.option.model")
-public class OptionPriceResultSet
+public final class OptionPriceResultSet
 {
 	@XmlElementWrapper(name = "optionPriceResults")
 	@XmlElement(name = "OptionPriceResult")

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @XmlRootElement(name="ClientDetailImpl")
-public class ClientDetailImpl 
+public final class ClientDetailImpl 
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientDetailImpl.class);
 	private String name;

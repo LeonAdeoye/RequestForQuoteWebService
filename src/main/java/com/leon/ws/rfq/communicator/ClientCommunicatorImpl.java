@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ClientCommunicatorImpl extends Thread implements ClientCommunicator
+public final class ClientCommunicatorImpl extends Thread implements ClientCommunicator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientCommunicatorImpl.class);
 	private AsynchronousChannelGroup channelGroup;

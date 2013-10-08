@@ -3,7 +3,7 @@ package com.leon.ws.rfq.marketdata;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class MarketDataServiceImpl implements MarketDataService
+public final class MarketDataServiceImpl implements MarketDataService
 {
 	private Map<String, Prices> priceMap = new ConcurrentSkipListMap<>();
 	// Nested class

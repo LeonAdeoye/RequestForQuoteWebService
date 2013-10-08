@@ -3,7 +3,7 @@ package com.leon.ws.rfq.request;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="OptionDetailImpl", namespace = "com.leon.ws.rfq.request")
-public class OptionDetailImpl
+public final class OptionDetailImpl
 {
 	private int legId;
 	private boolean isCall;

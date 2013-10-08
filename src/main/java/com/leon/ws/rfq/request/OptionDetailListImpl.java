@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="OptionDetailListImpl", namespace = "com.leon.ws.rfq.request")
-public class OptionDetailListImpl
+public final class OptionDetailListImpl
 {
 	@XmlElementWrapper(name = "OptionDetailListImpl")
 	@XmlElement(name = "OptionDetailImpl")

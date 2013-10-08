@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
  
-public class ChatMessageDaoImpl implements ChatMessageDao
+public final class ChatMessageDaoImpl implements ChatMessageDao
 {
 	private class ChatMessageParameterizedRowMapper implements ParameterizedRowMapper<ChatMessageImpl>
 	{

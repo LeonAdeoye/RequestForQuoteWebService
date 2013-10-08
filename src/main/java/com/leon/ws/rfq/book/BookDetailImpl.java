@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 @XmlRootElement(name="BookDetailImpl")
-public class BookDetailImpl 
+public final class BookDetailImpl 
 {
 	private static final Logger logger = LoggerFactory.getLogger(BookDetailImpl.class);
 	private String bookCode;

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(namespace = "com.leon.ws.rfq.chat")
-public class ChatMessageListImpl
+public final class ChatMessageListImpl
 {
 	@XmlElementWrapper(name = "ChatMessageListImpl")
 	@XmlElement(name = "ChatMessageImpl")
