@@ -3,8 +3,17 @@ package com.leon.ws.rfq.marketdata;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public final class MarketDataServiceImpl implements MarketDataService
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+
+import com.leon.ws.rfq.events.NewBookEvent;
+import com.leon.ws.rfq.events.PriceUpdateEvent;
+
+public final class MarketDataServiceImpl implements MarketDataService, ApplicationListener
 {
+	private static final Logger logger = LoggerFactory.getLogger(MarketDataServiceImpl.class);
 	private Map<String, Prices> priceMap = new ConcurrentSkipListMap<>();
 	// Nested class
 	private class Prices
@@ -261,5 +270,23 @@ public final class MarketDataServiceImpl implements MarketDataService
 	public int size()
 	{
 		return priceMap.size();
+	}
+
+	/**
+	 * Handles price update events, other events are ignored.
+	 * 
+	 */	
+	@Override
+	public void onApplicationEvent(ApplicationEvent event)
+	{
+		if(!(event instanceof PriceUpdateEvent))
+			return;
+		
+		PriceUpdateEvent priceUpdateEvent = (PriceUpdateEvent) event;
+		
+		setMidPrice(priceUpdateEvent.getUnderlyingRIC(), priceUpdateEvent.getPriceUpdate());
+		
+		if(logger.isDebugEnabled())
+			logger.debug("Price update: " + priceUpdateEvent.getPriceUpdate() + " captured by the market data service for underlying: " + priceUpdateEvent.getUnderlyingRIC());				
 	}
 }

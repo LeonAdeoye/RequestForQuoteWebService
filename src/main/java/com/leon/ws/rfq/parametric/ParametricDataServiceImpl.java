@@ -35,7 +35,7 @@ public final class ParametricDataServiceImpl implements ParametricDataService
 		if(volatilities.containsKey(underlyingRIC))
 			return volatilities.get(underlyingRIC);
 		else
-			return 0;
+			return 0.2; //TODO
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public final class ParametricDataServiceImpl implements ParametricDataService
 		if(interestRates.containsKey(currency))
 			return interestRates.get(currency);
 		else
-			return 0;
+			return 0.1; //TODO
 	}
 	
 	/**

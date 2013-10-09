@@ -6,14 +6,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public final class OptionDetailImpl
 {
 	private int legId;
-	private boolean isCall;
-	private boolean isEuropean;
+	private boolean isCall = true;
+	private boolean isEuropean = true;
 	
     private double delta;
     private double gamma;
     private double theta;
     private double vega;
-    private double rho;	
+    private double rho;
+    
+    private String underlyingRIC;
+    private double underlyingPrice;
+    private double strike;
+    private double daysToExpiry;
+    private double dayCountConvention;
+    private String currency;    
 	
 	public OptionDetailImpl() {}
 	
@@ -138,6 +145,13 @@ public final class OptionDetailImpl
 				this.isCall == param.isCall &&
 				this.isEuropean == param.isEuropean &&
 				
+				this.strike == param.strike &&
+				this.underlyingPrice == param.underlyingPrice &&
+				this.underlyingRIC.equals(param.underlyingRIC) &&
+				this.dayCountConvention == param.dayCountConvention &&
+				this.daysToExpiry == param.daysToExpiry &&
+				this.currency.equals(param.currency) &&
+				
 				this.delta == param.delta &&
 				this.gamma == param.gamma &&
 				this.theta == param.theta &&
@@ -159,34 +173,34 @@ public final class OptionDetailImpl
 		result = 37 * result + (rho == null ? 0 : rho.hashCode());	*/	
 		return result;
 	}
+	
+	public double getUnderlyingPrice()
+	{
+		return this.underlyingPrice;
+	}
 
 	public double getStrike()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return 110; //this.strike; TODO
 	}
 
 	public double getDaysToExpiry()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return this.daysToExpiry;
 	}
 
 	public double getDayCountConvention()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return this.dayCountConvention;
 	}
 
 	public String getUnderlyingRIC()
 	{
-		// TODO Auto-generated method stub
-		return "";
+		return "0001.HK"; // this.underlyingRIC; //TODO
 	}
 
 	public String getCurrency()
 	{
-		// TODO Auto-generated method stub
-		return "";
+		return "USD"; // this.currency;
 	}	
 }

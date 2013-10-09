@@ -30,6 +30,8 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	
 	<bean id="optionPricer" class="com.leon.ws.rfq.option.model.OptionPricingControllerImpl">
 		<constructor-arg ref="blackScholesModel"/>
+    	<constructor-arg ref="marketDataService"/>
+    	<constructor-arg ref="parametricDataService"/>		
 	</bean>
 	
 	<bean id="asyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
@@ -57,8 +59,6 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     
     <bean id="requestController" class="com.leon.ws.rfq.request.RequestControllerImpl">
     	<property name="requestManagerDao" ref="requestManagerDao"/>
-    	<property name="marketDataService" ref="marketDataService"/>
-    	<property name="parametricDataService" ref="parametricDataService"/>
     </bean>    
     
     <bean id="bookController" class="com.leon.ws.rfq.book.BookControllerImpl">

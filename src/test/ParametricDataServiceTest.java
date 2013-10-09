@@ -52,7 +52,7 @@ public class ParametricDataServiceTest extends TestCase
 	@Test
 	public void test_getInterestRate_NonExistentInterestRate_ZeroInterestRateIsReturned()
 	{
-		assertEquals("Zero interest rate was not returned", 0.0, parametricDataService.getInterestRate("TEST_CURRENCY"));
+		assertEquals("Zero interest rate was not returned", 0.1, parametricDataService.getInterestRate("TEST_CURRENCY"));
 	}
 	
 	@Test
@@ -65,7 +65,7 @@ public class ParametricDataServiceTest extends TestCase
 	@Test
 	public void test_getVolatility_NonExistentVolatility_ZeroVolatilityIsReturned()
 	{
-		assertEquals("Zero volatility was not returned", 0.0, parametricDataService.getVolatility("TEST_RIC"));
+		assertEquals("Zero volatility was not returned", 0.2, parametricDataService.getVolatility("TEST_RIC"));
 	}
 	
 	@Test

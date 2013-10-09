@@ -13,6 +13,8 @@ import org.springframework.context.ApplicationListener;
 
 import com.leon.ws.rfq.events.PriceSimulatorRequestEvent;
 import com.leon.ws.rfq.events.PriceUpdateEvent;
+import com.leon.ws.rfq.events.TaggedRequestEvent;
+import com.leon.ws.rfq.request.OptionDetailImpl;
 
 public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 		ApplicationListener, ApplicationEventPublisherAware
@@ -103,32 +105,42 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 	@Override
 	public void onApplicationEvent(ApplicationEvent event)
 	{
-		if(!(event instanceof PriceSimulatorRequestEvent))
-			return;
-		
-		PriceSimulatorRequestEvent requestEvent = (PriceSimulatorRequestEvent) event;
-		
-		switch(requestEvent.getRequestType())
+		if((event instanceof PriceSimulatorRequestEvent))
 		{
-			case ADD_UNDERLYING:
-				add(requestEvent.getUnderlyingRIC(), requestEvent.getPriceMean(), requestEvent.getPriceVariance());
-				break;
-			case REMOVE_UNDERLYING:
-				remove(requestEvent.getUnderlyingRIC());
-				break;
-			case SUSPEND_UNDERLYING:
-				suspend(requestEvent.getUnderlyingRIC());
-				break;
-			case AWAKEN_UNDERLYING:
-				awaken(requestEvent.getUnderlyingRIC());
-				break;
-			case SUSPEND_ALL:
-				suspendAll();
-				break;
-			case AWAKEN_ALL:
-				awakenAll();
-				break;
+			PriceSimulatorRequestEvent requestEvent = (PriceSimulatorRequestEvent) event;
+			
+			switch(requestEvent.getRequestType())
+			{
+				case ADD_UNDERLYING:
+					add(requestEvent.getUnderlyingRIC(), requestEvent.getPriceMean(), requestEvent.getPriceVariance());
+					break;
+				case REMOVE_UNDERLYING:
+					remove(requestEvent.getUnderlyingRIC());
+					break;
+				case SUSPEND_UNDERLYING:
+					suspend(requestEvent.getUnderlyingRIC());
+					break;
+				case AWAKEN_UNDERLYING:
+					awaken(requestEvent.getUnderlyingRIC());
+					break;
+				case SUSPEND_ALL:
+					suspendAll();
+					break;
+				case AWAKEN_ALL:
+					awakenAll();
+					break;
+			}			
 		}
+		else if(event instanceof TaggedRequestEvent)
+		{
+			TaggedRequestEvent taggedRequestEvent = (TaggedRequestEvent) event;
+			
+			for(OptionDetailImpl optionLeg : taggedRequestEvent.getRequest().getLegs().getOptionDetailList())
+				add(optionLeg.getUnderlyingRIC(), optionLeg.getUnderlyingPrice() == 0.0 ? 100 : optionLeg.getUnderlyingPrice(), 0.5); //TODO
+					
+			if(logger.isDebugEnabled())
+				logger.debug("Tagged request event received for request: " + taggedRequestEvent.getRequest());				
+		}		
 	}
 
 	/**
