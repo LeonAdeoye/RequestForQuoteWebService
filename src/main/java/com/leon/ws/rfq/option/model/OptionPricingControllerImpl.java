@@ -152,12 +152,16 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	{
 		for(OptionDetailImpl optionLeg : request.getLegs().getOptionDetailList())
 		{
+			optionLeg.setVolatility(parametricDataService.getVolatility(optionLeg.getUnderlyingRIC()));
+			optionLeg.setUnderlyingPrice(marketDataService.getMidPrice(optionLeg.getUnderlyingRIC()));
+			optionLeg.setInterestRate(parametricDataService.getInterestRate(request.getPremiumSettlementCurrency()));
+			
 	        OptionPriceResult result = this.calculate(
 	        		optionLeg.getStrike(), 
-	        		parametricDataService.getVolatility(optionLeg.getUnderlyingRIC()), 
-	        		marketDataService.getMidPrice(optionLeg.getUnderlyingRIC()), 
+	        		optionLeg.getVolatility(), 
+	        		optionLeg.getUnderlyingPrice(), 
 	        		optionLeg.getDaysToExpiry(), 
-	        		parametricDataService.getInterestRate(optionLeg.getCurrency()), 
+	        		optionLeg.getInterestRate(), 
 	        		optionLeg.getIsCall(), 
 	        		optionLeg.getIsEuropean(), 
 	        		optionLeg.getDayCountConvention());
@@ -167,6 +171,7 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	        	optionLeg.setVega(result.getVega());
 	        	optionLeg.setTheta(result.getTheta());
 	        	optionLeg.setRho(result.getRho());
+	        	optionLeg.setPremium(result.getPrice());
 	        	
 	        	if(logger.isDebugEnabled())
 	        		logger.debug("Repriced option: " + optionLeg.toString());
