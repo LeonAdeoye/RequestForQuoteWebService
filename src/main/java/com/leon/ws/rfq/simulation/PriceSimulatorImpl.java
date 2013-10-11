@@ -17,17 +17,17 @@ import com.leon.ws.rfq.events.TaggedRequestEvent;
 import com.leon.ws.rfq.request.OptionDetailImpl;
 
 public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
-		ApplicationListener, ApplicationEventPublisherAware
+ApplicationListener, ApplicationEventPublisherAware
 {
 	private static final Logger logger = LoggerFactory.getLogger(PriceSimulatorImpl.class);
-	private Map<String, PriceGenerator> priceMap  = new HashMap<>();
+	private final Map<String, PriceGenerator> priceMap  = new HashMap<>();
 	private ApplicationEventPublisher applicationEventPublisher;
 	private final int sleepDurationMin;
 	private final int sleepDurationIncrement;
 	private final Random sleepDurationGenerator = new Random();
 	private boolean isRunning = true;
-	private boolean isSuspended = false; 
-	
+	private boolean isSuspended = false;
+
 	private class PriceGenerator
 	{
 		private final double priceMean;
@@ -35,68 +35,69 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 		private boolean isAwake = true;
 		private final Random priceGenerator = new Random();
 		private final Random changeGenerator = new Random();
-		
+
 		private PriceGenerator(double priceMean, double priceVariance)
 		{
 			this.priceMean = priceMean;
 			this.priceVariance = priceVariance;
 		}
-		
+
 		private void suspend()
 		{
-			this.isAwake = false; 
+			this.isAwake = false;
 		}
-		
+
 		private void awaken()
 		{
 			this.isAwake = true;
 		}
-		
+
 		private boolean isAwake()
 		{
 			return this.isAwake;
 		}
-		
-		private double getLatestPrice() 
+
+		private double getLatestPrice()
 		{
-			return this.priceMean + this.priceGenerator.nextGaussian() * this.priceVariance;
+			return this.priceMean + (this.priceGenerator.nextGaussian() * this.priceVariance);
 		}
-		
+
 		private boolean hasChanged()
 		{
 			return this.changeGenerator.nextInt(3) == 2;
 		}
 	}
-	
+
 	/**
 	 * Returns the next sleeping duration.
 	 *
 	 * @return	the randomly generated sleep duration
-	 */	
+	 */
 	private int getNextSleepDuration()
 	{
 		return this.sleepDurationMin + this.sleepDurationGenerator.nextInt(this.sleepDurationIncrement);
 	}
-	
+
 	/**
 	 * Constructor.
 	 *
 	 * @param  sleepDurationMin 		the minimum sleep duration in between each set of publishing events.
 	 * @param  sleepDurationIncrement	the sleep duration increment between each set of publishing events.
-	 */	
+	 */
 	public PriceSimulatorImpl(int sleepDurationMin, int sleepDurationIncrement)
 	{
 		this.sleepDurationMin = sleepDurationMin;
 		this.sleepDurationIncrement = sleepDurationIncrement;
 	}
-	
+
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
 		this.applicationEventPublisher = applicationEventPublisher;
 
 	}
-	
+
+	@Override
 	public void initialize()
 	{
 		this.start();
@@ -108,50 +109,50 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 		if((event instanceof PriceSimulatorRequestEvent))
 		{
 			PriceSimulatorRequestEvent requestEvent = (PriceSimulatorRequestEvent) event;
-			
+
 			switch(requestEvent.getRequestType())
 			{
-				case ADD_UNDERLYING:
-					add(requestEvent.getUnderlyingRIC(), requestEvent.getPriceMean(), requestEvent.getPriceVariance());
-					break;
-				case REMOVE_UNDERLYING:
-					remove(requestEvent.getUnderlyingRIC());
-					break;
-				case SUSPEND_UNDERLYING:
-					suspend(requestEvent.getUnderlyingRIC());
-					break;
-				case AWAKEN_UNDERLYING:
-					awaken(requestEvent.getUnderlyingRIC());
-					break;
-				case SUSPEND_ALL:
-					suspendAll();
-					break;
-				case AWAKEN_ALL:
-					awakenAll();
-					break;
-			}			
+			case ADD_UNDERLYING:
+				add(requestEvent.getUnderlyingRIC(), requestEvent.getPriceMean(), requestEvent.getPriceVariance());
+				break;
+			case REMOVE_UNDERLYING:
+				remove(requestEvent.getUnderlyingRIC());
+				break;
+			case SUSPEND_UNDERLYING:
+				suspend(requestEvent.getUnderlyingRIC());
+				break;
+			case AWAKEN_UNDERLYING:
+				awaken(requestEvent.getUnderlyingRIC());
+				break;
+			case SUSPEND_ALL:
+				suspendAll();
+				break;
+			case AWAKEN_ALL:
+				awakenAll();
+				break;
+			}
 		}
 		else if(event instanceof TaggedRequestEvent)
 		{
 			TaggedRequestEvent taggedRequestEvent = (TaggedRequestEvent) event;
-			
-			for(OptionDetailImpl optionLeg : taggedRequestEvent.getRequest().getLegs().getOptionDetailList())
-				add(optionLeg.getUnderlyingRIC(), optionLeg.getUnderlyingPrice() == 0.0 ? 100 : optionLeg.getUnderlyingPrice(), 0.5); //TODO
-					
+
 			if(logger.isDebugEnabled())
-				logger.debug("Tagged request event received for request: " + taggedRequestEvent.getRequest());				
-		}		
+				logger.debug("Tagged request event received for request: " + taggedRequestEvent.getRequest());
+
+			for(OptionDetailImpl optionLeg : taggedRequestEvent.getRequest().getLegs().getOptionDetailList())
+				add(optionLeg.getUnderlyingRIC(), optionLeg.getUnderlyingPrice(), 0.5);
+		}
 	}
 
 	/**
 	 * Terminates the price simulator stopping all price generation.
-	 */		
+	 */
 	@Override
 	public void terminate()
 	{
 		if(logger.isInfoEnabled())
 			logger.info("Terminating price simulator...");
-		
+
 		this.isRunning = false;
 	}
 
@@ -163,7 +164,7 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 	 * @param  priceVariance	the variance used random price generator with normal distribution.
 	 * @throws					IllegalArgumentException if underlyingRIC parameter is an empty string ||
 	 * 							priceMean <= 0 || priceVariance <= 0.
-	 */		
+	 */
 	@Override
 	public void add(String underlyingRIC, double priceMean, double priceVariance)
 	{
@@ -173,14 +174,14 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 			throw new IllegalArgumentException("priceMean");
 		if(priceVariance <= 0.0)
 			throw new IllegalArgumentException("priceVariance");
-		
+
 		if(this.priceMap.containsKey(underlyingRIC))
 			return;
-		
+
 		this.priceMap.put(underlyingRIC, new PriceGenerator(priceMean, priceVariance));
-		
+
 		if(logger.isInfoEnabled())
-			logger.info("Added underlying " + underlyingRIC + " to the price publishing map");		
+			logger.info("Added underlying " + underlyingRIC + " to the price publishing map");
 	}
 
 	/**
@@ -188,32 +189,32 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 	 *
 	 * @param  underlyingRIC	the RIC of the underlying product used as key to remove it.
 	 * @throws					IllegalArgumentException if underlyingRIC parameter is an empty string.
-	 */		
+	 */
 	@Override
 	public void remove(String underlyingRIC)
 	{
 		if(underlyingRIC.isEmpty())
 			throw new IllegalArgumentException("underlyingRIC");
-		
+
 		if(!this.priceMap.containsKey(underlyingRIC))
-			return;		
-		
+			return;
+
 		this.priceMap.remove(underlyingRIC);
-		
+
 		if(logger.isInfoEnabled())
-			logger.info("Removed underlying " + underlyingRIC + " from the price publishing map");		
+			logger.info("Removed underlying " + underlyingRIC + " from the price publishing map");
 	}
 
 	/**
 	 * Suspends all price generation by all underlyings.
-	 */		
+	 */
 	@Override
 	public void suspendAll()
 	{
 		this.isSuspended = true;
-		
+
 		if(logger.isInfoEnabled())
-			logger.info("All underlying have been suspended.");		
+			logger.info("All underlying have been suspended.");
 	}
 
 	/**
@@ -221,32 +222,32 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 	 *
 	 * @param  underlyingRIC	the RIC of the underlying product used as key to suspend it.
 	 * @throws					IllegalArgumentException if underlyingRIC parameter is an empty string.
-	 */	
+	 */
 	@Override
 	public void suspend(String underlyingRIC)
 	{
 		if(underlyingRIC.isEmpty())
 			throw new IllegalArgumentException("underlyingRIC");
-		
+
 		if(!this.priceMap.containsKey(underlyingRIC))
 			return;
-		
+
 		this.priceMap.get(underlyingRIC).suspend();
-		
+
 		if(logger.isInfoEnabled())
-			logger.info("Underlying " + underlyingRIC + " has been suspended.");		
+			logger.info("Underlying " + underlyingRIC + " has been suspended.");
 	}
 
 	/**
 	 * Restart all price generation by all underlyings.
-	 */		
+	 */
 	@Override
 	public void awakenAll()
 	{
 		this.isSuspended = false;
 
 		if(logger.isInfoEnabled())
-			logger.info("All underlying have been awoken.");		
+			logger.info("All underlying have been awoken.");
 	}
 
 	/**
@@ -254,28 +255,28 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 	 *
 	 * @param  underlyingRIC	the RIC of the underlying product used as key to awaken it.
 	 * @throws					IllegalArgumentException if underlyingRIC parameter is an empty string.
-	 */		
+	 */
 	@Override
 	public void awaken(String underlyingRIC)
 	{
 		if(underlyingRIC.isEmpty())
 			throw new IllegalArgumentException("underlyingRIC");
-		
+
 		if(!this.priceMap.containsKey(underlyingRIC))
 			return;
-		
+
 		this.priceMap.get(underlyingRIC).awaken();
-		
+
 		if(logger.isInfoEnabled())
 			logger.info("Underlying " + underlyingRIC + " has been awoken.");
 	}
-	
+
 	@Override
 	public void run()
 	{
 		if(logger.isInfoEnabled())
 			logger.info("Price simulator starting continuous publishing...");
-		
+
 		while(this.isRunning)
 		{
 			if(!this.isSuspended)
@@ -283,19 +284,19 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 				for(Map.Entry<String, PriceGenerator> item : this.priceMap.entrySet())
 				{
 					PriceGenerator underlying = item.getValue();
-					
+
 					if(underlying.isAwake() && underlying.hasChanged())
 					{
 						double price = underlying.getLatestPrice();
-						
+
 						if(logger.isDebugEnabled())
 							logger.debug("Publishing price: " + price + " for underlying: " + item.getKey());
-						
+
 						this.applicationEventPublisher.publishEvent(new PriceUpdateEvent(this, item.getKey(), price));
 					}
 				}
 			}
-			
+
 			try
 			{
 				sleep(this.getNextSleepDuration());
@@ -304,13 +305,13 @@ public final class PriceSimulatorImpl extends Thread implements PriceSimulator,
 			{
 				if(logger.isInfoEnabled())
 					logger.info("Interruption exception raised. Terminating price simulator...");
-				
-				isRunning = false;
+
+				this.isRunning = false;
 			}
 		}
-		
+
 		if(logger.isInfoEnabled())
-			logger.info("Price simulator activity terminated!");		
+			logger.info("Price simulator activity terminated!");
 	}
 
 }
