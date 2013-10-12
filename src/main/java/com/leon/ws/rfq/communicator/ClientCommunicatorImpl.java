@@ -239,6 +239,9 @@ public final class ClientCommunicatorImpl extends Thread implements ClientCommun
 
 		JsonSerializableEvent jsonSerializableEvent = (JsonSerializableEvent) event;
 
-		sendToClients(jsonSerializableEvent.getJson());
+		if(jsonSerializableEvent.getMessageType().isEmpty())
+			throw new IllegalStateException("No message type set for transmission!");
+
+		sendToClients(jsonSerializableEvent.getMessageType() + "=" + jsonSerializableEvent.getJson());
 	}
 }

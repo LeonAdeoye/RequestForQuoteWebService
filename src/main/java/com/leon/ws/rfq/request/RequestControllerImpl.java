@@ -14,109 +14,116 @@ import com.leon.ws.rfq.search.SearchCriteriaImpl;
 @WebService(serviceName="RequestController", endpointInterface="com.leon.ws.rfq.request.RequestController")
 public final class RequestControllerImpl implements RequestController, ApplicationEventPublisherAware
 {
-	private final static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);	
+	private final static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);
+	private static final String NEW_REQUEST_UPDATE = "NewRequestUpdate";
 	private RequestManagerDao dao;
-	private ApplicationEventPublisher applicationEventPublisher; 
-	
+	private ApplicationEventPublisher applicationEventPublisher;
+
 	public RequestControllerImpl() {}
-	
+
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
 		this.dao = dao;
 	}
-	
+
+	@Override
 	@WebMethod
 	public int save(RequestDetailImpl request, String savedByUser)
 	{
 		if(logger.isDebugEnabled())
 			logger.debug("Received request from user " + savedByUser + " to SAVE RFQ [" + request + "].");
-		
-		int identifier = dao.save(request, savedByUser);
-		
+
+		int identifier = this.dao.save(request, savedByUser);
+
 		if(identifier != -1)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));	
-		
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+
 		return identifier;
 	}
 
+	@Override
 	@WebMethod
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
 		if(logger.isDebugEnabled())
 			logger.debug("Received request from user " + updatedByUser + " to UPDATE RFQ [" + request + "].");
-		
-		boolean success = dao.update(request, updatedByUser);
-		
+
+		boolean success = this.dao.update(request, updatedByUser);
+
 		if(success)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));				
-		
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+
 		return success;
 	}
 
+	@Override
 	@WebMethod
 	public RequestDetailImpl getRequest(int identifier, boolean rePrice)
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + " RFQ with identifier [" + identifier + "].");		
-		
-		RequestDetailImpl request = dao.getRequest(identifier);
-				
+			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + " RFQ with identifier [" + identifier + "].");
+
+		RequestDetailImpl request = this.dao.getRequest(identifier);
+
 		if(rePrice)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));				
-		
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+
 		return request;
 	}
 
+	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsForToday(boolean rePrice)
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + " RFQs created today.");		
-		
-		
-		RequestDetailListImpl requests = dao.getRequestsForToday();
-		
+			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + " RFQs created today.");
+
+
+		RequestDetailListImpl requests = this.dao.getRequestsForToday();
+
 		if(rePrice)
-		{			
+		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));			
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
 		}
-		
+
 		return requests;
 	}
 
+	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria, boolean rePrice)
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + 
-					" RFQs matching the adhoc criteria [" + criteria + "].");		
-				
-		RequestDetailListImpl requests = dao.getRequestsMatchingAdhocCriteria(criteria);
-		
+			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  +
+					" RFQs matching the adhoc criteria [" + criteria + "].");
+
+		RequestDetailListImpl requests = this.dao.getRequestsMatchingAdhocCriteria(criteria);
+
 		if(rePrice)
-		{			
+		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));			
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
 		}
-		
+
 		return requests;
 	}
 
+	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingExistingCriteria(String criteriaOwner, String criteriaKey, boolean rePrice)
 	{
 		if(logger.isDebugEnabled())
-			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + 
-					" RFQs matching the existing criteria with owner ["	+ criteriaOwner + 
-					"] and description key [" + criteriaKey + "].");		
-				
-		RequestDetailListImpl requests = dao.getRequestsMatchingExistingCriteria(criteriaOwner, criteriaKey);
-		
+			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  +
+					" RFQs matching the existing criteria with owner ["	+ criteriaOwner +
+					"] and description key [" + criteriaKey + "].");
+
+		RequestDetailListImpl requests = this.dao.getRequestsMatchingExistingCriteria(criteriaOwner, criteriaKey);
+
 		if(rePrice)
-		{			
+		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));			
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
 		}
 
 		return requests;

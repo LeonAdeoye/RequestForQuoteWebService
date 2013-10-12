@@ -40,10 +40,6 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
       <property name='taskExecutor' ref="asyncTaskExecutor"/>
   	</bean>
 		
-	<bean id="newBookEventHandler" class="com.leon.ws.rfq.events.NewBookEventHandlerImpl">
-		<constructor-arg ref="clientCommunicator"/>
-	</bean>
-	
 	<bean id="chatMediator" class="com.leon.ws.rfq.chat.ChatMediatorImpl">
 		<constructor-arg ref="clientCommunicator"/>
 		<constructor-arg ref="chatMessageDao"/>
