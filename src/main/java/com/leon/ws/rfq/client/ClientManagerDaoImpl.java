@@ -1,65 +1,71 @@
 package com.leon.ws.rfq.client;
 
-import java.util.List;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 
 public final class ClientManagerDaoImpl implements ClientManagerDao
 {
-	private static final String DELETE = "CALL clients_DELETE (?)";
-	private static final String SAVE = "CALL clients_SAVE (?, ?)";
-	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?)";
-	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?)";
-	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";	
+	private class ClientParameterizedRowMapper implements ParameterizedRowMapper<ClientDetailImpl>
+	{
+		@Override
+		public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ClientDetailImpl client = new ClientDetailImpl();
+
+			client.setName(rs.getString("name"));
+			client.setTier(rs.getInt("tier"));
+			client.setIdentifier(rs.getInt("indentifier"));
+			client.setIsValid((rs.getString("isValid").equals("Y")));
+			return client;
+		}
+	}
+
+	private static final String SAVE = "CALL clients_SAVE (?, ?, ?)";
+	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?, ?)";
+	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?, ?)";
+	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";
 	private GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor;
-	
+
 	ClientManagerDaoImpl()
 	{
-		
+
 	}
-	
+
 	ClientManagerDaoImpl(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
-	
+
 	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
-	
-	public boolean delete(int identifier)
-	{		
-		return databaseExecutor.executePreparedStatement(DELETE, identifier);
+
+	@Override
+	public ClientDetailImpl save(String name, int tier, String savedBy)
+	{
+		return this.databaseExecutor.getSingleResult(SAVE, new ClientParameterizedRowMapper(), name, tier, savedBy);
 	}
-	
-	public boolean save(String name, int tier)
-	{	
-		return databaseExecutor.executePreparedStatement(SAVE, name, tier);
+
+	@Override
+	public boolean updateTier(int identifier, int tier, String updatedBy)
+	{
+		return this.databaseExecutor.executePreparedStatement(UPDATE_TIER, identifier, tier, updatedBy);
 	}
-	
-	public boolean updateTier(int identifier, int tier)
-	{	
-		return databaseExecutor.executePreparedStatement(UPDATE_TIER, identifier, tier);
+
+	@Override
+	public boolean updateValidity(int identifier, boolean isValid, String updatedBy)
+	{
+		return this.databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, identifier, isValid ? "Y" : "N", updatedBy);
 	}
-	
-	public boolean updateValidity(int identifier, boolean isValid)
-	{	
-		return databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, identifier, isValid ? "Y" : "N");
-	}	
-		
+
+	@Override
 	public List<ClientDetailImpl> getAll()
-	{	
-		ParameterizedRowMapper<ClientDetailImpl> clientsRowMapper = new ParameterizedRowMapper<ClientDetailImpl>() 
-		{
-			public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
-			{
-				return new ClientDetailImpl(rs.getString("name"), rs.getInt("identifier"), rs.getInt("tier"), rs.getString("isValid").equals("Y"));					
-			}				
-		};
-		
-		return databaseExecutor.getResultSet(SELECT_ALL, clientsRowMapper);		
+	{
+		return this.databaseExecutor.getResultSet(SELECT_ALL, new ClientParameterizedRowMapper());
 	}
 }
