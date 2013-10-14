@@ -16,7 +16,6 @@ import com.leon.ws.rfq.events.NewBookEvent;
 @WebService(serviceName="BookController", endpointInterface="com.leon.ws.rfq.book.BookController")
 public final class BookControllerImpl implements BookController, ApplicationEventPublisherAware
 {
-	private static final String NEW_BOOK_UPDATE = "NewBookUpdate";
 	private static Logger logger = LoggerFactory.getLogger(BookControllerImpl.class);
 	private ApplicationEventPublisher applicationEventPublisher;
 	private BookManagerDao dao;
@@ -54,7 +53,7 @@ public final class BookControllerImpl implements BookController, ApplicationEven
 		boolean isSaved = this.dao.save(bookCode, entity, savedByUser);
 
 		if(isSaved)
-			this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true), NEW_BOOK_UPDATE));
+			this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true)));
 
 		return isSaved;
 	}

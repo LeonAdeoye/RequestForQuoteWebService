@@ -9,13 +9,12 @@ import com.leon.ws.rfq.request.RequestDetailImpl;
 public final class TaggedRequestEvent extends ApplicationEvent implements JsonSerializableEvent
 {
 	private final RequestDetailImpl request;
-	private final String messageType;
+	private static final String NEW_REQUEST_UPDATE = "NewRequestUpdate";
 
-	public TaggedRequestEvent(Object source, RequestDetailImpl request, String messageType)
+	public TaggedRequestEvent(Object source, RequestDetailImpl request)
 	{
 		super(source);
 		this.request = request;
-		this.messageType = messageType;
 	}
 
 	public RequestDetailImpl getRequest()
@@ -32,6 +31,6 @@ public final class TaggedRequestEvent extends ApplicationEvent implements JsonSe
 	@Override
 	public String getMessageType()
 	{
-		return this.messageType;
+		return NEW_REQUEST_UPDATE;
 	}
 }

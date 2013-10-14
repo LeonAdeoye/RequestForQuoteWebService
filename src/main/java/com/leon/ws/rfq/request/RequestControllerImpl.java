@@ -15,7 +15,6 @@ import com.leon.ws.rfq.search.SearchCriteriaImpl;
 public final class RequestControllerImpl implements RequestController, ApplicationEventPublisherAware
 {
 	private final static Logger logger = LoggerFactory.getLogger(RequestControllerImpl.class);
-	private static final String NEW_REQUEST_UPDATE = "NewRequestUpdate";
 	private RequestManagerDao dao;
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -36,7 +35,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		int identifier = this.dao.save(request, savedByUser);
 
 		if(identifier != -1)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 
 		return identifier;
 	}
@@ -51,7 +50,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		boolean success = this.dao.update(request, updatedByUser);
 
 		if(success)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 
 		return success;
 	}
@@ -66,7 +65,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		RequestDetailImpl request = this.dao.getRequest(identifier);
 
 		if(rePrice)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 
 		return request;
 	}
@@ -84,7 +83,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		if(rePrice)
 		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 		}
 
 		return requests;
@@ -103,7 +102,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		if(rePrice)
 		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 		}
 
 		return requests;
@@ -123,7 +122,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		if(rePrice)
 		{
 			for(RequestDetailImpl request : requests.getRequestDetailList())
-				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request, NEW_REQUEST_UPDATE));
+				this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
 		}
 
 		return requests;

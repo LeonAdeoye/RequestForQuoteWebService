@@ -9,12 +9,11 @@ import com.leon.ws.rfq.client.ClientDetailImpl;
 public class NewClientEvent extends ApplicationEvent implements JsonSerializableEvent
 {
 	private final ClientDetailImpl newClient;
-	private final String messageType;
+	private static final String NEW_CLIENT_UPDATE = "NewClientUpdate";
 
-	public NewClientEvent(Object source, ClientDetailImpl newClient, String messageType)
+	public NewClientEvent(Object source, ClientDetailImpl newClient)
 	{
 		super(source);
-		this.messageType = messageType;
 		this.newClient = newClient;
 	}
 
@@ -38,6 +37,6 @@ public class NewClientEvent extends ApplicationEvent implements JsonSerializable
 	@Override
 	public String getMessageType()
 	{
-		return this.messageType;
+		return NEW_CLIENT_UPDATE;
 	}
 }

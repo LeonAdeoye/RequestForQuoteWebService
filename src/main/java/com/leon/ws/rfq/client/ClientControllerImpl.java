@@ -16,7 +16,6 @@ import com.leon.ws.rfq.events.NewClientEvent;
 public final class ClientControllerImpl implements ClientController, ApplicationEventPublisherAware
 {
 	private static Logger logger = LoggerFactory.getLogger(ClientControllerImpl.class);
-	private static final String NEW_CLIENT_UPDATE = "NewClientUpdate";
 	private ApplicationEventPublisher applicationEventPublisher;
 	private ClientManagerDao dao;
 
@@ -43,7 +42,7 @@ public final class ClientControllerImpl implements ClientController, Application
 		ClientDetailImpl newClient = this.dao.save(name, tier, savedBy);
 
 		if(newClient != null)
-			this.applicationEventPublisher.publishEvent(new NewClientEvent(this, new ClientDetailImpl(name, 1, 1, true), NEW_CLIENT_UPDATE));
+			this.applicationEventPublisher.publishEvent(new NewClientEvent(this, new ClientDetailImpl(name, 1, 1, true)));
 
 		return newClient != null;
 	}

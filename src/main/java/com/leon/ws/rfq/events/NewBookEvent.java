@@ -9,13 +9,12 @@ import com.leon.ws.rfq.book.BookDetailImpl;
 public final class NewBookEvent extends ApplicationEvent implements JsonSerializableEvent
 {
 	private final BookDetailImpl newBook;
-	private final String messageType;
+	private static final String NEW_BOOK_UPDATE = "NewBookUpdate";
 
-	public NewBookEvent(Object source, BookDetailImpl newBook, String messageType)
+	public NewBookEvent(Object source, BookDetailImpl newBook)
 	{
 		super(source);
 		this.newBook = newBook;
-		this.messageType = messageType;
 	}
 
 	@Override
@@ -38,6 +37,6 @@ public final class NewBookEvent extends ApplicationEvent implements JsonSerializ
 	@Override
 	public String getMessageType()
 	{
-		return this.messageType;
+		return NEW_BOOK_UPDATE;
 	}
 }
