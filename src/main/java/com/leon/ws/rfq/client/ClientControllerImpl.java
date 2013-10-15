@@ -51,6 +51,9 @@ public final class ClientControllerImpl implements ClientController, Application
 	@WebMethod
 	public boolean updateTier(int identifier, int tier, String updatedBy)
 	{
+		if(identifier > 0)
+			throw new IllegalArgumentException("identifier");
+
 		if(updatedBy.isEmpty())
 			throw new IllegalArgumentException("updatedBy");
 
@@ -61,6 +64,9 @@ public final class ClientControllerImpl implements ClientController, Application
 	@WebMethod
 	public boolean updateValidity(int identifier, boolean isValid, String updatedBy)
 	{
+		if(identifier > 0)
+			throw new IllegalArgumentException("identifier");
+
 		if(updatedBy.isEmpty())
 			throw new IllegalArgumentException("updatedBy");
 

@@ -3,15 +3,15 @@ package com.leon.ws.rfq.events;
 import org.springframework.context.ApplicationEvent;
 
 import com.google.gson.Gson;
-import com.leon.ws.rfq.holiday.HolidayImpl;
+import com.leon.ws.rfq.holiday.Holiday;
 
 @SuppressWarnings("serial")
 public class NewHolidayEvent extends ApplicationEvent implements JsonSerializableEvent
 {
-	private final HolidayImpl holiday;
+	private final Holiday holiday;
 	private static final String NEW_HOLIDAY_UPDATE = "NewHolidayUpdate";
 
-	public NewHolidayEvent(Object source, HolidayImpl holiday)
+	public NewHolidayEvent(Object source, Holiday holiday)
 	{
 		super(source);
 		this.holiday = holiday;
@@ -35,7 +35,7 @@ public class NewHolidayEvent extends ApplicationEvent implements JsonSerializabl
 		return "New holiday event: " + this.holiday;
 	}
 
-	public HolidayImpl getHoliday()
+	public Holiday getHoliday()
 	{
 		return this.holiday;
 	}

@@ -41,7 +41,6 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
   	</bean>
 		
 	<bean id="chatMediator" class="com.leon.ws.rfq.chat.ChatMediatorImpl">
-		<constructor-arg ref="clientCommunicator"/>
 		<constructor-arg ref="chatMessageDao"/>
 	</bean>
 	

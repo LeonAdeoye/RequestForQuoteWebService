@@ -27,27 +27,42 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 	@Override
 	@WebMethod
-	public int save(RequestDetailImpl request, String savedByUser)
+	public int save(RequestDetailImpl request, String savedBy)
 	{
+		if(request == null)
+			throw new IllegalArgumentException("request");
+
+		if(savedBy.isEmpty())
+			throw new IllegalArgumentException("savedBy");
+
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + savedByUser + " to SAVE RFQ [" + request + "].");
+			logger.debug("Received request from user " + savedBy + " to SAVE RFQ [" + request + "].");
 
-		int identifier = this.dao.save(request, savedByUser);
+		RequestDetailImpl newRequest = this.dao.save(request, savedBy);
 
-		if(identifier != -1)
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
+		if(newRequest != null)
+		{
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, newRequest));
+			return newRequest.getIdentifier();
+		}
 
-		return identifier;
+		return -1;
 	}
 
 	@Override
 	@WebMethod
-	public boolean update(RequestDetailImpl request, String updatedByUser)
+	public boolean update(RequestDetailImpl request, String updatedBy)
 	{
-		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + updatedByUser + " to UPDATE RFQ [" + request + "].");
+		if(request == null)
+			throw new IllegalArgumentException("request");
 
-		boolean success = this.dao.update(request, updatedByUser);
+		if(updatedBy.isEmpty())
+			throw new IllegalArgumentException("updatedBy");
+
+		if(logger.isDebugEnabled())
+			logger.debug("Received request from user " + updatedBy + " to UPDATE RFQ [" + request + "].");
+
+		boolean success = this.dao.update(request, updatedBy);
 
 		if(success)
 			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));

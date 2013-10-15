@@ -37,6 +37,9 @@ public final class BookControllerImpl implements BookController, ApplicationEven
 	@WebMethod
 	public boolean delete(String bookCode)
 	{
+		if(bookCode.isEmpty())
+			throw new IllegalArgumentException("bookCode");
+
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to delete the book with book code [" + bookCode + "]");
 
@@ -45,23 +48,35 @@ public final class BookControllerImpl implements BookController, ApplicationEven
 
 	@Override
 	@WebMethod
-	public boolean save(String bookCode, String entity, String savedByUser)
+	public boolean save(String bookCode, String entity, String savedBy)
 	{
+		if(bookCode.isEmpty())
+			throw new IllegalArgumentException("bookCode");
+
+		if(entity.isEmpty())
+			throw new IllegalArgumentException("entity");
+
+		if(savedBy.isEmpty())
+			throw new IllegalArgumentException("savedBy");
+
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + savedByUser + " to save book with book code [" + bookCode + "] and entity [" + entity + "].");
+			logger.debug("Received request from user " + savedBy + " to save book with book code [" + bookCode + "] and entity [" + entity + "].");
 
-		boolean isSaved = this.dao.save(bookCode, entity, savedByUser);
+		BookDetailImpl newBook = this.dao.save(bookCode, entity, savedBy);
 
-		if(isSaved)
-			this.applicationEventPublisher.publishEvent(new NewBookEvent(this, new BookDetailImpl(bookCode, entity, true)));
+		if(newBook != null)
+			this.applicationEventPublisher.publishEvent(new NewBookEvent(this, newBook));
 
-		return isSaved;
+		return (newBook != null);
 	}
 
 	@Override
 	@WebMethod
 	public boolean updateValidity(String bookCode, boolean isValid)
 	{
+		if(bookCode.isEmpty())
+			throw new IllegalArgumentException("bookCode");
+
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to update the validity of book with book code [" + bookCode + "] to [" + (isValid ? "valid" : "invalid") + "].");
 

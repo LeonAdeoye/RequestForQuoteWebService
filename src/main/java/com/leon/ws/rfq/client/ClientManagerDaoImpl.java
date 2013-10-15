@@ -15,7 +15,6 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 		@Override
 		public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ClientDetailImpl client = new ClientDetailImpl();
-
 			client.setName(rs.getString("name"));
 			client.setTier(rs.getInt("tier"));
 			client.setIdentifier(rs.getInt("indentifier"));

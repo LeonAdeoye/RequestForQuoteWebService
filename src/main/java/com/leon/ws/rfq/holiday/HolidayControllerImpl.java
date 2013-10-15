@@ -1,6 +1,5 @@
 package com.leon.ws.rfq.holiday;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 	}
 
 	@Override
-	public boolean delete(String location, Calendar holidayDate)
+	public boolean delete(String location, String holidayDate)
 	{
 		if(location.isEmpty())
 			throw new IllegalArgumentException("location");
@@ -37,7 +36,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 	}
 
 	@Override
-	public boolean save(String location, Calendar holidayDate, String savedBy)
+	public boolean save(String location, String holidayDate, String savedBy)
 	{
 		if(location.isEmpty())
 			throw new IllegalArgumentException("location");
@@ -54,7 +53,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 		boolean isSaved = this.dao.save(location, holidayDate, savedBy);
 
 		if(isSaved)
-			this.applicationEventPublisher.publishEvent(new NewHolidayEvent(this, new HolidayImpl(location, holidayDate.getTime())));
+			this.applicationEventPublisher.publishEvent(new NewHolidayEvent(this, new HolidayImpl(location, holidayDate)));
 
 		return isSaved;
 	}
