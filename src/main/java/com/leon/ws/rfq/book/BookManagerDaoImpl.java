@@ -50,9 +50,9 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	}
 
 	@Override
-	public BookDetailImpl save(String bookCode, String entity, String updatedByUser)
+	public BookDetailImpl save(String bookCode, String entity, String savedBy)
 	{
-		return this.databaseExecutor.getSingleResult(SAVE, new BookDetailParameterizedRowMapper(), bookCode, entity, updatedByUser);
+		return this.databaseExecutor.getSingleResult(SAVE, new BookDetailParameterizedRowMapper(), bookCode, entity, savedBy);
 	}
 
 	@Override

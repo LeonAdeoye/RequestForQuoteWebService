@@ -5,7 +5,7 @@ import java.util.List;
 interface BookManagerDao
 {
 	boolean delete(String BookCode);
-	BookDetailImpl save(String bookCode, String entity, String updatedByUser);
+	BookDetailImpl save(String bookCode, String entity, String savedBy);
 	List<BookDetailImpl> getAll();
 	boolean updateValidity(String BookCode, boolean isValid);
 }
