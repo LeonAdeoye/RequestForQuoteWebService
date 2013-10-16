@@ -140,8 +140,7 @@ public final class OptionDetailImpl
 	@Override
 	public String toString()
 	{
-		StringBuffer buf = new StringBuffer();
-		buf.append(" Leg ID: ");
+		StringBuilder buf = new StringBuilder(" Leg ID: ");
 		buf.append(this.legId);
 		buf.append(", Is call: ");
 		buf.append(this.isCall);

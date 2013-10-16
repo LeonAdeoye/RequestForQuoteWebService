@@ -49,7 +49,7 @@ public final class HolidayImpl implements Holiday
 	@Override
 	public String toString()
 	{
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		buf.append("Location: ");
 		buf.append(this.location);
 		buf.append(", Date: ");

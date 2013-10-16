@@ -149,7 +149,7 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 	@Override
 	public String toString()
 	{
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for(Map.Entry<Integer, Set<String>> chatroom : this.chatRooms.entrySet())
 		{
 			sb.append("\n[ Chatroom for requestforQuoteId=");
