@@ -16,7 +16,7 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 		public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ClientDetailImpl client = new ClientDetailImpl();
 			client.setName(rs.getString("name"));
-			client.setTier(rs.getInt("tier"));
+			client.setTier(rs.getString("tier"));
 			client.setIdentifier(rs.getInt("identifier"));
 			client.setIsValid((rs.getString("isValid").equals("Y")));
 			return client;
@@ -45,13 +45,13 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	}
 
 	@Override
-	public ClientDetailImpl save(String name, int tier, String savedBy)
+	public ClientDetailImpl save(String name, String tier, String savedBy)
 	{
 		return this.databaseExecutor.getSingleResult(SAVE, new ClientParameterizedRowMapper(), name, tier, savedBy);
 	}
 
 	@Override
-	public boolean updateTier(int identifier, int tier, String updatedBy)
+	public boolean updateTier(int identifier, String tier, String updatedBy)
 	{
 		return this.databaseExecutor.executePreparedStatement(UPDATE_TIER, identifier, tier, updatedBy);
 	}

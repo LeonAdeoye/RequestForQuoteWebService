@@ -28,7 +28,7 @@ public final class ClientControllerImpl implements ClientController, Application
 
 	@Override
 	@WebMethod
-	public boolean save(String name, int tier, String savedBy)
+	public boolean save(String name, String tier, String savedBy)
 	{
 		if(name.isEmpty())
 			throw new IllegalArgumentException("name");
@@ -36,26 +36,32 @@ public final class ClientControllerImpl implements ClientController, Application
 		if(savedBy.isEmpty())
 			throw new IllegalArgumentException("savedBy");
 
+		if(tier.isEmpty())
+			throw new IllegalArgumentException("tier");
+
 		if(logger.isDebugEnabled())
 			logger.debug("Received request from user [" + savedBy + "] to save client with name [" + name + "].");
 
 		ClientDetailImpl newClient = this.dao.save(name, tier, savedBy);
 
 		if(newClient != null)
-			this.applicationEventPublisher.publishEvent(new NewClientEvent(this, new ClientDetailImpl(name, 1, 1, true)));
+			this.applicationEventPublisher.publishEvent(new NewClientEvent(this, newClient));
 
 		return newClient != null;
 	}
 
 	@Override
 	@WebMethod
-	public boolean updateTier(int identifier, int tier, String updatedBy)
+	public boolean updateTier(int identifier, String tier, String updatedBy)
 	{
 		if(identifier > 0)
 			throw new IllegalArgumentException("identifier");
 
 		if(updatedBy.isEmpty())
 			throw new IllegalArgumentException("updatedBy");
+
+		if(tier.isEmpty())
+			throw new IllegalArgumentException("tier");
 
 		return this.dao.updateTier(identifier, tier, updatedBy);
 	}

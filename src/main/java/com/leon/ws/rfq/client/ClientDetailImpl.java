@@ -12,9 +12,9 @@ public final class ClientDetailImpl
 	private String name;
 	private int identifier;
 	private boolean isValid;
-	private int tier;
+	private String tier;
 
-	public ClientDetailImpl(String name, int identifier, int tier, boolean isValid)
+	public ClientDetailImpl(String name, int identifier, String tier, boolean isValid)
 	{
 		this.name = name;
 		this.identifier = identifier;
@@ -46,12 +46,12 @@ public final class ClientDetailImpl
 		this.identifier = identifier;
 	}
 
-	public int getTier()
+	public String getTier()
 	{
 		return this.tier;
 	}
 
-	public void setTier(int tier)
+	public void setTier(String tier)
 	{
 		this.tier = tier;
 	}
