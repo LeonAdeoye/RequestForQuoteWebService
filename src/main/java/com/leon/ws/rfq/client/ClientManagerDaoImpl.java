@@ -17,7 +17,7 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 			ClientDetailImpl client = new ClientDetailImpl();
 			client.setName(rs.getString("name"));
 			client.setTier(rs.getInt("tier"));
-			client.setIdentifier(rs.getInt("indentifier"));
+			client.setIdentifier(rs.getInt("identifier"));
 			client.setIsValid((rs.getString("isValid").equals("Y")));
 			return client;
 		}
