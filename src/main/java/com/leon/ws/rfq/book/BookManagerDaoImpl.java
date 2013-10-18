@@ -19,19 +19,15 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	private class BookDetailParameterizedRowMapper implements ParameterizedRowMapper<BookDetailImpl>
 	{
 		@Override
-		public BookDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
-			BookDetailImpl newBook = new BookDetailImpl();
-			newBook.setBookCode(rs.getString("bookCode"));
-			newBook.setEntity(rs.getString("entity"));
-			newBook.setIsValid(rs.getString("isValid").equals("Y"));
+		public BookDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			BookDetailImpl newBook = new BookDetailImpl(rs.getString("bookCode"), rs.getString("bookCode"), rs.getString("isValid").equals("Y"));
+
 			return newBook;
 		}
 	}
 
-	BookManagerDaoImpl()
-	{
-
-	}
+	BookManagerDaoImpl() {}
 
 	BookManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{

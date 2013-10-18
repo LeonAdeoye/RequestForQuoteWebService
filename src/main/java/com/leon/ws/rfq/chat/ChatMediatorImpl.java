@@ -49,7 +49,11 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 				this.applicationEventPublisher.publishEvent(new NewChatMessageEvent(this, newlySavedMessage));
 		}
 		else
-			logger.error("Participant: {} in chatroom: {} is NOT registered. Message undelivered.", requestForQuoteId, owner);
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Participant: {} in chatroom: {} is NOT registered. Message undelivered.", requestForQuoteId, owner);
+		}
+
 	}
 
 	@Override
@@ -61,21 +65,21 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 
 		if(this.chatRooms.containsKey(requestForQuoteId))
 		{
-			if(logger.isInfoEnabled())
-				logger.info("New participant: {} added to chatroom with requestForQuote Id: {}.", newParticipantName, requestForQuoteId);
-
 			Set<String> participants = this.chatRooms.get(requestForQuoteId);
 			if(!participants.contains(newParticipantName))
 				participants.add(newParticipantName);
+
+			if(logger.isInfoEnabled())
+				logger.info("New participant: {} added to chatroom with requestForQuote Id: {}.", newParticipantName, requestForQuoteId);
 		}
 		else
 		{
-			if(logger.isInfoEnabled())
-				logger.info("Chatroom opened for requestForQuote Id: {} and participant: {}.", requestForQuoteId, newParticipantName);
-
 			Set<String> participants = new HashSet<String>();
 			participants.add(newParticipantName);
 			this.chatRooms.put(requestForQuoteId, participants);
+
+			if(logger.isInfoEnabled())
+				logger.info("Chatroom opened for requestForQuote Id: {} and participant: {}.", requestForQuoteId, newParticipantName);
 		}
 
 		int fromStartingSequenceId = 0;
@@ -122,10 +126,17 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 			if(participants.contains(existingParticipantName))
 				participants.remove(existingParticipantName);
 			else
-				logger.error("Participant: {} is NOT registered with the chatroom with requestForQuote Id: {}.", existingParticipantName, requestForQuoteId);
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Participant: {} is NOT registered with the chatroom with requestForQuote Id: {}.", existingParticipantName, requestForQuoteId);
+			}
+
 		}
 		else
-			logger.error("Chatroom with requestForQuote Id: {} does NOT exist.", requestForQuoteId);
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Chatroom with requestForQuote Id: {} does NOT exist.", requestForQuoteId);
+		}
 	}
 
 	public int countOfChatRooms()
@@ -141,7 +152,11 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 			return participants.size();
 		}
 		else
-			logger.error("Chatroom with requestForQuote Id: {} does NOT exist.", requestForQuoteId);
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Chatroom with requestForQuote Id: {} does NOT exist.", requestForQuoteId);
+		}
+
 
 		return -1;
 	}

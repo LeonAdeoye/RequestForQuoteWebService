@@ -13,13 +13,11 @@ public final class ChatMessageDaoImpl implements ChatMessageDao
 	private class ChatMessageParameterizedRowMapper implements ParameterizedRowMapper<ChatMessageImpl>
 	{
 		@Override
-		public ChatMessageImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
-			ChatMessageImpl chatMessage = new ChatMessageImpl();
-			chatMessage.setOwner(rs.getString("owner"));
-			chatMessage.setContent(rs.getString("content"));
-			chatMessage.setRequestForQuoteId(rs.getInt("requestForQuoteId"));
-			chatMessage.setSequenceId(rs.getInt("sequenceId"));
-			chatMessage.setTimeStamp(rs.getString("createTime"));
+		public ChatMessageImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			ChatMessageImpl chatMessage = new ChatMessageImpl(rs.getString("owner"), rs.getString("content"),
+					rs.getString("createTime"), rs.getInt("requestForQuoteId"),	rs.getInt("sequenceId"));
+
 			return chatMessage;
 		}
 	}
@@ -28,10 +26,7 @@ public final class ChatMessageDaoImpl implements ChatMessageDao
 	private static final String GET = "CALL chatMessages_GET (?, ?)";
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
-	ChatMessageDaoImpl()
-	{
-
-	}
+	ChatMessageDaoImpl() {}
 
 	ChatMessageDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{

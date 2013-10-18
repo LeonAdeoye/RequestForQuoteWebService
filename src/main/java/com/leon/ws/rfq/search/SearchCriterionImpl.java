@@ -25,7 +25,7 @@ public final class SearchCriterionImpl
 		this.isPrivate = isPrivate;
 		this.isFilter = isFilter;
 
-		logger.debug("Criterion instantiated = > " +  this.toString());
+		logger.debug("Criterion instantiated = > " +  this);
 	}
 
 	public SearchCriterionImpl() {}

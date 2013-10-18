@@ -13,12 +13,11 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	private class ClientParameterizedRowMapper implements ParameterizedRowMapper<ClientDetailImpl>
 	{
 		@Override
-		public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
-			ClientDetailImpl client = new ClientDetailImpl();
-			client.setName(rs.getString("name"));
-			client.setTier(rs.getString("tier"));
-			client.setIdentifier(rs.getInt("identifier"));
-			client.setIsValid((rs.getString("isValid").equals("Y")));
+		public ClientDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			ClientDetailImpl client = new ClientDetailImpl(rs.getString("name"), rs.getInt("identifier"),
+					rs.getString("tier"), rs.getString("isValid").equals("Y"));
+
 			return client;
 		}
 	}

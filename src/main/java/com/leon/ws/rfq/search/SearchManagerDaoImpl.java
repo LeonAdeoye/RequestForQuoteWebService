@@ -22,13 +22,10 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 		@Override
 		public SearchCriterionImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			SearchCriterionImpl criterion = new SearchCriterionImpl();
-			criterion.setControlValue(rs.getString("controlValue"));
-			criterion.setControlName(rs.getString("controlName"));
-			criterion.setOwner(rs.getString("owner"));
-			criterion.setKey(rs.getString("keyValue"));
-			criterion.setIsFilter(rs.getString("isFilter").equals("Y"));
-			criterion.setIsPrivate(rs.getString("isPrivate").equals("Y"));
+			SearchCriterionImpl criterion = new SearchCriterionImpl(rs.getString("owner"), rs.getString("keyValue"),
+					rs.getString("controlName"), rs.getString("controlValue"), rs.getString("isPrivate").equals("Y"),
+					rs.getString("isFilter").equals("Y"));
+
 			return criterion;
 		}
 	}

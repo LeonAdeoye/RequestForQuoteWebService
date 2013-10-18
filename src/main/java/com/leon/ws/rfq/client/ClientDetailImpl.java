@@ -14,6 +14,8 @@ public final class ClientDetailImpl
 	private boolean isValid;
 	private String tier;
 
+	public ClientDetailImpl() {}
+
 	public ClientDetailImpl(String name, int identifier, String tier, boolean isValid)
 	{
 		this.name = name;
@@ -23,8 +25,6 @@ public final class ClientDetailImpl
 
 		logger.debug("ClientDetailImpl object instantiated = > " +  this);
 	}
-
-	public ClientDetailImpl() {}
 
 	public String getName()
 	{

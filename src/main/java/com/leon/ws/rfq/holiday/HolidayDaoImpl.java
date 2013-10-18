@@ -19,18 +19,15 @@ public final class HolidayDaoImpl implements HolidayDao
 	private class HolidayParameterizedRowMapper implements ParameterizedRowMapper<HolidayImpl>
 	{
 		@Override
-		public HolidayImpl mapRow(ResultSet rs, int rowNum) throws SQLException {
-			HolidayImpl holiday = new HolidayImpl();
-			holiday.setLocation(rs.getString("location"));
-			holiday.setHolidayDate(rs.getString("holidayDate"));
+		public HolidayImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			HolidayImpl holiday = new HolidayImpl(rs.getString("location"), rs.getString("holidayDate"));
+
 			return holiday;
 		}
 	}
 
-	HolidayDaoImpl()
-	{
-
-	}
+	HolidayDaoImpl() {}
 
 	HolidayDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{

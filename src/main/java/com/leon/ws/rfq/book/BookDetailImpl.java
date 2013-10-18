@@ -15,6 +15,8 @@ public final class BookDetailImpl
 	private boolean isValid;
 	private String entity;
 
+	public BookDetailImpl() {}
+
 	public BookDetailImpl(String bookCode, String entity, boolean isValid)
 	{
 		this.bookCode = bookCode;
@@ -23,8 +25,6 @@ public final class BookDetailImpl
 
 		logger.debug("BookDetailImpl object instantiated = > " +  this);
 	}
-
-	public BookDetailImpl() {}
 
 	public String getBookCode()
 	{
