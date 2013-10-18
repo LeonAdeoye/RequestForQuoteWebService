@@ -8,21 +8,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public final class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor<T>
+public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor
 {
 	private static final Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
-	
+
 	@Override
-	public boolean executePreparedStatement(String preparedStatement,Object... params)
+	public <T> boolean executePreparedStatement(String preparedStatement,Object... params)
 	{
 		try
 		{
 			if(logger.isInfoEnabled())
 				logger.info("Executing prepared statement: {} with params: {}.", preparedStatement, params);
-			
+
 			getSimpleJdbcTemplate().update(preparedStatement, params);
 			return true;
-			
+
 		}
 		catch(Exception exception)
 		{
@@ -32,13 +32,13 @@ public final class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSu
 	}
 
 	@Override
-	public List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
+	public <T> List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
 	{
 		try
 		{
 			if(logger.isInfoEnabled())
 				logger.info("Executing prepared statement to retreive a result set:  {} with params: {}.", preparedStatement, params);
-			
+
 			return getSimpleJdbcTemplate().query(preparedStatement, rowMapper, params);
 		}
 		catch(Exception exception)
@@ -47,15 +47,15 @@ public final class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSu
 		}
 		return new LinkedList<T>();
 	}
-	
+
 	@Override
-	public T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
+	public <T> T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
 	{
 		try
 		{
 			if(logger.isInfoEnabled())
 				logger.info("Executing prepared statement to retreive a result set:  {} with params: {}", preparedStatement, params);
-			
+
 			return getSimpleJdbcTemplate().queryForObject(preparedStatement, rowMapper, params);
 		}
 		catch(Exception exception)
@@ -63,5 +63,5 @@ public final class GenericDatabaseCommandExecutorImpl<T> extends SimpleJdbcDaoSu
 			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
 		}
 		return null;
-	}	
+	}
 }

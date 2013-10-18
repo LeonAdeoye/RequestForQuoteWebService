@@ -15,7 +15,7 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 	private static final String SELECT_ALL = "CALL searches_SELECT_ALL";
 	private static final String GET = "CALL searches_GET (?, ?)";
 	private static final String UPDATE_PRIVACY = "CALL searches_UPDATE_PRIVACY (?, ?, ?)";
-	private GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor;
+	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	private class SearchCriterionParameterizedRowMapper implements ParameterizedRowMapper<SearchCriterionImpl>
 	{
@@ -38,12 +38,12 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 
 	}
 
-	SearchManagerDaoImpl(GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor)
+	SearchManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<SearchCriterionImpl> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -51,30 +51,30 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 	@Override
 	public boolean delete(String owner, String key)
 	{
-		return this.databaseExecutor.executePreparedStatement(DELETE, owner, key);
+		return this.databaseExecutor.<SearchCriterionImpl>executePreparedStatement(DELETE, owner, key);
 	}
 
 	@Override
 	public boolean updatePrivacy(String owner, String key, Boolean isPrivate)
 	{
-		return this.databaseExecutor.executePreparedStatement(UPDATE_PRIVACY, owner, key, isPrivate ? "Y" : "N");
+		return this.databaseExecutor.<SearchCriterionImpl>executePreparedStatement(UPDATE_PRIVACY, owner, key, isPrivate ? "Y" : "N");
 	}
 
 	@Override
 	public boolean save(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
 	{
-		return this.databaseExecutor.executePreparedStatement(SAVE, owner, key, controlName, controlValue, isPrivate ? "Y" : "N",  isFilter ? "Y" : "N");
+		return this.databaseExecutor.<SearchCriterionImpl>executePreparedStatement(SAVE, owner, key, controlName, controlValue, isPrivate ? "Y" : "N",  isFilter ? "Y" : "N");
 	}
 
 	@Override
 	public List<SearchCriterionImpl> getAll()
 	{
-		return this.databaseExecutor.getResultSet(SELECT_ALL, new SearchCriterionParameterizedRowMapper());
+		return this.databaseExecutor.<SearchCriterionImpl>getResultSet(SELECT_ALL, new SearchCriterionParameterizedRowMapper());
 	}
 
 	@Override
 	public List<SearchCriterionImpl> get(String owner, String key)
 	{
-		return this.databaseExecutor.getResultSet(GET, new SearchCriterionParameterizedRowMapper(), owner, key);
+		return this.databaseExecutor.<SearchCriterionImpl>getResultSet(GET, new SearchCriterionParameterizedRowMapper(), owner, key);
 	}
 }

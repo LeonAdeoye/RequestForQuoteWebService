@@ -26,19 +26,19 @@ public final class ChatMessageDaoImpl implements ChatMessageDao
 
 	private static final String SAVE = "CALL chatMessages_SAVE (?, ?, ?)";
 	private static final String GET = "CALL chatMessages_GET (?, ?)";
-	private GenericDatabaseCommandExecutor<ChatMessageImpl> databaseExecutor;
+	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	ChatMessageDaoImpl()
 	{
 
 	}
 
-	ChatMessageDaoImpl(GenericDatabaseCommandExecutor<ChatMessageImpl> databaseExecutor)
+	ChatMessageDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<ChatMessageImpl> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -46,12 +46,12 @@ public final class ChatMessageDaoImpl implements ChatMessageDao
 	@Override
 	public ChatMessage save(int requestForQuoteId, String owner, String content)
 	{
-		return this.databaseExecutor.getSingleResult(SAVE, new ChatMessageParameterizedRowMapper(), requestForQuoteId, owner, content);
+		return this.databaseExecutor.<ChatMessageImpl>getSingleResult(SAVE, new ChatMessageParameterizedRowMapper(), requestForQuoteId, owner, content);
 	}
 
 	@Override
 	public List<ChatMessageImpl> get(int requestForQuoteId, int fromThisSequenceId)
 	{
-		return this.databaseExecutor.getResultSet(GET, new ChatMessageParameterizedRowMapper(), requestForQuoteId, fromThisSequenceId);
+		return this.databaseExecutor.<ChatMessageImpl>getResultSet(GET, new ChatMessageParameterizedRowMapper(), requestForQuoteId, fromThisSequenceId);
 	}
 }

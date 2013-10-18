@@ -125,29 +125,27 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private static final String SELECT_WITH_EXISTING_CRITERIA = "CALL requests_SELECT_WITH_EXISTING_CRITERIA (?, ?)";
 
-	private GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor;
+	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	RequestManagerDaoImpl()
 	{
 
 	}
 
-	RequestManagerDaoImpl(GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor)
+	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<RequestDetailImpl> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
-
-
 
 	@Override
 	public RequestDetailImpl save(RequestDetailImpl request, String savedByUser)
 	{
-		RequestDetailImpl result = this.databaseExecutor.getSingleResult(SAVE, new RequestParameterizedRowMapper(),
+		RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
 				request.getRequest(),
 				request.getBookCode(),
 				request.getClientId(),
@@ -227,7 +225,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	@Override
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
-		return this.databaseExecutor.executePreparedStatement(UPDATE,
+		return this.databaseExecutor.<RequestDetailImpl>executePreparedStatement(UPDATE,
 				request.getIdentifier(),
 				request.getRequest(),
 				request.getBookCode(),
@@ -306,7 +304,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	@Override
 	public RequestDetailImpl getRequest(int identifier)
 	{
-		return this.databaseExecutor.getSingleResult(GET, new RequestParameterizedRowMapper(), identifier);
+		return this.databaseExecutor.<RequestDetailImpl>getSingleResult(GET, new RequestParameterizedRowMapper(), identifier);
 	}
 
 	@Override
@@ -315,7 +313,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		RequestDetailListImpl requestsForToday = new RequestDetailListImpl();
 
 		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.getResultSet(SELECT_TODAY, new RequestParameterizedRowMapper());
+				.<RequestDetailImpl>getResultSet(SELECT_TODAY, new RequestParameterizedRowMapper());
 
 		requestsForToday.setRequestDetailList(resultSet);
 
@@ -328,7 +326,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		RequestDetailListImpl requestsMatchingAdhocCriteria = new RequestDetailListImpl();
 
 		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.getResultSet(SELECT_WITH_ADHOC_CRITERIA, new RequestParameterizedRowMapper());
+				.<RequestDetailImpl>getResultSet(SELECT_WITH_ADHOC_CRITERIA, new RequestParameterizedRowMapper());
 
 		requestsMatchingAdhocCriteria.setRequestDetailList(resultSet);
 
@@ -341,7 +339,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		RequestDetailListImpl requestsMatchingExistingCriteria = new RequestDetailListImpl();
 
 		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.getResultSet(SELECT_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey);
+				.<RequestDetailImpl>getResultSet(SELECT_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey);
 
 		requestsMatchingExistingCriteria.setRequestDetailList(resultSet);
 

@@ -14,7 +14,7 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	private static final String SAVE = "CALL books_SAVE (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL books_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL books_SELECT_ALL";
-	private GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor;
+	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	private class BookDetailParameterizedRowMapper implements ParameterizedRowMapper<BookDetailImpl>
 	{
@@ -33,12 +33,12 @@ public final class BookManagerDaoImpl implements BookManagerDao
 
 	}
 
-	BookManagerDaoImpl(GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor)
+	BookManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<BookDetailImpl> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -46,24 +46,24 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	@Override
 	public boolean delete(String bookCode)
 	{
-		return this.databaseExecutor.executePreparedStatement(DELETE, bookCode);
+		return this.databaseExecutor.<BookDetailImpl>executePreparedStatement(DELETE, bookCode);
 	}
 
 	@Override
 	public BookDetailImpl save(String bookCode, String entity, String savedBy)
 	{
-		return this.databaseExecutor.getSingleResult(SAVE, new BookDetailParameterizedRowMapper(), bookCode, entity, savedBy);
+		return this.databaseExecutor.<BookDetailImpl>getSingleResult(SAVE, new BookDetailParameterizedRowMapper(), bookCode, entity, savedBy);
 	}
 
 	@Override
 	public boolean updateValidity(String bookCode, boolean isValid)
 	{
-		return  this.databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, bookCode, isValid ? "Y" : "N");
+		return  this.databaseExecutor.<BookDetailImpl>executePreparedStatement(UPDATE_VALIDITY, bookCode, isValid ? "Y" : "N");
 	}
 
 	@Override
 	public List<BookDetailImpl> getAll()
 	{
-		return this.databaseExecutor.getResultSet(SELECT_ALL, new BookDetailParameterizedRowMapper());
+		return this.databaseExecutor.<BookDetailImpl>getResultSet(SELECT_ALL, new BookDetailParameterizedRowMapper());
 	}
 }

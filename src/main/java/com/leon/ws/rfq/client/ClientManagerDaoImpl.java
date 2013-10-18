@@ -27,19 +27,19 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";
-	private GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor;
+	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	ClientManagerDaoImpl()
 	{
 
 	}
 
-	ClientManagerDaoImpl(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
+	ClientManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor<ClientDetailImpl> databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
 		this.databaseExecutor = databaseExecutor;
 	}
@@ -47,24 +47,24 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	@Override
 	public ClientDetailImpl save(String name, String tier, String savedBy)
 	{
-		return this.databaseExecutor.getSingleResult(SAVE, new ClientParameterizedRowMapper(), name, tier, savedBy);
+		return this.databaseExecutor.<ClientDetailImpl>getSingleResult(SAVE, new ClientParameterizedRowMapper(), name, tier, savedBy);
 	}
 
 	@Override
 	public boolean updateTier(int identifier, String tier, String updatedBy)
 	{
-		return this.databaseExecutor.executePreparedStatement(UPDATE_TIER, identifier, tier, updatedBy);
+		return this.databaseExecutor.<ClientDetailImpl>executePreparedStatement(UPDATE_TIER, identifier, tier, updatedBy);
 	}
 
 	@Override
 	public boolean updateValidity(int identifier, boolean isValid, String updatedBy)
 	{
-		return this.databaseExecutor.executePreparedStatement(UPDATE_VALIDITY, identifier, isValid ? "Y" : "N", updatedBy);
+		return this.databaseExecutor.<ClientDetailImpl>executePreparedStatement(UPDATE_VALIDITY, identifier, isValid ? "Y" : "N", updatedBy);
 	}
 
 	@Override
 	public List<ClientDetailImpl> getAll()
 	{
-		return this.databaseExecutor.getResultSet(SELECT_ALL, new ClientParameterizedRowMapper());
+		return this.databaseExecutor.<ClientDetailImpl>getResultSet(SELECT_ALL, new ClientParameterizedRowMapper());
 	}
 }
