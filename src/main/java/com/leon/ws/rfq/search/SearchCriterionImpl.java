@@ -102,9 +102,9 @@ public final class SearchCriterionImpl
 		buf.append(", Criterion Value: ");
 		buf.append(this.controlValue);
 		buf.append(", IsPrivate: ");
-		buf.append(this.isPrivate ? "TRUE" : "FALSE");
+		buf.append(this.isPrivate);
 		buf.append(", IsFilter: ");
-		buf.append(this.isFilter ? "TRUE" : "FALSE");
+		buf.append(this.isFilter);
 		return buf.toString();
 	}
 

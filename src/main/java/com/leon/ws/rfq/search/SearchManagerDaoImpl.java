@@ -58,9 +58,10 @@ public final class SearchManagerDaoImpl implements SearchManagerDao
 	}
 
 	@Override
-	public boolean save(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
+	public SearchCriterionImpl save(String owner, String key, String controlName, String controlValue, Boolean isPrivate, Boolean isFilter)
 	{
-		return this.databaseExecutor.<SearchCriterionImpl>executePreparedStatement(SAVE, owner, key, controlName, controlValue, isPrivate ? "Y" : "N",  isFilter ? "Y" : "N");
+		return this.databaseExecutor.<SearchCriterionImpl>getSingleResult(SAVE, new SearchCriterionParameterizedRowMapper(),
+				owner, key, controlName, controlValue, isPrivate ? "Y" : "N",  isFilter ? "Y" : "N");
 	}
 
 	@Override

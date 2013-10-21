@@ -5,10 +5,16 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+
+import com.leon.ws.rfq.events.NewSearchCriterionEvent;
+
 @WebService(serviceName="SearchController", endpointInterface="com.leon.ws.rfq.search.SearchController")
-public final class SearchControllerImpl implements SearchController
+public final class SearchControllerImpl implements SearchController, ApplicationEventPublisherAware
 {
 	private SearchManagerDao dao;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public void setSearchManagerDao(SearchManagerDao dao)
 	{
@@ -59,7 +65,15 @@ public final class SearchControllerImpl implements SearchController
 		if(controlValue.isEmpty())
 			throw new IllegalArgumentException("controlValue");
 
-		return this.dao.save(owner, key, controlName, controlValue, isPrivate, isFilter);
+		SearchCriterionImpl newlySavedCriterion = this.dao.save(owner, key, controlName, controlValue, isPrivate, isFilter);
+
+		if(newlySavedCriterion != null)
+		{
+			this.applicationEventPublisher.publishEvent(new NewSearchCriterionEvent(this, newlySavedCriterion));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -74,5 +88,11 @@ public final class SearchControllerImpl implements SearchController
 	public List<SearchCriterionImpl> get(String owner, String key)
 	{
 		return this.dao.get(owner, key);
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
+	{
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }
