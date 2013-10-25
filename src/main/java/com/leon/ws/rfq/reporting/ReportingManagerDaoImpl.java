@@ -1,5 +1,6 @@
 package com.leon.ws.rfq.reporting;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -75,8 +76,9 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	{
 		RequestCountReportDataListImpl requestsByCategory = new RequestCountReportDataListImpl();
 
-		ArrayList<RequestCountReportDataImpl> resultSet = (ArrayList<RequestCountReportDataImpl>) this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
-				new ReportDataParameterizedRowMapper(), this.dateFormat.format(fromDate), minimumCount);
+		ArrayList<RequestCountReportDataImpl> resultSet = (ArrayList<RequestCountReportDataImpl>)
+				this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
+						new ReportDataParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
 
 		requestsByCategory.setRequestCountList(resultSet);
 
