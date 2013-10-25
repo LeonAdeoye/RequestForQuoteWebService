@@ -63,6 +63,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     <bean id="holidayController" class="com.leon.ws.rfq.holiday.HolidayControllerImpl">
     	<property name="holidayDao" ref="holidayDao"/>
     </bean> 
+
+    <bean id="reportingController" class="com.leon.ws.rfq.reporting.ReportingControllerImpl">
+    	<property name="reportingManagerDao" ref="reportingManagerDao"/>
+    </bean> 
     
     <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoImpl">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
@@ -86,7 +90,11 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     
     <bean id="requestManagerDao" class="com.leon.ws.rfq.request.RequestManagerDaoImpl">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
-    </bean>    
+    </bean> 
+    
+    <bean id="reportingManagerDao" class="com.leon.ws.rfq.reporting.ReportingManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean> 
     
     <bean id="databaseCommandExecutor" class="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl">
     	<property name="dataSource" ref="dataSource"/>
@@ -108,4 +116,5 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	<jaxws:endpoint 	  id="chatController"	  				implementor="#chatMediator"	  address="/Chat" />
 	<jaxws:endpoint 	  id="holidayMaintenanceController"	  implementor="#holidayController"	  address="/HolidayMaintenance" />
 	<jaxws:endpoint 	  id="requestMaintenanceController"	  implementor="#requestController"	  address="/RequestMaintenance" />
+	<jaxws:endpoint 	  id="reportController"	  implementor="#reportingController"	  address="/Report" />
 </beans>
