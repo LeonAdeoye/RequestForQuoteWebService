@@ -3,8 +3,6 @@ package com.leon.ws.rfq.reporting;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -17,22 +15,14 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	private static final String REQUESTS_COUNT_BY_BOOKCODE = "BookCode";
+	private static final String REQUESTS_COUNT_BY_CLIENT = "Client";
+	private static final String REQUESTS_COUNT_BY_UNDERLYING = "Underlying";
+	private static final String REQUESTS_COUNT_BY_INITIATOR = "Inititor";
 
-	private static final String COUNT_BY_BOOKCODE = "SELECT IFNULL(bookCode,'NONE') categoryValue, COUNT(*) requestCount"
-			+ " FROM requestforquotemain"
-			+ " WHERE tradeDate >= ?"
-			+ " GROUP By bookCode"
-			+ " HAVING COUNT(*) > ?";
-
-	//private static final String COUNT_BY_UNDERLYIER = "TODO";
-
-	private static final String COUNT_BY_CLIENT = "SELECT IFNULL(client,'NONE') categoryValue, COUNT(*) requestCount"
-			+ " FROM requestforquotemain"
-			+ " WHERE tradeDate >= ?"
-			+ " GROUP By clientId"
-			+ " HAVING COUNT(*) > ?";
-
-	//private static final String COUNT_BY_INITIATOR = "TODO";
+	private static final String REQUESTS_COUNT_BY_BOOKCODE_GET = "CALL requestsCountByBookCode(?, ?)";
+	private static final String REQUESTS_COUNT_BY_CLIENT_GET = "CALL requestsCountByClient(?, ?)";
+	private static final String REQUESTS_COUNT_BY_UNDERLYING_GET = "CALL requestsCountByUnderlying(?, ?)";
+	private static final String REQUESTS_COUNT_BY_INITIATOR_GET = "CALL requestsCountByInitiator(?, ?)";
 
 	private class ReportDataParameterizedRowMapper implements ParameterizedRowMapper<RequestCountReportDataImpl>
 	{
@@ -45,16 +35,18 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 		}
 	}
 
-	private final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-
 	private String getPreparedStatement(String categoryType)
 	{
 		switch(categoryType)
 		{
 		case REQUESTS_COUNT_BY_BOOKCODE:
-			return COUNT_BY_BOOKCODE;
-		case "Client":
-			return COUNT_BY_CLIENT;
+			return REQUESTS_COUNT_BY_BOOKCODE_GET;
+		case REQUESTS_COUNT_BY_CLIENT:
+			return REQUESTS_COUNT_BY_CLIENT_GET;
+		case REQUESTS_COUNT_BY_UNDERLYING:
+			return REQUESTS_COUNT_BY_UNDERLYING_GET;
+		case REQUESTS_COUNT_BY_INITIATOR:
+			return REQUESTS_COUNT_BY_INITIATOR_GET;
 		}
 		return null;
 	}
