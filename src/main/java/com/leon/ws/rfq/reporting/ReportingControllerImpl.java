@@ -1,6 +1,7 @@
 package com.leon.ws.rfq.reporting;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -23,7 +24,7 @@ public class ReportingControllerImpl implements ReportingController
 
 	@Override
 	@WebMethod
-	public RequestCountReportDataListImpl getRequestsByCategory(String categoryType, GregorianCalendar fromDate, int minimumCount)
+	public List<RequestCountReportDataImpl> getRequestsByCategory(String categoryType, GregorianCalendar fromDate, int minimumCount)
 	{
 		if(categoryType.isEmpty())
 			throw new IllegalArgumentException("categoryType");

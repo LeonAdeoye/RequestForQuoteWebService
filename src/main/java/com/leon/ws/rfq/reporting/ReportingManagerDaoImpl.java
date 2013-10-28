@@ -3,8 +3,8 @@ package com.leon.ws.rfq.reporting;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
@@ -64,16 +64,9 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	}
 
 	@Override
-	public RequestCountReportDataListImpl getRequestsByCategory(String categoryType,Calendar fromDate, int minimumCount)
+	public List<RequestCountReportDataImpl> getRequestsByCategory(String categoryType,Calendar fromDate, int minimumCount)
 	{
-		RequestCountReportDataListImpl requestsByCategory = new RequestCountReportDataListImpl();
-
-		ArrayList<RequestCountReportDataImpl> resultSet = (ArrayList<RequestCountReportDataImpl>)
-				this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
-						new ReportDataParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
-
-		requestsByCategory.setRequestCountList(resultSet);
-
-		return requestsByCategory;
+		return this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
+				new ReportDataParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
 	}
 }
