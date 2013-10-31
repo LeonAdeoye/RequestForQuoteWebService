@@ -11,7 +11,7 @@ Maven project build management.
 
 SPRING framework used for dependency injection and XML configuration, and MYSQL JDBC access.
 
-Asynchronous socket communication between .NET WPF client using NIO2 Java7 library and JSON.
+Asynchronous socket communication with .NET WPF client using NIO2 Java7 library and JSON.
 
 JUNIT unit test automation.
 
