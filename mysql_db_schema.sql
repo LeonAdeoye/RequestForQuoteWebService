@@ -24,7 +24,7 @@ CREATE TABLE `chatmessages` (
   `requestForQuoteId` int(10) unsigned NOT NULL,
   `owner` varchar(20) NOT NULL,
   `content` varchar(500) NOT NULL,
-  `createTime` datetime NOT NULL,
+  `createTime` varchar(20) NOT NULL,
   PRIMARY KEY (`requestForQuoteId`,`sequenceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -35,65 +35,93 @@ CREATE TABLE `clients` (
   `identifier` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `isValid` char(1) NOT NULL DEFAULT 'Y',
-  `tier` int(11) NOT NULL,
+  `tier` varchar(10) NOT NULL,
   `lastUpdated` datetime NOT NULL,
+  `lastUpdatedBy` varchar(20) NOT NULL,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `id_UNIQUE` (`identifier`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `holidays`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `holidays` (
   `location` varchar(20) NOT NULL,
-  `holidayDate` datetime NOT NULL,
+  `holidayDate` varchar(20) NOT NULL,
   `addedBy` varchar(20) NOT NULL,
   `identifier` int(10) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `location_date_index` (`location`,`holidayDate`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `requestforquotemain`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `requestforquotemain` (
+  `lotSize` int(10) DEFAULT NULL,
   `identifier` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `clientId` int(10) unsigned NOT NULL,
-  `bookCode` varchar(10) DEFAULT NULL,
+  `bookCode` varchar(20) DEFAULT NULL,
   `request` varchar(100) NOT NULL,
   `isOTC` char(1) NOT NULL DEFAULT 'Y',
-  `notionalMillions` decimal(13,3) unsigned NOT NULL DEFAULT '0.000',
-  `notionalCurrency` char(3) DEFAULT NULL,
-  `contracts` int(11) NOT NULL DEFAULT '100',
-  `multiplier` int(11) NOT NULL DEFAULT '1',
-  `lotSize` int(11) DEFAULT NULL,
-  `tradeDate` datetime NOT NULL,
-  `currency` char(3) NOT NULL DEFAULT 'USD',
+  `status` varchar(20) NOT NULL,
+  `pickedUpBy` varchar(20) DEFAULT NULL,
+  `notionalMillions` decimal(13,3) unsigned NOT NULL DEFAULT '1.000',
+  `notionalCurrency` char(3) DEFAULT 'USD',
+  `notionalFXRate` decimal(13,3) DEFAULT NULL,
+  `contracts` int(10) NOT NULL DEFAULT '100',
+  `multiplier` int(10) NOT NULL DEFAULT '1',
+  `quantity` int(10) DEFAULT NULL,
+  `tradeDate` datetime DEFAULT NULL,
+  `expiryDate` datetime DEFAULT NULL,
   `premiumSettlementCurrency` char(3) NOT NULL DEFAULT 'USD',
-  `premiumSettlementDate` datetime NOT NULL,
-  `premiumSettlementDaysOverride` int(11) DEFAULT NULL,
+  `premiumSettlementDate` datetime DEFAULT NULL,
+  `premiumSettlementDaysOverride` int(10) DEFAULT NULL,
   `premiumSettlementFXRate` decimal(13,3) DEFAULT NULL,
   `salesCreditAmount` decimal(13,3) DEFAULT NULL,
   `salesCreditPercentage` decimal(13,3) DEFAULT NULL,
-  `salesCreditCurrency` char(3) DEFAULT NULL,
+  `salesCreditFXRate` decimal(13,3) DEFAULT NULL,
+  `salesCreditCurrency` char(3) DEFAULT 'USD',
   `salesComment` varchar(300) DEFAULT NULL,
-  `tradeComment` varchar(300) DEFAULT NULL,
+  `traderComment` varchar(300) DEFAULT NULL,
   `clientComment` varchar(300) DEFAULT NULL,
-  `premiumAbsolute` decimal(13,3) DEFAULT NULL,
+  `premiumAmount` decimal(13,3) DEFAULT NULL,
   `premiumPercentage` decimal(13,3) DEFAULT NULL,
-  `delta` decimal(20,10) DEFAULT NULL,
-  `gamma` decimal(20,10) DEFAULT NULL,
-  `vega` decimal(20,10) DEFAULT NULL,
-  `rho` decimal(20,10) DEFAULT NULL,
-  `theta` decimal(20,10) DEFAULT NULL,
+  `impliedVol` decimal(13,3) DEFAULT NULL,
+  `delta` decimal(13,3) DEFAULT NULL,
+  `gamma` decimal(13,3) DEFAULT NULL,
+  `vega` decimal(13,3) DEFAULT NULL,
+  `theta` decimal(13,3) DEFAULT NULL,
+  `rho` decimal(13,3) DEFAULT NULL,
+  `deltaNotional` decimal(13,3) DEFAULT NULL,
+  `gammaNotional` decimal(13,3) DEFAULT NULL,
+  `vegaNotional` decimal(13,3) DEFAULT NULL,
+  `thetaNotional` decimal(13,3) DEFAULT NULL,
+  `rhoNotional` decimal(13,3) DEFAULT NULL,
+  `deltaShares` decimal(13,3) DEFAULT NULL,
+  `gammaShares` decimal(13,3) DEFAULT NULL,
+  `vegaShares` decimal(13,3) DEFAULT NULL,
+  `thetaShares` decimal(13,3) DEFAULT NULL,
+  `rhoShares` decimal(13,3) DEFAULT NULL,
   `totalPremium` decimal(13,3) DEFAULT NULL,
   `hedgePrice` decimal(13,3) DEFAULT NULL,
   `hedgeType` varchar(20) DEFAULT NULL,
+  `askFinalAmount` decimal(13,3) DEFAULT NULL,
+  `askFinalPercentage` decimal(13,3) DEFAULT NULL,
+  `askImpliedVol` decimal(13,3) DEFAULT NULL,
+  `askPremiumAmount` decimal(13,3) DEFAULT NULL,
+  `askPremiumPercentage` decimal(13,3) DEFAULT NULL,
+  `bidFinalAmount` decimal(13,3) DEFAULT NULL,
+  `bidFinalPercentage` decimal(13,3) DEFAULT NULL,
+  `bidImpliedVol` decimal(13,3) DEFAULT NULL,
+  `bidPremiumAmount` decimal(13,3) DEFAULT NULL,
+  `bidPremiumPercentage` decimal(13,3) DEFAULT NULL,
+  `savedBy` varchar(20) NOT NULL,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `searches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -109,7 +137,7 @@ CREATE TABLE `searches` (
   `isFilter` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `owner_and_key_and_control_UNIQUE` (`owner`,`keyValue`,`controlName`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 DROP FUNCTION IF EXISTS `GetNextSequenceId` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -197,13 +225,17 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `books_SAVE`(
-bookCode varchar(10),
-entity varchar(10),
-updatedBy varchar(20)
+p_bookCode varchar(10),
+p_entity varchar(10),
+p_savedBy varchar(20)
 )
 BEGIN
     INSERT INTO books(bookCode, entity, isValid, lastUpdated, lastUpdatedBy)
-    VALUES(bookCode, entity, 'Y', now(), updatedBy);
+    VALUES(p_bookCode, p_entity, 'Y', now(), p_savedBy);
+    
+    SELECT * 
+    FROM books
+    WHERE bookCode = p_bookCode;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -261,9 +293,10 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `chatMessages_GET`(
 p_requestForQuoteId INT,
-p_sequenceId INT)
+p_sequenceId INT
+)
 BEGIN
-    SELECT requestForQuoteId, sequenceId, owner, content, createTime as timeStamp
+    SELECT *
     FROM chatMessages
     WHERE requestForQuoteId = p_requestForQuoteId
     AND sequenceId >= p_sequenceId;
@@ -293,10 +326,9 @@ BEGIN
     
     INSERT INTO chatMessages (requestForQuoteId, sequenceId, owner, content, createTime)
     VALUES (p_requestForQuoteId, @nextSequenceId, p_owner, p_content, now());
-    
-    SET @jsonTime = CONCAT('/Date(',(UNIX_TIMESTAMP(now())*1000), GetTimeStampPrefix() ,TIMESTAMPDIFF(HOUR, UTC_TIMESTAMP, NOW()), ":00)/");
           
-    SELECT requestForQuoteId, sequenceId, owner, content, @jsonTime as CreateTime FROM chatMessages
+    SELECT * 
+    FROM chatMessages
     WHERE requestForQuoteId = p_requestForQuoteId
     AND sequenceId = @nextSequenceId;
 END */;;
@@ -336,12 +368,17 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `clients_SAVE`(
-name varchar(100),
-tier int
+p_name varchar(100),
+p_tier varchar(10),
+p_savedBy varchar(20)
 )
 BEGIN
-    INSERT INTO clients(name, tier, isValid, lastUpdated)
-    VALUES(name, tier, 'Y', now());
+    INSERT INTO clients(name, tier, isValid, lastUpdated, lastUpdatedBy)
+    VALUES(p_name, p_tier, 'Y', now(), p_savedBy);
+    
+    SELECT *
+    FROM clients
+    WHERE name = p_name;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -377,11 +414,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `clients_UPDATE_TIER`(p_identifer int,p_tier int)
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `clients_UPDATE_TIER`(
+p_identifier int,
+p_tier varchar(10),
+p_updatedBy varchar(20)
+)
 BEGIN
-
-    UPDATE clients SET tier = p_tier
-    WHERE identifier = p_identifier;
+    UPDATE 
+        clients 
+    SET 
+        tier = p_tier, 
+        lastUpdatedBy = p_updatedBy, 
+        lastUpdated = now()
+    WHERE
+        identifier = p_identifier;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -398,11 +444,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `clients_UPDATE_VALIDITY`(p_identifier int, p_isValid CHAR(1))
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `clients_UPDATE_VALIDITY`(
+p_identifier int, 
+p_isValid CHAR(1),
+p_updatedBy varchar(20)
+)
 BEGIN
-
-    UPDATE clients SET isValid = p_isValid
-    WHERE identifier = p_identifier;
+    UPDATE 
+        clients 
+    SET 
+        isValid = p_isValid, 
+        lastUpdatedBy = p_updatedBy, 
+        lastUpdated = now()
+    WHERE 
+        identifier = p_identifier;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -464,7 +519,7 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `holidays_SAVE`(
 p_location varchar(20),
-p_holidayDate datetime,
+p_holidayDate varchar(20),
 p_addedBy varchar(20)
 )
 BEGIN
@@ -489,6 +544,483 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `holidays_SELECT_ALL`()
 BEGIN
     SELECT * FROM holidays;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `requestsCountByBookCode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `requestsCountByBookCode`(
+p_fromDate DATETIME,
+p_minimumCount INT
+)
+BEGIN
+    SELECT 
+        IFNULL(bookCode,'NONE') categoryValue, 
+        COUNT(*) requestCount
+    FROM 
+        requestforquotemain
+    WHERE 
+        tradeDate >= p_fromDate
+    GROUP By 
+        bookCode
+    HAVING 
+        COUNT(*) > p_minimumCount;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `requestsCountByClient` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `requestsCountByClient`(
+p_fromDate DATETIME,
+p_minimumCount INT
+)
+BEGIN
+    SELECT 
+        IFNULL(cl.name,'NONE') categoryValue, 
+        COUNT(*) requestCount
+    FROM 
+        requestforquotemain rfqs, clients cl
+    WHERE 
+        tradeDate > p_fromDate
+    AND
+        cl.identifier = rfqs.clientId
+    GROUP By 
+        rfqs.clientId
+    HAVING 
+        COUNT(*) > p_minimumCount;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `requests_SELECT_TODAY` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `requests_SELECT_TODAY`()
+BEGIN
+    SELECT *
+    FROM requestforquotemain
+    WHERE DATE(tradeDate) = DATE(NOW());
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `request_GET` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `request_GET`(
+p_identifier INT(10)
+)
+BEGIN
+    SELECT *
+    FROM requestforquotemain
+    WHERE identifier = p_identifier;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `request_SAVE` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `request_SAVE`(
+p_request VARCHAR(100), 
+p_bookCode VARCHAR(10), 
+p_clientId INT(10),  
+p_isOTC CHAR(1), 
+p_status VARCHAR(20),
+
+p_tradeDate DATETIME, 
+p_expiryDate DATETIME,
+				
+p_lotSize INT(10),
+p_multiplier INT(10), 
+p_contracts INT(10), 
+p_quantity INT(10),
+
+p_notionalMillions DECIMAL(13,3),
+p_notionalFXRate DECIMAL(13,3), 
+p_notionalCurrency CHAR(3),
+
+p_delta DECIMAL(13,3), 
+p_gamma DECIMAL(13,3),
+p_vega DECIMAL(13,3), 
+p_theta DECIMAL(13,3), 
+p_rho DECIMAL(13,3),
+
+p_deltaNotional DECIMAL(13,3), 
+p_gammaNotional DECIMAL(13,3),
+p_vegaNotional DECIMAL(13,3), 
+p_thetaNotional DECIMAL(13,3), 
+p_rhoNotional DECIMAL(13,3),
+
+p_deltaShares DECIMAL(13,3),
+p_gammaShares DECIMAL(13,3), 
+p_vegaShares DECIMAL(13,3), 
+p_thetaShares DECIMAL(13,3), 
+p_rhoShares DECIMAL(13,3),
+
+p_askFinalAmount DECIMAL(13,3), 
+p_askFinalPercentage DECIMAL(13,3), 
+p_askImpliedVol DECIMAL(13,3), 
+p_askPremiumAmount DECIMAL(13,3),
+p_askPremiumPercentage DECIMAL(13,3),
+
+p_bidFinalAmount DECIMAL(13,3), 
+p_bidFinalPercentage DECIMAL(13,3), 
+p_bidImpliedVol DECIMAL(13,3),
+p_bidPremiumAmount DECIMAL(13,3), 
+p_bidPremiumPercentage DECIMAL(13,3),
+
+p_premiumAmount DECIMAL(13,3), 
+p_premiumPercentage DECIMAL(13,3),
+p_impliedVol DECIMAL(13,3),
+
+p_salesCreditAmount DECIMAL(13,3),
+p_salesCreditPercentage DECIMAL(13,3),
+p_salesCreditCurrency CHAR(3),
+p_salesCreditFXRate DECIMAL(13,3),
+
+p_premiumSettlementCurrency CHAR(3),
+p_premiumSettlementDate DATETIME,
+p_premiumSettlementDaysOverride INT(10),
+p_premiumSettlementFXRate DECIMAL(13,3),
+
+p_salesComment VARCHAR(300),
+p_traderComment VARCHAR(300),
+p_clientComment VARCHAR(300),
+
+p_hedgePrice DECIMAL(13,3),
+p_hedgeType VARCHAR(20),
+p_totalPremium DECIMAL(13,3),
+p_pickedUpBy VARCHAR(20),
+p_savedBy VARCHAR(20)
+)
+BEGIN
+    INSERT INTO requestforquotemain
+    (
+    lotSize, 
+    clientId, 
+    bookCode, 
+    request, 
+    isOTC, 
+    status, 
+    pickedUpBy, 
+    notionalMillions, 
+    notionalCurrency, 
+    notionalFXRate, 
+    contracts, 
+    multiplier, 
+    quantity, 
+    tradeDate, 
+    expiryDate, 
+    premiumSettlementCurrency, 
+    premiumSettlementDate, 
+    premiumSettlementDaysOverride, 
+    premiumSettlementFXRate, 
+    salesCreditAmount, 
+    salesCreditPercentage, 
+    salesCreditFXRate, 
+    salesCreditCurrency, 
+    salesComment, 
+    traderComment, 
+    clientComment, 
+    premiumAmount, 
+    premiumPercentage, 
+    impliedVol, 
+    delta, 
+    gamma, 
+    vega, 
+    theta, 
+    rho, 
+    deltaNotional, 
+    gammaNotional, 
+    vegaNotional, 
+    thetaNotional, 
+    rhoNotional, 
+    deltaShares, 
+    gammaShares, 
+    vegaShares, 
+    thetaShares, 
+    rhoShares, 
+    totalPremium, 
+    hedgePrice, 
+    hedgeType, 
+    askFinalAmount, 
+    askFinalPercentage, 
+    askImpliedVol, 
+    askPremiumAmount, 
+    askPremiumPercentage, 
+    bidFinalAmount, 
+    bidFinalPercentage, 
+    bidImpliedVol, 
+    bidPremiumAmount, 
+    bidPremiumPercentage,
+    savedBy
+    )
+    VALUES
+    (
+    lotSize, 
+    p_clientId, 
+    p_bookCode, 
+    p_request, 
+    p_isOTC, 
+    p_status, 
+    p_pickedUpBy, 
+    p_notionalMillions, 
+    p_notionalCurrency, 
+    p_notionalFXRate, 
+    p_contracts, 
+    p_multiplier, 
+    p_quantity, 
+    p_tradeDate, 
+    p_expiryDate, 
+    p_premiumSettlementCurrency, 
+    p_premiumSettlementDate, 
+    p_premiumSettlementDaysOverride, 
+    p_premiumSettlementFXRate, 
+    p_salesCreditAmount, 
+    p_salesCreditPercentage, 
+    p_salesCreditFXRate, 
+    p_salesCreditCurrency, 
+    p_salesComment, 
+    p_traderComment, 
+    p_clientComment, 
+    p_premiumAmount, 
+    premiumPercentage, 
+    p_impliedVol, 
+    p_delta, 
+    p_gamma, 
+    p_vega, 
+    p_theta, 
+    p_rho, 
+    p_deltaNotional, 
+    p_gammaNotional, 
+    p_vegaNotional, 
+    p_thetaNotional, 
+    p_rhoNotional, 
+    p_deltaShares, 
+    p_gammaShares, 
+    p_vegaShares, 
+    p_thetaShares, 
+    p_rhoShares, 
+    p_totalPremium, 
+    p_hedgePrice, 
+    p_hedgeType, 
+    p_askFinalAmount, 
+    p_askFinalPercentage, 
+    p_askImpliedVol, 
+    p_askPremiumAmount, 
+    p_askPremiumPercentage, 
+    p_bidFinalAmount, 
+    p_bidFinalPercentage, 
+    p_bidImpliedVol, 
+    p_bidPremiumAmount, 
+    p_bidPremiumPercentage,
+    p_savedBy
+    );
+    
+    SELECT *
+    FROM requestforquotemain
+    WHERE identifier = (SELECT MAX(identifier) FROM requestforquotemain);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `request_UPDATE` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `request_UPDATE`(
+p_identifier INT(10),
+p_request VARCHAR(100), 
+p_bookCode VARCHAR(10), 
+p_clientId INT(10),  
+p_isOTC CHAR(1), 
+p_status VARCHAR(20),
+
+p_tradeDate DATETIME, 
+p_expiryDate DATETIME,
+				
+p_lotSize INT(10),
+p_multiplier INT(10), 
+p_contracts INT(10), 
+p_quantity INT(10),
+
+p_notionalMillions DECIMAL(13,3),
+p_notionalFXRate DECIMAL(13,3), 
+p_notionalCurrency CHAR(3),
+
+p_delta DECIMAL(13,3), 
+p_gamma DECIMAL(13,3),
+p_vega DECIMAL(13,3), 
+p_theta DECIMAL(13,3), 
+p_rho DECIMAL(13,3),
+
+p_deltaNotional DECIMAL(13,3), 
+p_gammaNotional DECIMAL(13,3),
+p_vegaNotional DECIMAL(13,3), 
+p_thetaNotional DECIMAL(13,3), 
+p_rhoNotional DECIMAL(13,3),
+
+p_deltaShares DECIMAL(13,3),
+p_gammaShares DECIMAL(13,3), 
+p_vegaShares DECIMAL(13,3), 
+p_thetaShares DECIMAL(13,3), 
+p_rhoShares DECIMAL(13,3),
+
+p_askFinalAmount DECIMAL(13,3), 
+p_askFinalPercentage DECIMAL(13,3), 
+p_askImpliedVol DECIMAL(13,3), 
+p_askPremiumAmount DECIMAL(13,3),
+p_askPremiumPercentage DECIMAL(13,3),
+
+p_bidFinalAmount DECIMAL(13,3), 
+p_bidFinalPercentage DECIMAL(13,3), 
+p_bidImpliedVol DECIMAL(13,3),
+p_bidPremiumAmount DECIMAL(13,3), 
+p_bidPremiumPercentage DECIMAL(13,3),
+
+p_premiumAmount DECIMAL(13,3), 
+p_premiumPercentage DECIMAL(13,3),
+p_impliedVol DECIMAL(13,3),
+
+p_salesCreditAmount DECIMAL(13,3),
+p_salesCreditPercentage DECIMAL(13,3),
+p_salesCreditCurrency CHAR(3),
+p_salesCreditFXRate DECIMAL(13,3),
+
+p_premiumSettlementCurrency CHAR(3),
+p_premiumSettlementDate DATETIME,
+p_premiumSettlementDaysOverride INT(10),
+p_premiumSettlementFXRate DECIMAL(13,3),
+
+p_salesComment VARCHAR(300),
+p_traderComment VARCHAR(300),
+p_clientComment VARCHAR(300),
+
+p_hedgePrice DECIMAL(13,3),
+p_hedgeType VARCHAR(20),
+p_totalPremium DECIMAL(13,3),
+p_pickedUpBy VARCHAR(20),
+p_updatedBy VARCHAR(20)
+)
+BEGIN
+    UPDATE requestforquotemain
+    SET lotSize = p_lotSize, 
+    clientId = p_clientId,
+    bookCode = p_bookCode,
+    request = p_request, 
+    isOTC = p_isOTC, 
+    status = p_status, 
+    pickedUpBy = p_pickedUpBy, 
+    notionalMillions = p_notionalMillions, 
+    notionalCurrency = p_notionalCurrency, 
+    notionalFXRate = p_notionalFXRate, 
+    contracts = p_contracts, 
+    multiplier = p_multiplier, 
+    quantity = p_quantity, 
+    tradeDate = p_tradeDate, 
+    expiryDate = p_expiryDate, 
+    premiumSettlementCurrency = p_premiumSettlementCurrency, 
+    premiumSettlementDate = p_premiumSettlementDate, 
+    premiumSettlementDaysOverride = p_premiumSettlementDaysOverride, 
+    premiumSettlementFXRate = p_premiumSettlementFXRate, 
+    salesCreditAmount = p_salesCreditAmount, 
+    salesCreditPercentage = p_salesCreditPercentage, 
+    salesCreditFXRate = p_salesCreditFXRate, 
+    salesCreditCurrency = p_salesCreditCurrency, 
+    salesComment = p_salesComment, 
+    traderComment = p_traderComment, 
+    clientComment = p_clientComment, 
+    premiumAmount = p_premiumAmount, 
+    premiumPercentage = p_premiumPercentage, 
+    impliedVol = p_impliedVol, 
+    delta = p_delta, 
+    gamma = p_gamma, 
+    vega = p_vega, 
+    theta = p_theta, 
+    rho = p_rho, 
+    deltaNotional = p_deltaNotional, 
+    gammaNotional = p_gammaNotional, 
+    vegaNotional = p_vegaNotional, 
+    thetaNotional = p_thetaNotional, 
+    rhoNotional = p_rhoNotional, 
+    deltaShares = p_deltaShares, 
+    gammaShares = p_gammaShares, 
+    vegaShares = p_vegaShares, 
+    thetaShares = p_thetaShares, 
+    rhoShares = p_rhoShares, 
+    totalPremium = p_totalPremium, 
+    hedgePrice = p_hedgePrice, 
+    hedgeType = p_hedgeType, 
+    askFinalAmount = p_askFinalAmount, 
+    askFinalPercentage = p_askFinalPercentage, 
+    askImpliedVol = p_askImpliedVol, 
+    askPremiumAmount = p_askPremiumAmount, 
+    askPremiumPercentage = p_askPremiumPercentage, 
+    bidFinalAmount = p_bidFinalAmount, 
+    bidFinalPercentage = p_bidFinalPercentage, 
+    bidImpliedVol = p_bidImpliedVol, 
+    bidPremiumAmount = p_bidPremiumAmount, 
+    bidPremiumPercentage = p_bidPremiumPercentage,
+    savedBy = p_updatedBy
+    WHERE identifier = p_identifier;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -552,16 +1084,23 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `searches_SAVE`(
-owner varchar(45),
-keyValue varchar(45),
-controlName varchar(45),
-controlValue varchar(255),
-isPrivate char(1),
-isFilter char(1)
+p_owner varchar(45),
+P_keyValue varchar(45),
+P_controlName varchar(45),
+p_controlValue varchar(255),
+P_isPrivate char(1),
+p_isFilter char(1)
 )
 BEGIN
     INSERT INTO searches(owner, keyValue, controlName, controlValue, isPrivate, isFilter, lastUpdated)
-    VALUES(owner, keyValue, controlName, controlValue, isPrivate, isFilter, now());
+    VALUES(p_owner, p_keyValue, p_controlName, p_controlValue, p_isPrivate, p_isFilter, now());
+    
+    SELECT *
+    FROM searches
+    WHERE owner = p_owner
+    AND keyValue = p_keyValue
+    AND controlName = p_controlName
+    AND controlValue = p_controlValue;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
