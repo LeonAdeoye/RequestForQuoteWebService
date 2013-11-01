@@ -5,8 +5,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 @XmlRootElement(name="ChatMessageImpl")
 public final class ChatMessageImpl implements ChatMessage
 {
@@ -95,7 +93,18 @@ public final class ChatMessageImpl implements ChatMessage
 	@Override
 	public String toString()
 	{
-		return new Gson().toJson(this);
+		StringBuilder buf = new StringBuilder("RequestForQuote identifier: ");
+		buf.append(this.requestForQuoteId);
+		buf.append(", Sequence identifier: ");
+		buf.append(this.sequenceId);
+		buf.append(", Owner: ");
+		buf.append(this.owner);
+		buf.append(", Content: ");
+		buf.append(this.content);
+		buf.append(", Timestamp: ");
+		buf.append(this.timeStamp);
+
+		return buf.toString();
 	}
 
 	@Override

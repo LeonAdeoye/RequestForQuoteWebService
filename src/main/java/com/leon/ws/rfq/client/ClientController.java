@@ -12,7 +12,7 @@ public interface ClientController
 	@WebMethod
 	boolean save(@WebParam(name="name")String name,
 			@WebParam(name="tier")String tier,
-			@WebParam(name="savedBy")String savedByUser);
+			@WebParam(name="savedBy")String savedBy);
 
 	@WebMethod
 	boolean updateTier(@WebParam(name="identifier") int identifier,

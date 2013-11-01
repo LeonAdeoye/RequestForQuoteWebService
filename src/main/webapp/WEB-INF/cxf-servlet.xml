@@ -60,6 +60,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="bookManagerDao" ref="bookManagerDao"/>
     </bean>
     
+    <bean id="underlyingController" class="com.leon.ws.rfq.underlying.UnderlyingControllerImpl">
+    	<property name="underlyingManagerDao" ref="underlyingManagerDao"/>
+    </bean>    
+    
     <bean id="holidayController" class="com.leon.ws.rfq.holiday.HolidayControllerImpl">
     	<property name="holidayDao" ref="holidayDao"/>
     </bean> 
@@ -73,6 +77,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     </bean>
     
     <bean id="clientManagerDao" class="com.leon.ws.rfq.client.ClientManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+
+    <bean id="underlyingManagerDao" class="com.leon.ws.rfq.underlying.UnderlyingManagerDaoImpl">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
     </bean>
     
@@ -109,6 +117,7 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="maxActive" value="5"/>
     </bean>
     	
+	<jaxws:endpoint 	  id="underlyingMaintenanceController"	  implementor="#underlyingController"	  address="/UnderlyingMaintenance" />    	
 	<jaxws:endpoint 	  id="optionPricingController"	  implementor="#optionPricer"	  address="/PriceOption" />
 	<jaxws:endpoint 	  id="searchCriteriaController"	  implementor="#searchController"	  address="/SearchCriteria" />
 	<jaxws:endpoint 	  id="clientMaintenanceController"	  implementor="#clientController"	  address="/ClientMaintenance" />

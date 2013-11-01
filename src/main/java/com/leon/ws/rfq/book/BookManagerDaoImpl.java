@@ -21,7 +21,7 @@ public final class BookManagerDaoImpl implements BookManagerDao
 		@Override
 		public BookDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			BookDetailImpl newBook = new BookDetailImpl(rs.getString("bookCode"), rs.getString("bookCode"), rs.getString("isValid").equals("Y"));
+			BookDetailImpl newBook = new BookDetailImpl(rs.getString("bookCode"), rs.getString("entity"), rs.getString("isValid").equals("Y"));
 
 			return newBook;
 		}

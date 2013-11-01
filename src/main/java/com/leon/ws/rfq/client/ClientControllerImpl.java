@@ -63,6 +63,9 @@ public final class ClientControllerImpl implements ClientController, Application
 		if(tier.isEmpty())
 			throw new IllegalArgumentException("tier");
 
+		if(logger.isDebugEnabled())
+			logger.debug("Received request from user [" + updatedBy + "] to update the tier of the client with identifier [" + identifier + "].");
+
 		return this.dao.updateTier(identifier, tier, updatedBy);
 	}
 
@@ -76,6 +79,9 @@ public final class ClientControllerImpl implements ClientController, Application
 		if(updatedBy.isEmpty())
 			throw new IllegalArgumentException("updatedBy");
 
+		if(logger.isDebugEnabled())
+			logger.debug("Received request from user [" + updatedBy + "] to update the validity of the client with identifier [" + identifier + "].");
+
 		return this.dao.updateValidity(identifier, isValid, updatedBy);
 	}
 
@@ -83,6 +89,9 @@ public final class ClientControllerImpl implements ClientController, Application
 	@WebMethod
 	public List<ClientDetailImpl> getAll()
 	{
+		if(logger.isDebugEnabled())
+			logger.debug("Received request to get all previously saved underlyings.");
+
 		return this.dao.getAll();
 	}
 
