@@ -11,7 +11,7 @@ import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 public class UnderlyingManagerDaoImpl implements UnderlyingManagerDao
 {
 	private static final String SELECT_ALL = "CALL underlyings_SELECT_ALL";
-	private static final String UPDATE_VALIDITY = "CALL underlyings_UPDATE_VALIDITY (?, ?)";
+	private static final String UPDATE_VALIDITY = "CALL underlyings_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SAVE = "CALL underlyings_SAVE (?, ?, ?)";
 
 	private GenericDatabaseCommandExecutor databaseExecutor;
@@ -44,7 +44,7 @@ public class UnderlyingManagerDaoImpl implements UnderlyingManagerDao
 	@Override
 	public boolean updateValidity(String ric, boolean isValid, String updatedBy)
 	{
-		return  this.databaseExecutor.<UnderlyingDetailImpl>executePreparedStatement(UPDATE_VALIDITY, ric, isValid ? "Y" : "N");
+		return  this.databaseExecutor.<UnderlyingDetailImpl>executePreparedStatement(UPDATE_VALIDITY, ric, isValid ? "Y" : "N", updatedBy);
 	}
 
 	@Override
