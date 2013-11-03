@@ -22,12 +22,18 @@ public final class BookControllerImpl implements BookController, ApplicationEven
 
 	public void setBookManagerDao(BookManagerDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
+		if(applicationEventPublisher == null)
+			throw new NullPointerException("applicationEventPublisher");
+
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 

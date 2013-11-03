@@ -21,6 +21,9 @@ public final class ClientControllerImpl implements ClientController, Application
 
 	public void setClientManagerDao(ClientManagerDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 
@@ -98,6 +101,9 @@ public final class ClientControllerImpl implements ClientController, Application
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
+		if(applicationEventPublisher == null)
+			throw new NullPointerException("applicationEventPublisher");
+
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }

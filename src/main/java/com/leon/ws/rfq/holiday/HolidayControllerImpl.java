@@ -18,7 +18,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 	public void setHolidayDao(HolidayDao dao)
 	{
 		if(dao == null)
-			throw new IllegalArgumentException("dao");
+			throw new NullPointerException("dao");
 
 		this.dao = dao;
 	}
@@ -77,7 +77,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
 		if(applicationEventPublisher == null)
-			throw new IllegalArgumentException("applicationEventPublisher");
+			throw new NullPointerException("applicationEventPublisher");
 
 		this.applicationEventPublisher = applicationEventPublisher;
 	}

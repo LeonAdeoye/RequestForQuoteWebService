@@ -27,6 +27,9 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 
 	public ChatMediatorImpl(ChatMessageDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 
@@ -182,6 +185,9 @@ public final class ChatMediatorImpl implements ChatMediator, ApplicationEventPub
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
+		if(applicationEventPublisher == null)
+			throw new NullPointerException("applicationEventPublisher");
+
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }

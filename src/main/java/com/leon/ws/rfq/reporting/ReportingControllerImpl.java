@@ -19,6 +19,9 @@ public class ReportingControllerImpl implements ReportingController
 
 	public void setReportingManagerDao(ReportingManagerDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 

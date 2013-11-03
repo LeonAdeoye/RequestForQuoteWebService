@@ -22,6 +22,9 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 
@@ -146,6 +149,9 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
+		if(applicationEventPublisher == null)
+			throw new NullPointerException("applicationEventPublisher");
+
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }

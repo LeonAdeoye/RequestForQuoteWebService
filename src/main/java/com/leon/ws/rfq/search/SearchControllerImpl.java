@@ -18,6 +18,9 @@ public final class SearchControllerImpl implements SearchController, Application
 
 	public void setSearchManagerDao(SearchManagerDao dao)
 	{
+		if(dao == null)
+			throw new NullPointerException("dao");
+
 		this.dao = dao;
 	}
 
@@ -93,6 +96,9 @@ public final class SearchControllerImpl implements SearchController, Application
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
+		if(applicationEventPublisher == null)
+			throw new NullPointerException("applicationEventPublisher");
+
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }
