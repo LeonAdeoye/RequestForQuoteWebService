@@ -32,6 +32,9 @@ public class UnderlyingManagerDaoImpl implements UnderlyingManagerDao
 
 	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
 	{
+		if(databaseExecutor == null)
+			throw new NullPointerException("databaseExecutor");
+
 		this.databaseExecutor = databaseExecutor;
 	}
 
