@@ -17,12 +17,14 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String REQUESTS_COUNT_BY_BOOKCODE = "BookCode";
 	private static final String REQUESTS_COUNT_BY_CLIENT = "Client";
 	private static final String REQUESTS_COUNT_BY_UNDERLYING = "Underlying";
-	private static final String REQUESTS_COUNT_BY_INITIATOR = "Inititor";
+	private static final String REQUESTS_COUNT_BY_INITIATOR = "Initiator";
+	private static final String REQUESTS_COUNT_BY_TRADEDATE = "TradeDate";
 
 	private static final String REQUESTS_COUNT_BY_BOOKCODE_GET = "CALL requestsCountByBookCode(?, ?)";
 	private static final String REQUESTS_COUNT_BY_CLIENT_GET = "CALL requestsCountByClient(?, ?)";
 	private static final String REQUESTS_COUNT_BY_UNDERLYING_GET = "CALL requestsCountByUnderlying(?, ?)";
 	private static final String REQUESTS_COUNT_BY_INITIATOR_GET = "CALL requestsCountByInitiator(?, ?)";
+	private static final String REQUESTS_COUNT_BY_TRADEDATE_GET = "CALL requestsCountByTradeDate(?, ?)";
 
 	private class ReportDataParameterizedRowMapper implements ParameterizedRowMapper<RequestCountReportDataImpl>
 	{
@@ -47,6 +49,9 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 			return REQUESTS_COUNT_BY_UNDERLYING_GET;
 		case REQUESTS_COUNT_BY_INITIATOR:
 			return REQUESTS_COUNT_BY_INITIATOR_GET;
+		case REQUESTS_COUNT_BY_TRADEDATE:
+			return REQUESTS_COUNT_BY_TRADEDATE_GET;
+
 		}
 		return null;
 	}
