@@ -124,6 +124,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	public static final String UNDERLYIER_CRITERION = "Underlyier";
 	public static final String TRADE_DATE_CRITERION = "TradeDate";
 	public static final String EXPIRY_DATE_CRITERION = "ExpiryDate";
+	public static final String INITIATOR_CRITERION = "Initiator";
+	public static final String PICKER_CRITERION = "Picker";
 
 	private static final String GET = "CALL request_GET (?)";
 	private static final String SELECT_TODAY = "CALL requests_SELECT_TODAY";
@@ -131,10 +133,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
-	RequestManagerDaoImpl()
-	{
-
-	}
+	RequestManagerDaoImpl() {}
 
 	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
 	{
@@ -354,6 +353,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				// TODO
 				break;
 			case EXPIRY_DATE_CRITERION:
+				// TODO
+				break;
+			case INITIATOR_CRITERION:
+				// TODO
+				break;
+			case PICKER_CRITERION:
 				// TODO
 				break;
 			}
