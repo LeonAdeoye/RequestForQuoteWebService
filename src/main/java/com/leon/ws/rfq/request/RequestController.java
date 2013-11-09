@@ -22,7 +22,7 @@ public interface RequestController
 	RequestDetailListImpl getRequestsForToday(@WebParam(name="rePrice") boolean rePrice);
 
 	@WebMethod
-	RequestDetailListImpl getRequestsMatchingAdhocCriteria(@WebParam(name="rePrice") SearchCriteriaImpl criteria,
+	RequestDetailListImpl getRequestsMatchingAdhocCriteria(@WebParam(name="criteria") SearchCriteriaImpl criteria,
 			@WebParam(name="rePrice") boolean rePrice);
 
 	@WebMethod

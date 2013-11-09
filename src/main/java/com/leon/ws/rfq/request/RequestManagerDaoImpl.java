@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
+import com.leon.ws.rfq.search.SearchCriterionImpl;
 import com.leon.ws.rfq.utilities.UtilityMethods;
 
 public final class RequestManagerDaoImpl implements RequestManagerDao
@@ -117,13 +118,16 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
 
+	public static final String CLIENT_CRITERION = "Client";
+	public static final String STATUS_CRITERION = "Status";
+	public static final String BOOK_CRITERION = "Book";
+	public static final String UNDERLYIER_CRITERION = "Underlyier";
+	public static final String TRADE_DATE_CRITERION = "TradeDate";
+	public static final String EXPIRY_DATE_CRITERION = "ExpiryDate";
+
 	private static final String GET = "CALL request_GET (?)";
-
 	private static final String SELECT_TODAY = "CALL requests_SELECT_TODAY";
-
-	private static final String SELECT_WITH_ADHOC_CRITERIA = "CALL requests_SELECT_WITH_ADHOC_CRITERIA";
-
-	private static final String SELECT_WITH_EXISTING_CRITERIA = "CALL requests_SELECT_WITH_EXISTING_CRITERIA (?, ?)";
+	private static final String SEARCH_WITH_EXISTING_CRITERIA = "CALL requests_SEARCH (?, ?)";
 
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
@@ -325,8 +329,40 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	{
 		RequestDetailListImpl requestsMatchingAdhocCriteria = new RequestDetailListImpl();
 
-		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.<RequestDetailImpl>getResultSet(SELECT_WITH_ADHOC_CRITERIA, new RequestParameterizedRowMapper());
+		StringBuilder builder = new StringBuilder("SELECT * FROM requestforquotemain WHERE ");
+
+		for(int index = 0, size = criteria.getCriteria().size(); index < size; ++index)
+		{
+			SearchCriterionImpl criterion = criteria.getCriteria().get(index);
+			switch(criterion.getControlName())
+			{
+			case STATUS_CRITERION:
+				builder.append("status = '");
+				builder.append(criterion.getControlValue());
+				builder.append("'");
+				break;
+			case BOOK_CRITERION:
+				builder.append("bookCode = '");
+				builder.append(criterion.getControlValue());
+				builder.append("'");
+				break;
+			case CLIENT_CRITERION:
+				builder.append("clientId = '");
+				builder.append(criterion.getControlValue());
+				builder.append("'");
+			case TRADE_DATE_CRITERION:
+				// TODO
+				break;
+			case EXPIRY_DATE_CRITERION:
+				// TODO
+				break;
+			}
+			if(index < (size - 1))
+				builder.append(" AND ");
+		}
+
+		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
+				.<RequestDetailImpl>getResultSet(builder.toString(), new RequestParameterizedRowMapper()));
 
 		requestsMatchingAdhocCriteria.setRequestDetailList(resultSet);
 
@@ -338,8 +374,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	{
 		RequestDetailListImpl requestsMatchingExistingCriteria = new RequestDetailListImpl();
 
-		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.<RequestDetailImpl>getResultSet(SELECT_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey);
+		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
+				.<RequestDetailImpl>getResultSet(SEARCH_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey));
 
 		requestsMatchingExistingCriteria.setRequestDetailList(resultSet);
 

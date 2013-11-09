@@ -121,7 +121,7 @@ CREATE TABLE `requestforquotemain` (
   `savedBy` varchar(20) NOT NULL,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `searches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -137,7 +137,7 @@ CREATE TABLE `searches` (
   `isFilter` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `owner_and_key_and_control_UNIQUE` (`owner`,`keyValue`,`controlName`)
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `underlyings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -720,6 +720,70 @@ BEGIN
     HAVING 
         COUNT(*) > p_minimumCount;
 
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `requests_SEARCH` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `requests_SEARCH`(
+p_owner VARCHAR(45),
+p_keyValue VARCHAR(45)
+)
+BEGIN
+DECLARE exitLoop INT DEFAULT 0;
+DECLARE criterionKey VARCHAR(45);
+DECLARE criterionValue VARCHAR(255);
+DECLARE sqlStatement VARCHAR(500);
+
+DECLARE criterion_cursor CURSOR FOR 
+    SELECT controlName, controlValue 
+    FROM searches 
+    WHERE owner = p_owner AND keyValue = p_keyValue;    
+    
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET exitLoop = 1;    
+
+SET sqlStatement = "SELECT * FROM requestforquotemain WHERE";
+
+OPEN criterion_cursor;
+
+rfq_loop: LOOP
+ 
+    FETCH criterion_cursor INTO criterionKey, criterionValue;
+ 
+    IF exitLoop = 1 THEN
+        LEAVE rfq_loop;
+    END IF;
+    
+   
+    CASE
+        WHEN criterionKey = "Book" THEN
+            SET sqlStatement = CONCAT(sqlStatement, " bookCode = \"", criterionValue, "\" AND");
+        WHEN criterionKey = "Client" THEN
+            SET sqlStatement = CONCAT(sqlStatement, " clientId = ", criterionValue, " AND");
+        WHEN criterionKey = "Status" THEN
+            SET sqlStatement = CONCAT(sqlStatement, " status = \"", criterionValue, "\" AND");
+    END CASE;
+ 
+ END LOOP rfq_loop;
+
+CLOSE criterion_cursor;
+
+SET @sqlStatement = CONCAT(sqlStatement, " 1 = 1"); 
+
+PREPARE stmt FROM @sqlStatement;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
