@@ -30,4 +30,17 @@ public final class SearchCriteriaImpl
 	{
 		return this.searchCriteriaArrayList;
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		for(SearchCriterionImpl criterion : this.searchCriteriaArrayList)
+		{
+			builder.append("Criterion: { ");
+			builder.append(criterion);
+			builder.append(" }");
+		}
+		return builder.toString();
+	}
 }

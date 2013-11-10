@@ -118,14 +118,14 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
 
-	public static final String CLIENT_CRITERION = "Client";
-	public static final String STATUS_CRITERION = "Status";
-	public static final String BOOK_CRITERION = "Book";
-	public static final String UNDERLYIER_CRITERION = "Underlyier";
-	public static final String TRADE_DATE_CRITERION = "TradeDate";
-	public static final String EXPIRY_DATE_CRITERION = "ExpiryDate";
-	public static final String INITIATOR_CRITERION = "Initiator";
-	public static final String PICKER_CRITERION = "Picker";
+	private static final String CLIENT_CRITERION = "Client";
+	private static final String STATUS_CRITERION = "Status";
+	private static final String BOOK_CRITERION = "Book";
+	private static final String UNDERLYING_CRITERION = "Underlyier";
+	private static final String TRADE_DATE_CRITERION = "TradeDate";
+	private static final String EXPIRY_DATE_CRITERION = "ExpiryDate";
+	private static final String INITIATOR_CRITERION = "Initiator";
+	private static final String PICKER_CRITERION = "Picker";
 
 	private static final String GET = "CALL request_GET (?)";
 	private static final String SELECT_TODAY = "CALL requests_SELECT_TODAY";
@@ -323,9 +323,44 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		return requestsForToday;
 	}
 
+	private String constructDateWhereClause(String dateName, String criterionValue)
+	{
+		if(dateName.isEmpty())
+			throw new IllegalArgumentException("dateName");
+
+		if(criterionValue.isEmpty())
+			throw new IllegalArgumentException("criterionValue");
+
+		int indexOfHyphen = criterionValue.indexOf('-');
+
+		if(criterionValue.startsWith("-")) // if hyphen at start then criterion value is an end date.
+		{
+			return dateName + " <= '" + UtilityMethods.convertStringFormatOfDate(criterionValue.substring(1),
+					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT) + "'";
+		}
+		else if(criterionValue.endsWith("-"))  // if hyphen at end then criterion value is an start date.
+		{
+			return dateName + " >= '" + UtilityMethods.convertStringFormatOfDate(criterionValue.substring(0, indexOfHyphen),
+					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT) + "'";
+		}
+		else // if the hyphen is in the middle then both the end and start date exist.
+		{
+			String startDate = UtilityMethods.convertStringFormatOfDate(criterionValue.substring(0, indexOfHyphen),
+					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
+
+			String endDate = UtilityMethods.convertStringFormatOfDate(criterionValue.substring(indexOfHyphen + 1),
+					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
+
+			return dateName + " >= '" + startDate + "' AND " + dateName + " <= '" + endDate + "'";
+		}
+	}
+
 	@Override
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria)
 	{
+		if(criteria == null)
+			throw new NullPointerException("criteria");
+
 		RequestDetailListImpl requestsMatchingAdhocCriteria = new RequestDetailListImpl();
 
 		StringBuilder builder = new StringBuilder("SELECT * FROM requestforquotemain WHERE ");
@@ -349,11 +384,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				builder.append("clientId = '");
 				builder.append(criterion.getControlValue());
 				builder.append("'");
+				break;
 			case TRADE_DATE_CRITERION:
-				// TODO
+				builder.append(constructDateWhereClause("tradeDate", criterion.getControlValue()));
 				break;
 			case EXPIRY_DATE_CRITERION:
-				// TODO
+				builder.append(constructDateWhereClause("expiryDate", criterion.getControlValue()));
 				break;
 			case INITIATOR_CRITERION:
 				// TODO
