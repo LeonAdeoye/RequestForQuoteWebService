@@ -323,6 +323,15 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		return requestsForToday;
 	}
 
+	private String extractYYYYMMDDFormattedDate(String rawDate)
+	{
+		if(rawDate.isEmpty())
+			throw new IllegalArgumentException("rawDate");
+
+		return UtilityMethods.convertStringFormatOfDate(rawDate,
+				UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
+	}
+
 	private String constructDateWhereClause(String dateName, String criterionValue)
 	{
 		if(dateName.isEmpty())
@@ -335,21 +344,16 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 		if(criterionValue.startsWith("-")) // if hyphen at start then criterion value is an end date.
 		{
-			return dateName + " <= '" + UtilityMethods.convertStringFormatOfDate(criterionValue.substring(1),
-					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT) + "'";
+			return dateName + " <= '" + extractYYYYMMDDFormattedDate(criterionValue.substring(1)) + "'";
 		}
 		else if(criterionValue.endsWith("-"))  // if hyphen at end then criterion value is an start date.
 		{
-			return dateName + " >= '" + UtilityMethods.convertStringFormatOfDate(criterionValue.substring(0, indexOfHyphen),
-					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT) + "'";
+			return dateName + " >= '" + extractYYYYMMDDFormattedDate(criterionValue.substring(0, indexOfHyphen)) + "'";
 		}
 		else // if the hyphen is in the middle then both the end and start date exist.
 		{
-			String startDate = UtilityMethods.convertStringFormatOfDate(criterionValue.substring(0, indexOfHyphen),
-					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
-
-			String endDate = UtilityMethods.convertStringFormatOfDate(criterionValue.substring(indexOfHyphen + 1),
-					UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
+			String startDate = extractYYYYMMDDFormattedDate(criterionValue.substring(0, indexOfHyphen));
+			String endDate = extractYYYYMMDDFormattedDate(criterionValue.substring(indexOfHyphen + 1));
 
 			return dateName + " >= '" + startDate + "' AND " + dateName + " <= '" + endDate + "'";
 		}
@@ -392,10 +396,10 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				builder.append(constructDateWhereClause("expiryDate", criterion.getControlValue()));
 				break;
 			case INITIATOR_CRITERION:
-				// TODO
 				break;
 			case PICKER_CRITERION:
-				// TODO
+				break;
+			case UNDERLYING_CRITERION:
 				break;
 			}
 			if(index < (size - 1))
