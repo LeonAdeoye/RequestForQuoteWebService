@@ -20,6 +20,8 @@ public final class BookControllerImpl implements BookController, ApplicationEven
 	private ApplicationEventPublisher applicationEventPublisher;
 	private BookManagerDao dao;
 
+	@Override
+	@WebMethod(exclude = true)
 	public void setBookManagerDao(BookManagerDao dao)
 	{
 		if(dao == null)
