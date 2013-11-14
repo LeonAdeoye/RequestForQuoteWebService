@@ -19,6 +19,8 @@ public final class ClientControllerImpl implements ClientController, Application
 	private ApplicationEventPublisher applicationEventPublisher;
 	private ClientManagerDao dao;
 
+	@Override
+	@WebMethod(exclude = true)
 	public void setClientManagerDao(ClientManagerDao dao)
 	{
 		if(dao == null)
@@ -57,7 +59,7 @@ public final class ClientControllerImpl implements ClientController, Application
 	@WebMethod
 	public boolean updateTier(int identifier, String tier, String updatedBy)
 	{
-		if(identifier > 0)
+		if(identifier <= 0)
 			throw new IllegalArgumentException("identifier");
 
 		if(updatedBy.isEmpty())
@@ -76,7 +78,7 @@ public final class ClientControllerImpl implements ClientController, Application
 	@WebMethod
 	public boolean updateValidity(int identifier, boolean isValid, String updatedBy)
 	{
-		if(identifier > 0)
+		if(identifier <= 0)
 			throw new IllegalArgumentException("identifier");
 
 		if(updatedBy.isEmpty())

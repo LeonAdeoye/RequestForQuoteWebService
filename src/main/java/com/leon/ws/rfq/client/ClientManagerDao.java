@@ -2,7 +2,7 @@ package com.leon.ws.rfq.client;
 
 import java.util.List;
 
-interface ClientManagerDao
+public interface ClientManagerDao
 {
 	ClientDetailImpl save(String name, String tier, String savedBy);
 	List<ClientDetailImpl> getAll();

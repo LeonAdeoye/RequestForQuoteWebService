@@ -9,6 +9,8 @@ import javax.jws.WebService;
 @WebService(name="ClientController")
 public interface ClientController
 {
+	void setClientManagerDao(ClientManagerDao dao);
+
 	@WebMethod
 	boolean save(@WebParam(name="name")String name,
 			@WebParam(name="tier")String tier,
