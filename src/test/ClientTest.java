@@ -42,7 +42,8 @@ public class ClientTest
 		}
 		catch(BeansException be)
 		{
-			logger.error("Failed to load application context for client controller!", be);
+			if(logger.isErrorEnabled())
+				logger.error("Failed to load application context for client controller!", be);
 		}
 	}
 

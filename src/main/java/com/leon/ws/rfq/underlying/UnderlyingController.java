@@ -8,6 +8,8 @@ import javax.jws.WebService;
 @WebService(name="UnderlyingController")
 public interface UnderlyingController
 {
+	void setUnderlyingManagerDao(UnderlyingManagerDao dao);
+
 	boolean save(@WebParam(name="RIC")String RIC,
 			@WebParam(name="description")String description,
 			@WebParam(name="savedBy")String savedBy);

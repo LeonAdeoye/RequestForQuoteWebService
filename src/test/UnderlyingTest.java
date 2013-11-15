@@ -11,17 +11,17 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.leon.ws.rfq.book.BookController;
-import com.leon.ws.rfq.book.BookManagerDao;
+import com.leon.ws.rfq.underlying.UnderlyingController;
+import com.leon.ws.rfq.underlying.UnderlyingManagerDao;
 
-public class BookTest
+public class UnderlyingTest
 {
 	@Rule public JUnitRuleMockery mockContext = new JUnitRuleMockery();
 	private static final Logger logger = LoggerFactory.getLogger(BookTest.class);
-	private BookController bookController;
-	private BookManagerDao daoMock;
+	private UnderlyingController underlyingController;
+	private UnderlyingManagerDao daoMock;
 
-	public BookTest()
+	public UnderlyingTest()
 	{
 		initializeBean();
 	}
@@ -36,9 +36,9 @@ public class BookTest
 		try
 		{
 			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-			this.bookController = (BookController) context.getBean("bookController");
-			this.daoMock = this.mockContext.mock(BookManagerDao.class);
-			this.bookController.setBookManagerDao(this.daoMock);
+			this.underlyingController = (UnderlyingController) context.getBean("underlyingController");
+			this.daoMock = this.mockContext.mock(UnderlyingManagerDao.class);
+			this.underlyingController.setUnderlyingManagerDao(this.daoMock);
 		}
 		catch(BeansException be)
 		{
@@ -56,71 +56,62 @@ public class BookTest
 	public void test_save_DaoSaveMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).save("test bookCode", "test entity", "test user"); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (UnderlyingTest.this.daoMock).save("test ric", "test description", "test user"); }});
 		// act
-		this.bookController.save("test bookCode", "test entity", "test user");
-	}
-
-	@Test
-	public void test_delete_DaoDeleteMethodCalled()
-	{
-		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).delete("test bookCode"); }});
-		// act
-		this.bookController.delete("test bookCode");
+		this.underlyingController.save("test ric", "test description", "test user");
 	}
 
 	@Test
 	public void test_updateValidity_DaoUpdateValidityMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).updateValidity("test bookCode", true); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (UnderlyingTest.this.daoMock).updateValidity("test ric", true, "test user"); }});
 		// act
-		this.bookController.updateValidity("test bookCode", true);
+		this.underlyingController.updateValidity("test ric", true, "test user");
 	}
 
 	@Test
 	public void test_getAll_DaoGetAllMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).getAll(); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (UnderlyingTest.this.daoMock).getAll(); }});
 		// act
-		this.bookController.getAll();
+		this.underlyingController.getAll();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_save_emptyBookCode_illegalArgumentExceptionThrown()
+	public void test_save_emptyRic_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("", "test entity", "test user");
+		this.underlyingController.save("", "test description", "test user");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_save_emptyEntity_illegalArgumentExceptionThrown()
+	public void test_save_emptyDescription_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("test bookCode", "", "test user");
+		this.underlyingController.save("test ric", "", "test user");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test_save_emptyUser_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("test bookCode", "test entity", "");
+		this.underlyingController.save("test ric", "test description", "");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_delete_emptyBookCode_illegalArgumentExceptionThrown()
+	public void test_updateValidity_emptyRic_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.delete("");
+		this.underlyingController.updateValidity("", true, "test user");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_updateValidity_emptyBookCode_illegalArgumentExceptionThrown()
+	public void test_updateValidity_emptyUser_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.updateValidity("", true);
+		this.underlyingController.updateValidity("test ric", true, "");
 	}
 
 	@After
@@ -129,3 +120,4 @@ public class BookTest
 	}
 
 }
+

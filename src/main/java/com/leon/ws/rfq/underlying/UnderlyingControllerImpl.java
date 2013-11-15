@@ -19,6 +19,14 @@ public class UnderlyingControllerImpl implements UnderlyingController, Applicati
 	private ApplicationEventPublisher applicationEventPublisher;
 	private UnderlyingManagerDao dao;
 
+	/**
+	 * Sets the Underlying Manager DAO object reference property.
+	 * 
+	 * @param dao 						the underlying manager dao for saving to the database.
+	 * @throws NullPointerException 	if the dao parameter is null.
+	 */
+	@Override
+	@WebMethod(exclude = true)
 	public void setUnderlyingManagerDao(UnderlyingManagerDao dao)
 	{
 		if(dao == null)
@@ -27,6 +35,15 @@ public class UnderlyingControllerImpl implements UnderlyingController, Applicati
 		this.dao = dao;
 	}
 
+	/**
+	 * Saves the underlying to the database and publishes an event for the listening client communicator.
+	 * 
+	 * @param ric 							the RIC of the underlying to be saved.
+	 * @param description					the description of the underlying to be saved.
+	 * @param savedBy						the user who is saving the underlying.
+	 * @returns	true if the save was successful; false otherwise.
+	 * @throws IllegalArgumentException 	if the RIC or description or savedBy parameter is an empty string.
+	 */
 	@Override
 	@WebMethod
 	public boolean save(String ric, String description, String savedBy)
@@ -51,6 +68,14 @@ public class UnderlyingControllerImpl implements UnderlyingController, Applicati
 		return newUnderlying != null;
 	}
 
+	/**
+	 * Updates the validity of the underlying in the database.
+	 * 
+	 * @param ric 							the RIC of the underlying to be updated.
+	 * @param isValid						the validity of the underlying to be updated.
+	 * @returns	true if the update was successful; false otherwise.
+	 * @throws IllegalArgumentException 	if the underlying's RIC parameter is an empty string.
+	 */
 	@Override
 	@WebMethod
 	public boolean updateValidity(String ric, boolean isValid, String updatedBy)
@@ -67,6 +92,12 @@ public class UnderlyingControllerImpl implements UnderlyingController, Applicati
 		return this.dao.updateValidity(ric, isValid, updatedBy);
 	}
 
+	/**
+	 * Sets the application event publisher.
+	 * 
+	 * @param applicationEventPublisher 	the applicationEventPublisher for publishing events.
+	 * @throws NullPointerException 		if the applicationEventPublisher parameter is null.
+	 */
 	@Override
 	@WebMethod
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
@@ -77,6 +108,10 @@ public class UnderlyingControllerImpl implements UnderlyingController, Applicati
 		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
+	/**
+	 * Gets all underlyings previously saved to the database.
+	 * @returns a list of underlyings that were previously saved in the database.
+	 */
 	@Override
 	@WebMethod
 	public List<UnderlyingDetailImpl> getAll()
