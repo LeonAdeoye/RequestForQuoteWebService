@@ -19,6 +19,14 @@ public final class OptionDetailImpl
 	private String underlyingRIC;
 	private double underlyingPrice;
 	private double strike;
+
+	private double strikePercentage;
+	private String description;
+	private double premiumPercentage;
+	private int quantity;
+	private double yearsToExpiry;
+	private String maturityDate;
+
 	private double daysToExpiry;
 	private double dayCountConvention;
 	private double volatility;
@@ -26,6 +34,66 @@ public final class OptionDetailImpl
 	private String side;
 
 	public OptionDetailImpl() {}
+
+	public double getStrikePercentage()
+	{
+		return this.strikePercentage;
+	}
+
+	public void setStrikePercentage(double strikePercentage)
+	{
+		this.strikePercentage = strikePercentage;
+	}
+
+	public String getMaturityDate()
+	{
+		return this.maturityDate;
+	}
+
+	public void setMaturityDate(String maturityDate)
+	{
+		this.maturityDate = maturityDate;
+	}
+
+	public double getPremiumPercentage()
+	{
+		return this.premiumPercentage;
+	}
+
+	public void setPremiumPercentage(double premiumPercentage)
+	{
+		this.premiumPercentage = premiumPercentage;
+	}
+
+	public double getYearsToExpiry()
+	{
+		return this.yearsToExpiry;
+	}
+
+	public void setYearsToExpiry(double yearsToExpiry)
+	{
+		this.yearsToExpiry = yearsToExpiry;
+	}
+
+	public int getQuantity()
+	{
+		return this.quantity;
+	}
+
+	public void setQuantity(int quantity)
+	{
+		this.quantity = quantity;
+	}
+
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 
 	public int getLegId()
 	{
@@ -137,99 +205,6 @@ public final class OptionDetailImpl
 		this.volatility = volatility;
 	}
 
-	@Override
-	public String toString()
-	{
-		StringBuilder buf = new StringBuilder(" Leg ID: ");
-		buf.append(this.legId);
-		buf.append(", Is call: ");
-		buf.append(this.isCall);
-		buf.append(", Is european: ");
-		buf.append(this.isEuropean);
-		buf.append(", Underlying RIC: ");
-		buf.append(this.underlyingRIC);
-		buf.append(", Side: ");
-		buf.append(this.side);
-
-		buf.append(", Underlying price: ");
-		buf.append(this.underlyingPrice);
-		buf.append(", Interest rate: ");
-		buf.append(this.interestRate);
-		buf.append(", Volatility: ");
-		buf.append(this.volatility);
-		buf.append(", Days to expiry: ");
-		buf.append(this.daysToExpiry);
-		buf.append(", Day count convention: ");
-		buf.append(this.dayCountConvention);
-		buf.append(", Strike: ");
-		buf.append(this.strike);
-
-		buf.append(", Delta: ");
-		buf.append(this.delta);
-		buf.append(", Gamma: ");
-		buf.append(this.gamma);
-		buf.append(", Vega: ");
-		buf.append(this.vega);
-		buf.append(", Theta: ");
-		buf.append(this.theta);
-		buf.append(", Rho: ");
-		buf.append(this.rho);
-		buf.append(", Premium: ");
-		buf.append(this.premium);
-
-
-		return buf.toString();
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if(this == o)
-			return true;
-
-		if(!(o instanceof OptionDetailImpl))
-			return false;
-
-		OptionDetailImpl param = (OptionDetailImpl) o;
-
-		return 	(this.legId == param.legId) &&
-				(this.isCall == param.isCall) &&
-				(this.isEuropean == param.isEuropean) &&
-
-				(this.strike == param.strike) &&
-				(this.underlyingPrice == param.underlyingPrice) &&
-				this.underlyingRIC.equals(param.underlyingRIC) &&
-				(this.dayCountConvention == param.dayCountConvention) &&
-				(this.daysToExpiry == param.daysToExpiry) &&
-				(this.volatility == param.volatility) &&
-				(this.interestRate == param.interestRate) &&
-				(this.side.equals(param.side)) &&
-
-				(this.premium == param.premium) &&
-				(this.delta == param.delta) &&
-				(this.gamma == param.gamma) &&
-				(this.theta == param.theta) &&
-				(this.vega == param.vega) &&
-				(this.rho == param.rho);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int result = 17;
-		result = (37 * result) + this.legId;
-		result = (37 * result) + (this.isCall ? 0 : 1);
-		result = (37 * result) + (this.isEuropean ? 0 : 1);
-		result = (37 * result) + this.side.hashCode();
-		result = (37 * result) + this.underlyingRIC.hashCode();
-		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
-		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
-		result = 37 * result + (vega == null ? 0 : vega.hashCode());
-		result = 37 * result + (theta == null ? 0 : theta.hashCode());
-		result = 37 * result + (rho == null ? 0 : rho.hashCode());	*/
-		return result;
-	}
-
 	public double getUnderlyingPrice()
 	{
 		return this.underlyingPrice;
@@ -288,5 +263,119 @@ public final class OptionDetailImpl
 	public void setSide(String side)
 	{
 		this.side = side;
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder buf = new StringBuilder(" Leg ID: ");
+		buf.append(this.legId);
+		buf.append(", Is call: ");
+		buf.append(this.isCall);
+		buf.append(", Is european: ");
+		buf.append(this.isEuropean);
+		buf.append(", Underlying RIC: ");
+		buf.append(this.underlyingRIC);
+		buf.append(", Side: ");
+		buf.append(this.side);
+		buf.append(", Description: ");
+		buf.append(this.description);
+		buf.append(", Quantity: ");
+		buf.append(this.quantity);
+
+		buf.append(", Underlying price: ");
+		buf.append(this.underlyingPrice);
+		buf.append(", Interest rate: ");
+		buf.append(this.interestRate);
+		buf.append(", Volatility: ");
+		buf.append(this.volatility);
+		buf.append(", Days to expiry: ");
+		buf.append(this.daysToExpiry);
+		buf.append(", Years to expiry: ");
+		buf.append(this.yearsToExpiry);
+		buf.append(", MaturityDate: ");
+		buf.append(this.maturityDate);
+		buf.append(", Day count convention: ");
+		buf.append(this.dayCountConvention);
+		buf.append(", Strike: ");
+		buf.append(this.strike);
+		buf.append(", Strike Percentage: ");
+		buf.append(this.strikePercentage);
+		buf.append(", Strike Percentage: ");
+		buf.append(this.strikePercentage);
+
+
+		buf.append(", Delta: ");
+		buf.append(this.delta);
+		buf.append(", Gamma: ");
+		buf.append(this.gamma);
+		buf.append(", Vega: ");
+		buf.append(this.vega);
+		buf.append(", Theta: ");
+		buf.append(this.theta);
+		buf.append(", Rho: ");
+		buf.append(this.rho);
+		buf.append(", Premium: ");
+		buf.append(this.premium);
+		buf.append(", Premium Percentage: ");
+		buf.append(this.premiumPercentage);
+
+
+		return buf.toString();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o)
+			return true;
+
+		if(!(o instanceof OptionDetailImpl))
+			return false;
+
+		OptionDetailImpl param = (OptionDetailImpl) o;
+
+		return 	(this.legId == param.legId) &&
+				(this.isCall == param.isCall) &&
+				(this.isEuropean == param.isEuropean) &&
+				(this.description.equals(param.description)) &&
+				(this.strike == param.strike) &&
+				(this.quantity == param.quantity) &&
+				(this.strikePercentage == param.strikePercentage) &&
+				(this.underlyingPrice == param.underlyingPrice) &&
+				this.underlyingRIC.equals(param.underlyingRIC) &&
+				(this.dayCountConvention == param.dayCountConvention) &&
+				(this.daysToExpiry == param.daysToExpiry) &&
+				(this.yearsToExpiry == param.yearsToExpiry) &&
+				(this.maturityDate.equals(param.maturityDate)) &&
+				(this.volatility == param.volatility) &&
+				(this.interestRate == param.interestRate) &&
+				(this.side.equals(param.side)) &&
+				(this.premium == param.premium) &&
+				(this.premiumPercentage == param.premiumPercentage) &&
+				(this.delta == param.delta) &&
+				(this.gamma == param.gamma) &&
+				(this.theta == param.theta) &&
+				(this.vega == param.vega) &&
+				(this.rho == param.rho);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = 17;
+		result = (37 * result) + this.legId;
+		result = (37 * result) + (this.isCall ? 0 : 1);
+		result = (37 * result) + (this.isEuropean ? 0 : 1);
+		result = (37 * result) + this.side.hashCode();
+		result = (37 * result) + this.underlyingRIC.hashCode();
+		result = (37 * result) + this.description.hashCode();
+		result = (37 * result) + this.maturityDate.hashCode();
+		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
+		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
+		result = 37 * result + (vega == null ? 0 : vega.hashCode());
+		result = 37 * result + (theta == null ? 0 : theta.hashCode());
+		result = 37 * result + (rho == null ? 0 : rho.hashCode());	*/
+		return result;
 	}
 }
