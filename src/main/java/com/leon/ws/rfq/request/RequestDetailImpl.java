@@ -1,6 +1,7 @@
 package com.leon.ws.rfq.request;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -90,6 +91,11 @@ public final class RequestDetailImpl
 		OptionDetailListImpl optionlegs =  new OptionDetailListImpl();
 		optionlegs.setOptionDetailList(this.legs);
 		return optionlegs;
+	}
+
+	public Iterator<OptionDetailImpl> iterator()
+	{
+		return this.legs.iterator();
 	}
 
 	public void setLegs(OptionDetailListImpl optionLegs)

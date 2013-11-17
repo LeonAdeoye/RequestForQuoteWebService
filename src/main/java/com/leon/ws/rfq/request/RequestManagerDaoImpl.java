@@ -118,6 +118,16 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
 
+	private static final String SAVE_LEG =
+			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+					+ "?, ?, ?, ? )";
+
+	private static final String UPDATE_LEG =
+			"CALL optionLeg_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+					+ "?, ?, ?, ? )";
+
 	private static final String CLIENT_CRITERION = "Client";
 	private static final String STATUS_CRITERION = "Status";
 	private static final String BOOK_CRITERION = "Book";
@@ -222,13 +232,49 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 				savedByUser ); //59
 
+		// TODO add SPRING transaction management.
+		for(OptionDetailImpl leg : request.getLegs())
+		{
+			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,
+					leg.getLegId(),
+					leg.getDelta(),
+					leg.getGamma(),
+					leg.getTheta(),
+					leg.getVega(),
+
+					leg.getRho(),
+					leg.getVolatility(),
+					leg.getMaturityDate(),
+					leg.getDaysToExpiry(),
+					leg.getYearsToExpiry(),
+
+					leg.getUnderlyingPrice(),
+					leg.getUnderlyingRIC(),
+					leg.getDescription(),
+					leg.getIsCall(),
+					leg.getIsEuropean(),
+
+					leg.getInterestRate(),
+					leg.getDayCountConvention(),
+					leg.getPremium(),
+					leg.getPremiumPercentage(),
+					leg.getStrike(),
+
+					leg.getStrikePercentage(),
+					leg.getSide(),
+					leg.getQuantity(),
+					savedByUser))
+
+				return null;
+		}
+
 		return result;
 	}
 
 	@Override
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
-		return this.databaseExecutor.<RequestDetailImpl>executePreparedStatement(UPDATE,
+		boolean updateResult =  this.databaseExecutor.<RequestDetailImpl>executePreparedStatement(UPDATE,
 				request.getIdentifier(),
 				request.getRequest(),
 				request.getBookCode(),
@@ -302,6 +348,43 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				request.getPickedUpBy(), //58
 
 				updatedByUser); // 59
+
+		// TODO add SPRING transaction management.
+		for(OptionDetailImpl leg : request.getLegs())
+		{
+			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(UPDATE_LEG,
+					leg.getLegId(),
+					leg.getDelta(),
+					leg.getGamma(),
+					leg.getTheta(),
+					leg.getVega(),
+
+					leg.getRho(),
+					leg.getVolatility(),
+					leg.getMaturityDate(),
+					leg.getDaysToExpiry(),
+					leg.getYearsToExpiry(),
+
+					leg.getUnderlyingPrice(),
+					leg.getUnderlyingRIC(),
+					leg.getDescription(),
+					leg.getIsCall(),
+					leg.getIsEuropean(),
+
+					leg.getInterestRate(),
+					leg.getDayCountConvention(),
+					leg.getPremium(),
+					leg.getPremiumPercentage(),
+					leg.getStrike(),
+
+					leg.getStrikePercentage(),
+					leg.getSide(),
+					leg.getQuantity(),
+					updatedByUser))
+
+				return false;
+		}
+		return updateResult;
 	}
 
 	@Override
