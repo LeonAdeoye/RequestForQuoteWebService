@@ -69,7 +69,7 @@ public final class ClientCommunicatorImpl extends Thread implements ClientCommun
 					logger.info(String.format("server socket has been opened and is bound to %s using port %d", this.ipAddress, this.portNumber));
 
 				// Sleep to allow the binding to complete
-				sleep(2000);
+				TimeUnit.SECONDS.sleep(2);
 				this.start();
 				return true;
 			}

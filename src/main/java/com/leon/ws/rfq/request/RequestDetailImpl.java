@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.leon.ws.rfq.utilities.UtilityMethods;
+
 @XmlRootElement(name="RequestDetailImpl", namespace = "com.leon.ws.rfq.request")
 public final class RequestDetailImpl
 {
@@ -814,6 +816,29 @@ public final class RequestDetailImpl
 				(this.premiumAmount == param.premiumAmount) &&
 				(this.premiumPercentage == param.premiumPercentage) &&
 
+				(this.traderComment.equals(param.traderComment)) &&
+				(this.clientComment.equals(param.clientComment)) &&
+				(this.salesComment.equals(param.salesComment)) &&
+				(this.tradeDate.equals(param.tradeDate)) &&
+				(this.pickedUpBy.equals(param.pickedUpBy)) &&
+				(this.status.equals(param.status)) &&
+
+				(this.contracts == param.contracts) &&
+				(this.lotSize == param.lotSize) &&
+				(this.multiplier == param.multiplier) &&
+				(this.premiumSettlementDaysOverride == param.premiumSettlementDaysOverride) &&
+				(this.quantity == param.quantity) &&
+				(this.clientId == param.clientId) &&
+
+				(this.hedgePrice == param.hedgePrice) &&
+				(this.totalPremium == param.totalPremium) &&
+				(this.notionalFXRate == param.notionalFXRate) &&
+				(this.notionalMillions == param.notionalMillions) &&
+				(this.premiumSettlementFXRate == param.premiumSettlementFXRate) &&
+				(this.salesCreditAmount == param.salesCreditAmount) &&
+				(this.salesCreditFXRate == param.salesCreditFXRate) &&
+				(this.salesCreditPercentage == param.salesCreditPercentage) &&
+
 				(this.deltaShares == param.deltaShares) &&
 				(this.gammaShares == param.gammaShares) &&
 				(this.thetaShares == param.thetaShares) &&
@@ -828,40 +853,62 @@ public final class RequestDetailImpl
 		result = (37 * result) + this.identifier;
 		result = (37 * result) + (this.request == null ? 0 : this.request.hashCode());
 		result = (37 * result) + (this.bookCode == null ? 0 : this.bookCode.hashCode());
+		result = (37 * result) + (this.pickedUpBy == null ? 0 : this.pickedUpBy.hashCode());
+		result = (37 * result) + (this.status == null ? 0 : this.status.hashCode());
+		result = (37 * result) + (this.tradeDate == null ? 0 : this.tradeDate.hashCode());
+		result = (37 * result) + (this.traderComment == null ? 0 : this.traderComment.hashCode());
+		result = (37 * result) + (this.clientComment == null ? 0 : this.clientComment.hashCode());
+		result = (37 * result) + (this.salesComment == null ? 0 : this.salesComment.hashCode());
 
-		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
-		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
-		result = 37 * result + (vega == null ? 0 : vega.hashCode());
-		result = 37 * result + (theta == null ? 0 : theta.hashCode());
-		result = 37 * result + (rho == null ? 0 : rho.hashCode());
+		result = (37 * result) + this.contracts;
+		result = (37 * result) + this.lotSize;
+		result = (37 * result) + this.multiplier;
+		result = (37 * result) + this.premiumSettlementDaysOverride;
+		result = (37 * result) + this.quantity;
+		result = (37 * result) + this.clientId;
 
-		result = 37 * result + (deltaShares == null ? 0 : deltaShares.hashCode());
-		result = 37 * result + (gammaShares == null ? 0 : gammaShares.hashCode());
-		result = 37 * result + (vegaShares == null ? 0 : vegaShares.hashCode());
-		result = 37 * result + (thetaShares == null ? 0 : thetaShares.hashCode());
-		result = 37 * result + (rhoShares == null ? 0 : rhoShares.hashCode());
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.delta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.gamma);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.vega);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.theta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rho);
 
-		result = 37 * result + (deltaNotional == null ? 0 : deltaNotional.hashCode());
-		result = 37 * result + (gammaNotional == null ? 0 : gammaNotional.hashCode());
-		result = 37 * result + (vegaNotional == null ? 0 : vegaNotional.hashCode());
-		result = 37 * result + (thetaNotional == null ? 0 : thetaNotional.hashCode());
-		result = 37 * result + (rhoNotional == null ? 0 : rhoNotional.hashCode());
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.deltaShares);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.gammaShares);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.vegaShares);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.thetaShares);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rhoShares);
 
-		result = 37 * result + (bidImpliedVol == null ? 0 : bidImpliedVol.hashCode());
-		result = 37 * result + (bidPremiumPercentage == null ? 0 : bidPremiumPercentage.hashCode());
-		result = 37 * result + (bidPremiumAmount == null ? 0 : bidPremiumAmount.hashCode());
-		result = 37 * result + (bidFinalAmount == null ? 0 : bidFinalAmount.hashCode());
-		result = 37 * result + (bidFinalPercentage == null ? 0 : bidFinalPercentage.hashCode());
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.deltaNotional);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.gammaNotional);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.vegaNotional);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.thetaNotional);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rhoNotional);
 
-		result = 37 * result + (askImpliedVol == null ? 0 : askImpliedVol.hashCode());
-		result = 37 * result + (askPremiumPercentage == null ? 0 : askPremiumPercentage.hashCode());
-		result = 37 * result + (askPremiumAmount == null ? 0 : askPremiumAmount.hashCode());
-		result = 37 * result + (askFinalAmount == null ? 0 : askFinalAmount.hashCode());
-		result = 37 * result + (askFinalPercentage == null ? 0 : askFinalPercentage.hashCode());
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.bidImpliedVol);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.bidPremiumPercentage);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.bidPremiumAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.bidFinalAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.bidFinalPercentage);
 
-		result = 37 * result + (impliedVol == null ? 0 : impliedVol.hashCode());
-		result = 37 * result + (premiumPercentage == null ? 0 : premiumPercentage.hashCode());
-		result = 37 * result + (premiumAmount == null ? 0 : premiumAmount.hashCode());*/
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.askImpliedVol);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.askPremiumPercentage);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.askPremiumAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.askFinalAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.askFinalPercentage);
+
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.impliedVol);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.premiumPercentage);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.premiumAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.hedgePrice);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.totalPremium);
+
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.notionalFXRate);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.notionalMillions);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.premiumSettlementFXRate);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.salesCreditAmount);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.salesCreditFXRate);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.salesCreditPercentage);
 
 		if(this.legs != null)
 		{

@@ -74,5 +74,16 @@ public final class UtilityMethods
 		}
 		return "";
 	}
+
+	/**
+	 * Calculates the hash code of a double value.
+	 * 
+	 * @param value							the seed double value.
+	 */
+	public static int doubleHashCode(double value)
+	{
+		long bits = Double.doubleToLongBits(value);
+		return (int)(bits ^ (bits >>> 32));
+	}
 }
 

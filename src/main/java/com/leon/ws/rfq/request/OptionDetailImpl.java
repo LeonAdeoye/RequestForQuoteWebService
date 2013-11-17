@@ -2,6 +2,8 @@ package com.leon.ws.rfq.request;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.leon.ws.rfq.utilities.UtilityMethods;
+
 @XmlRootElement(name="OptionDetailImpl", namespace = "com.leon.ws.rfq.request")
 public final class OptionDetailImpl
 {
@@ -371,11 +373,21 @@ public final class OptionDetailImpl
 		result = (37 * result) + this.underlyingRIC.hashCode();
 		result = (37 * result) + this.description.hashCode();
 		result = (37 * result) + this.maturityDate.hashCode();
-		/*result = 37 * result + (delta == null ? 0 : delta.hashCode());
-		result = 37 * result + (gamma == null ? 0 : gamma.hashCode());
-		result = 37 * result + (vega == null ? 0 : vega.hashCode());
-		result = 37 * result + (theta == null ? 0 : theta.hashCode());
-		result = 37 * result + (rho == null ? 0 : rho.hashCode());	*/
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.delta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.gamma);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.vega);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.theta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rho);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.premiumPercentage);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.premium);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.interestRate);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.volatility);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.yearsToExpiry);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.daysToExpiry);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.underlyingPrice);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.strike);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.strikePercentage);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.quantity);
 		return result;
 	}
 }
