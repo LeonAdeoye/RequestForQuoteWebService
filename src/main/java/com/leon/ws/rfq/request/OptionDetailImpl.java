@@ -388,6 +388,7 @@ public final class OptionDetailImpl
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.strike);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.strikePercentage);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.quantity);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.dayCountConvention);
 		return result;
 	}
 }

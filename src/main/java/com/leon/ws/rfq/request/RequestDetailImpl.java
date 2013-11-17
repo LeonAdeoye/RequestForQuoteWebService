@@ -762,6 +762,16 @@ public final class RequestDetailImpl
 		return buf.toString();
 	}
 
+	public OptionDetailImpl getLeg(int legId)
+	{
+		for(OptionDetailImpl leg : this.legs)
+		{
+			if(leg.getLegId() == legId)
+				return leg;
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -773,18 +783,21 @@ public final class RequestDetailImpl
 
 		RequestDetailImpl param = (RequestDetailImpl) o;
 
-		boolean isEqual = false;
-
-		if(this.legs != null)
+		if((this.legs != null) && (param.legs != null))
 		{
+			if(this.legs != param.legs)
+				return false;
+
 			for(OptionDetailImpl leg : this.legs)
 			{
-				// TODO - check each leg and compare against param's legs
-				isEqual = leg.equals(leg);
+				if(!param.getLeg(leg.getLegId()).equals(leg))
+					return false;
 			}
 		}
+		else if((this.legs != null) || (param.legs != null))
+			return false;
 
-		return 	isEqual && (this.identifier == param.identifier) &&
+		return 	(this.identifier == param.identifier) &&
 				(this.request == param.request) &&
 				(this.bookCode == param.bookCode) &&
 
