@@ -62,6 +62,10 @@
 		<appender-ref ref="DAO_LOG_FILE" />           
 	</logger>
 	
+	<logger name="com.leon.ws.rfq.request.RequestManagerDaoImpl" level="TRACE">
+		<appender-ref ref="DAO_LOG_FILE" />           
+	</logger>	
+	
 	<logger name="com.leon.ws.rfq.chat.ChatMediatorImpl" level="TRACE">
 		<appender-ref ref="CHAT_LOG_FILE" />           
 	</logger>
