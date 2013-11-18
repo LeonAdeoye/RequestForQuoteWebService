@@ -2,10 +2,13 @@ package com.leon.ws.rfq.request;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
@@ -15,6 +18,8 @@ import com.leon.ws.rfq.utilities.UtilityMethods;
 
 public final class RequestManagerDaoImpl implements RequestManagerDao
 {
+	private static final Logger logger = LoggerFactory.getLogger(RequestManagerDaoImpl.class);
+
 	private class RequestParameterizedRowMapper implements ParameterizedRowMapper<RequestDetailImpl>
 	{
 		@Override
@@ -120,12 +125,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private static final String SAVE_LEG =
 			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String UPDATE_LEG =
 			"CALL optionLeg_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String CLIENT_CRITERION = "Client";
@@ -158,117 +163,142 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	@Override
 	public RequestDetailImpl save(RequestDetailImpl request, String savedByUser)
 	{
-		RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
-				request.getRequest(),
-				request.getBookCode(),
-				request.getClientId(),
-				request.getIsOTC(),
-				request.getStatus(), //6
-
-				UtilityMethods.convertToDate(request.getTradeDate()),
-				UtilityMethods.convertToDate(request.getExpiryDate()),
-
-				request.getLotSize(),
-				request.getMultiplier(),
-				request.getContracts(),
-				request.getQuantity(), //12
-
-				request.getNotionalMillions(),
-				request.getNotionalFXRate(),
-				request.getNotionalCurrency(), //15
-
-				request.getDelta(),
-				request.getGamma(),
-				request.getVega(),
-				request.getTheta(),
-				request.getRho(), //20
-
-				request.getDeltaNotional(),
-				request.getGammaNotional(),
-				request.getVegaNotional(),
-				request.getThetaNotional(),
-				request.getRhoNotional(), //25
-
-				request.getDeltaShares(),
-				request.getGammaShares(),
-				request.getVegaShares(),
-				request.getThetaShares(),
-				request.getRhoShares(), //30
-
-				request.getAskFinalAmount(),
-				request.getAskFinalPercentage(),
-				request.getAskImpliedVol(),
-				request.getAskPremiumAmount(),
-				request.getAskPremiumPercentage(), //35
-
-				request.getBidFinalAmount(),
-				request.getBidFinalPercentage(),
-				request.getBidImpliedVol(),
-				request.getBidPremiumAmount(),
-				request.getBidPremiumPercentage(), //40
-
-				request.getPremiumAmount(),
-				request.getPremiumPercentage(),
-				request.getImpliedVol(), //43
-
-				request.getSalesCreditAmount(),
-				request.getSalesCreditPercentage(),
-				request.getSalesCreditCurrency(),
-				request.getSalesCreditFXRate(), //47
-
-				request.getPremiumSettlementCurrency(),
-				UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
-				request.getPremiumSettlementDaysOverride(),
-				request.getPremiumSettlementFXRate(), //51
-
-				request.getSalesComment(),
-				request.getTraderComment(),
-				request.getClientComment(), //54
-
-				request.getHedgePrice(),
-				request.getHedgeType(),
-				request.getTotalPremium(),
-				request.getPickedUpBy(), //58
-
-				savedByUser ); //59
-
-		// TODO add SPRING transaction management.
-		for(OptionDetailImpl leg : request.getLegs())
+		Savepoint saveRequest = null;
+		try
 		{
-			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,
-					leg.getLegId(),
-					leg.getDelta(),
-					leg.getGamma(),
-					leg.getTheta(),
-					leg.getVega(),
+			saveRequest = this.databaseExecutor.startTransaction();
 
-					leg.getRho(),
-					leg.getVolatility(),
-					leg.getMaturityDate(),
-					leg.getDaysToExpiry(),
-					leg.getYearsToExpiry(),
+			RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
+					request.getRequest(),
+					request.getBookCode(),
+					request.getClientId(),
+					request.getIsOTC(),
+					request.getStatus(), //6
 
-					leg.getUnderlyingPrice(),
-					leg.getUnderlyingRIC(),
-					leg.getDescription(),
-					leg.getIsCall(),
-					leg.getIsEuropean(),
+					UtilityMethods.convertToDate(request.getTradeDate()),
+					UtilityMethods.convertToDate(request.getExpiryDate()),
 
-					leg.getInterestRate(),
-					leg.getDayCountConvention(),
-					leg.getPremium(),
-					leg.getPremiumPercentage(),
-					leg.getStrike(),
+					request.getLotSize(),
+					request.getMultiplier(),
+					request.getContracts(),
+					request.getQuantity(), //12
 
-					leg.getStrikePercentage(),
-					leg.getSide(),
-					leg.getQuantity(),
-					savedByUser))
+					request.getNotionalMillions(),
+					request.getNotionalFXRate(),
+					request.getNotionalCurrency(), //15
 
-				return null;
+					request.getDelta(),
+					request.getGamma(),
+					request.getVega(),
+					request.getTheta(),
+					request.getRho(), //20
+
+					request.getDeltaNotional(),
+					request.getGammaNotional(),
+					request.getVegaNotional(),
+					request.getThetaNotional(),
+					request.getRhoNotional(), //25
+
+					request.getDeltaShares(),
+					request.getGammaShares(),
+					request.getVegaShares(),
+					request.getThetaShares(),
+					request.getRhoShares(), //30
+
+					request.getAskFinalAmount(),
+					request.getAskFinalPercentage(),
+					request.getAskImpliedVol(),
+					request.getAskPremiumAmount(),
+					request.getAskPremiumPercentage(), //35
+
+					request.getBidFinalAmount(),
+					request.getBidFinalPercentage(),
+					request.getBidImpliedVol(),
+					request.getBidPremiumAmount(),
+					request.getBidPremiumPercentage(), //40
+
+					request.getPremiumAmount(),
+					request.getPremiumPercentage(),
+					request.getImpliedVol(), //43
+
+					request.getSalesCreditAmount(),
+					request.getSalesCreditPercentage(),
+					request.getSalesCreditCurrency(),
+					request.getSalesCreditFXRate(), //47
+
+					request.getPremiumSettlementCurrency(),
+					UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
+					request.getPremiumSettlementDaysOverride(),
+					request.getPremiumSettlementFXRate(), //51
+
+					request.getSalesComment(),
+					request.getTraderComment(),
+					request.getClientComment(), //54
+
+					request.getHedgePrice(),
+					request.getHedgeType(),
+					request.getTotalPremium(),
+					request.getPickedUpBy(), //58
+
+					savedByUser ); //59
+
+			if(result == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Failed to save request: " + request.getRequest());
+
+				this.databaseExecutor.rollbackTransaction(saveRequest);
+			}
+
+			for(OptionDetailImpl leg : request.getLegs())
+			{
+				if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,
+						leg.getLegId(),
+						leg.getDelta(),
+						leg.getGamma(),
+						leg.getTheta(),
+						leg.getVega(),
+
+						leg.getRho(),
+						leg.getVolatility(),
+						leg.getMaturityDate(),
+						leg.getDaysToExpiry(),
+						leg.getYearsToExpiry(),
+
+						leg.getUnderlyingPrice(),
+						leg.getUnderlyingRIC(),
+						leg.getDescription(),
+						leg.getIsCall(),
+						leg.getIsEuropean(),
+
+						leg.getInterestRate(),
+						leg.getDayCountConvention(),
+						leg.getPremium(),
+						leg.getPremiumPercentage(),
+						leg.getStrike(),
+
+						leg.getStrikePercentage(),
+						leg.getSide(),
+						leg.getQuantity(),
+						savedByUser))
+				{
+					if(logger.isErrorEnabled())
+						logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
+
+					this.databaseExecutor.rollbackTransaction(saveRequest);
+					return null;
+				}
+			}
+
+			this.databaseExecutor.commitTransaction();
+			return result;
 		}
-
-		return result;
+		catch(SQLException se)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Failed to save request: " + request.getRequest());
+		}
+		return null;
 	}
 
 	@Override

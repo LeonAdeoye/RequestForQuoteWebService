@@ -1,5 +1,7 @@
 package com.leon.ws.rfq.database;
 
+import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,8 +13,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSupport  implements GenericDatabaseCommandExecutor
 {
 	private static final Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
-
-
 
 	@Override
 	public <T> boolean executePreparedStatement(String preparedStatement,Object... params)
@@ -65,5 +65,24 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
 		}
 		return null;
+	}
+
+	@Override
+	public Savepoint startTransaction() throws SQLException
+	{
+		this.getConnection().setAutoCommit(false);
+		return this.getConnection().setSavepoint();
+	}
+
+	@Override
+	public void commitTransaction() throws SQLException
+	{
+		this.getConnection().commit();
+	}
+
+	@Override
+	public void rollbackTransaction(Savepoint savePoint) throws SQLException
+	{
+		this.getConnection().rollback(savePoint);
 	}
 }

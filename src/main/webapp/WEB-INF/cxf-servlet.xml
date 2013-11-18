@@ -116,6 +116,10 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="initialSize" value="3"/>
     	<property name="maxActive" value="5"/>
     </bean>
+    
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>    
     	
 	<jaxws:endpoint 	  id="underlyingMaintenanceController"	  implementor="#underlyingController"	  address="/UnderlyingMaintenance" />    	
 	<jaxws:endpoint 	  id="optionPricingController"	  implementor="#optionPricer"	  address="/PriceOption" />
