@@ -115,8 +115,9 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="password" value="liverpool"/>
     	<property name="initialSize" value="3"/>
     	<property name="maxActive" value="5"/>
+    	<property name="defaultAutoCommit" value="false"/>
     </bean>
-    
+       
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>    

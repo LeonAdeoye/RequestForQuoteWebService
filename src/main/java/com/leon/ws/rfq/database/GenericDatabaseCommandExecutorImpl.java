@@ -1,7 +1,6 @@
 package com.leon.ws.rfq.database;
 
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,10 +67,9 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 	}
 
 	@Override
-	public Savepoint startTransaction() throws SQLException
+	public void setAutoCommit(boolean autoCommit) throws SQLException
 	{
-		this.getConnection().setAutoCommit(false);
-		return this.getConnection().setSavepoint();
+		this.getConnection().setAutoCommit(autoCommit);
 	}
 
 	@Override
@@ -81,8 +79,8 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 	}
 
 	@Override
-	public void rollbackTransaction(Savepoint savePoint) throws SQLException
+	public void rollbackTransaction() throws SQLException
 	{
-		this.getConnection().rollback(savePoint);
+		this.getConnection().rollback();
 	}
 }

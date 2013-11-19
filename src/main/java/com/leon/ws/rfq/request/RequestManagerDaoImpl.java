@@ -2,7 +2,6 @@ package com.leon.ws.rfq.request;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,12 +124,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private static final String SAVE_LEG =
 			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String UPDATE_LEG =
 			"CALL optionLeg_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String CLIENT_CRITERION = "Client";
@@ -150,23 +149,51 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	RequestManagerDaoImpl() {}
 
-	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor)
+	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
 		this.databaseExecutor = databaseExecutor;
+		this.databaseExecutor.setAutoCommit(true);
 	}
 
-	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor)
+	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
 		this.databaseExecutor = databaseExecutor;
+		this.databaseExecutor.setAutoCommit(true);
 	}
 
 	@Override
 	public RequestDetailImpl save(RequestDetailImpl request, String savedByUser)
 	{
-		Savepoint saveRequest = null;
 		try
 		{
-			saveRequest = this.databaseExecutor.startTransaction();
+			java.sql.Date tradeDate = UtilityMethods.convertToDate(request.getTradeDate());
+			if(tradeDate == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid trade date: " + request.getTradeDate());
+
+				throw new IllegalArgumentException("tradeDate");
+			}
+
+			java.sql.Date expiryDate = UtilityMethods.convertToDate(request.getExpiryDate());
+			if(expiryDate == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid expiry date: " + request.getTradeDate());
+
+				throw new IllegalArgumentException("expiryDate");
+			}
+
+			java.sql.Date premiumSettlementDate = UtilityMethods.convertToDate(request.getPremiumSettlementDate());
+			if(premiumSettlementDate == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid premium settlement date: " + request.getPremiumSettlementDate());
+
+				throw new IllegalArgumentException("PremiumSettlementDate");
+			}
+
+			this.databaseExecutor.setAutoCommit(false);
 
 			RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
 					request.getRequest(),
@@ -175,8 +202,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					request.getIsOTC(),
 					request.getStatus(), //6
 
-					UtilityMethods.convertToDate(request.getTradeDate()),
-					UtilityMethods.convertToDate(request.getExpiryDate()),
+					tradeDate,
+					expiryDate,
 
 					request.getLotSize(),
 					request.getMultiplier(),
@@ -227,7 +254,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					request.getSalesCreditFXRate(), //47
 
 					request.getPremiumSettlementCurrency(),
-					UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
+					premiumSettlementDate,
 					request.getPremiumSettlementDaysOverride(),
 					request.getPremiumSettlementFXRate(), //51
 
@@ -247,11 +274,26 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				if(logger.isErrorEnabled())
 					logger.error("Failed to save request: " + request.getRequest());
 
-				this.databaseExecutor.rollbackTransaction(saveRequest);
+				this.databaseExecutor.rollbackTransaction();
 			}
+
+			java.sql.Date maturityDate;
 
 			for(OptionDetailImpl leg : request.getLegs())
 			{
+				maturityDate = UtilityMethods.convertToDate(leg.getMaturityDate());
+
+				if(maturityDate == null)
+				{
+					if(logger.isErrorEnabled())
+						logger.error("Cannot save leg: " + leg.getLegId() + " of request : " + request.getRequest()
+								+ " because of an invalid maturity date: " + leg.getMaturityDate());
+
+					this.databaseExecutor.rollbackTransaction();
+
+					throw new IllegalArgumentException("maturityDate");
+				}
+
 				if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,
 						leg.getLegId(),
 						leg.getDelta(),
@@ -261,13 +303,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 						leg.getRho(),
 						leg.getVolatility(),
-						leg.getMaturityDate(),
+						maturityDate,
 						leg.getDaysToExpiry(),
 						leg.getYearsToExpiry(),
 
 						leg.getUnderlyingPrice(),
 						leg.getUnderlyingRIC(),
-						leg.getDescription(),
 						leg.getIsCall(),
 						leg.getIsEuropean(),
 
@@ -285,25 +326,55 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					if(logger.isErrorEnabled())
 						logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
 
-					this.databaseExecutor.rollbackTransaction(saveRequest);
+					this.databaseExecutor.rollbackTransaction();
+
 					return null;
 				}
 			}
 
 			this.databaseExecutor.commitTransaction();
+
 			return result;
 		}
 		catch(SQLException se)
 		{
 			if(logger.isErrorEnabled())
-				logger.error("Failed to save request: " + request.getRequest());
+				logger.error("Failed to save request: " + request.getRequest() + ". Exception thrown: " + se);
 		}
+
 		return null;
 	}
 
 	@Override
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
+		java.sql.Date tradeDate = UtilityMethods.convertToDate(request.getTradeDate());
+		if(tradeDate == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Cannot update request: " + request.getRequest() + " because of an invalid trade date: " + request.getTradeDate());
+
+			throw new IllegalArgumentException("tradeDate");
+		}
+
+		java.sql.Date expiryDate = UtilityMethods.convertToDate(request.getExpiryDate());
+		if(expiryDate == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Cannot update request: " + request.getRequest() + " because of an invalid expiry date: " + request.getTradeDate());
+
+			throw new IllegalArgumentException("expiryDate");
+		}
+
+		java.sql.Date premiumSettlementDate = UtilityMethods.convertToDate(request.getPremiumSettlementDate());
+		if(premiumSettlementDate == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Cannot update request: " + request.getRequest() + " because of an invalid premium settlement date: " + request.getPremiumSettlementDate());
+
+			throw new IllegalArgumentException("PremiumSettlementDate");
+		}
+
 		boolean updateResult =  this.databaseExecutor.<RequestDetailImpl>executePreparedStatement(UPDATE,
 				request.getIdentifier(),
 				request.getRequest(),
@@ -312,8 +383,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				request.getIsOTC(),
 				request.getStatus(), //6
 
-				UtilityMethods.convertToDate(request.getTradeDate()),
-				UtilityMethods.convertToDate(request.getExpiryDate()), //8
+				tradeDate,
+				expiryDate, //8
 
 				request.getLotSize(),
 				request.getMultiplier(),
@@ -364,7 +435,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				request.getSalesCreditFXRate(), //47
 
 				request.getPremiumSettlementCurrency(),
-				UtilityMethods.convertToDate(request.getPremiumSettlementDate()),
+				premiumSettlementDate,
 				request.getPremiumSettlementDaysOverride(),
 				request.getPremiumSettlementFXRate(), //51
 
@@ -379,9 +450,23 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 				updatedByUser); // 59
 
-		// TODO add SPRING transaction management.
+		java.sql.Date maturityDate;
+
 		for(OptionDetailImpl leg : request.getLegs())
 		{
+			maturityDate = UtilityMethods.convertToDate(leg.getMaturityDate());
+
+			if(maturityDate == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Cannot update leg: " + leg.getLegId() + " of request : " + request.getRequest()
+							+ " because of an invalid maturity date: " + leg.getMaturityDate());
+
+				//this.databaseExecutor.rollbackTransaction();
+
+				throw new IllegalArgumentException("maturityDate");
+			}
+
 			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(UPDATE_LEG,
 					leg.getLegId(),
 					leg.getDelta(),
@@ -391,13 +476,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 					leg.getRho(),
 					leg.getVolatility(),
-					leg.getMaturityDate(),
+					maturityDate,
 					leg.getDaysToExpiry(),
 					leg.getYearsToExpiry(),
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
-					leg.getDescription(),
 					leg.getIsCall(),
 					leg.getIsEuropean(),
 
