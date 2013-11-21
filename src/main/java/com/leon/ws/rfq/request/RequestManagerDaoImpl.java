@@ -152,212 +152,265 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	private GenericDatabaseCommandExecutor databaseExecutor;
 	private PlatformTransactionManager platformTransactionManager;
 
+	/**
+	 * Default Constructor.
+	 *
+	 */
 	RequestManagerDaoImpl() {}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param  databaseExecutor			the database executor object that will send the prepared statements to the database.
+	 * @throws NullPointerException		if databaseExecutor parameter is null.
+	 */
 	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
+		if(databaseExecutor  == null)
+			throw new NullPointerException("databaseExecutor");
+
 		this.databaseExecutor = databaseExecutor;
 	}
 
+	/**
+	 * Sets the database executor property.
+	 *
+	 * @param  databaseExecutor			the database executor object that will send the prepared statements to the database.
+	 * @throws NullPointerException		if databaseExecutor parameter is null.
+	 */
 	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
+		if(databaseExecutor  == null)
+			throw new NullPointerException("databaseExecutor");
+
 		this.databaseExecutor = databaseExecutor;
 	}
 
+	/**
+	 * Sets the transaction manager property.
+	 *
+	 * @param  platformTransactionManager	the platformTransactionManager object that will manage the database transactions.
+	 * @throws NullPointerException			if platformTransactionManager parameter is null.
+	 */
 	public void setPlatformTransactionManager(PlatformTransactionManager platformTransactionManager)
 	{
+		if(platformTransactionManager  == null)
+			throw new NullPointerException("platformTransactionManager");
+
 		this.platformTransactionManager = platformTransactionManager;
 	}
 
+	/**
+	 * Saves the request details to the database. Also saves the option leg details.
+	 * Uses transaction management to ensure that both the request detail and the option leg are saved.
+	 * If the option leg is not saved then the request detail save is rolled back.
+	 *
+	 * @param  platformTransactionManager	the platformTransactionManager object that will manage the database transactions.
+	 * @throws NullPointerException			if platformTransactionManager parameter is null.
+	 * @throws IllegalArgumentException		if savedByUser parameter is empty.
+	 * @throws IllegalArgumentException		if tradeDate or expiryDate or premiumSettlementDate parameters is empty.
+	 */
 	@Override
 	public RequestDetailImpl save(RequestDetailImpl request, String savedByUser)
 	{
-		try
+		if(request  == null)
+			throw new NullPointerException("request");
+
+		if(savedByUser.isEmpty())
+			throw new IllegalArgumentException("savedByUser");
+
+		java.sql.Date tradeDate = UtilityMethods.convertToDate(request.getTradeDate());
+		if(tradeDate == null)
 		{
-			java.sql.Date tradeDate = UtilityMethods.convertToDate(request.getTradeDate());
-			if(tradeDate == null)
+			if(logger.isErrorEnabled())
+				logger.error("Cannot save request: " + request.getRequest() + " because of an invalid trade date: " + request.getTradeDate());
+
+			throw new IllegalArgumentException("tradeDate");
+		}
+
+		java.sql.Date expiryDate = UtilityMethods.convertToDate(request.getExpiryDate());
+		if(expiryDate == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Cannot save request: " + request.getRequest() + " because of an invalid expiry date: " + request.getTradeDate());
+
+			throw new IllegalArgumentException("expiryDate");
+		}
+
+		java.sql.Date premiumSettlementDate = UtilityMethods.convertToDate(request.getPremiumSettlementDate());
+		if(premiumSettlementDate == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Cannot save request: " + request.getRequest() + " because of an invalid premium settlement date: " + request.getPremiumSettlementDate());
+
+			throw new IllegalArgumentException("PremiumSettlementDate");
+		}
+
+		TransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+		TransactionStatus status=this.platformTransactionManager.getTransaction(paramTransactionDefinition);
+
+		RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
+				request.getRequest(),
+				request.getBookCode(),
+				request.getClientId(),
+				request.getIsOTC(),
+				request.getStatus(), //6
+
+				tradeDate,
+				expiryDate,
+
+				request.getLotSize(),
+				request.getMultiplier(),
+				request.getContracts(),
+				request.getQuantity(), //12
+
+				request.getNotionalMillions(),
+				request.getNotionalFXRate(),
+				request.getNotionalCurrency(), //15
+
+				request.getDelta(),
+				request.getGamma(),
+				request.getVega(),
+				request.getTheta(),
+				request.getRho(), //20
+
+				request.getDeltaNotional(),
+				request.getGammaNotional(),
+				request.getVegaNotional(),
+				request.getThetaNotional(),
+				request.getRhoNotional(), //25
+
+				request.getDeltaShares(),
+				request.getGammaShares(),
+				request.getVegaShares(),
+				request.getThetaShares(),
+				request.getRhoShares(), //30
+
+				request.getAskFinalAmount(),
+				request.getAskFinalPercentage(),
+				request.getAskImpliedVol(),
+				request.getAskPremiumAmount(),
+				request.getAskPremiumPercentage(), //35
+
+				request.getBidFinalAmount(),
+				request.getBidFinalPercentage(),
+				request.getBidImpliedVol(),
+				request.getBidPremiumAmount(),
+				request.getBidPremiumPercentage(), //40
+
+				request.getPremiumAmount(),
+				request.getPremiumPercentage(),
+				request.getImpliedVol(), //43
+
+				request.getSalesCreditAmount(),
+				request.getSalesCreditPercentage(),
+				request.getSalesCreditCurrency(),
+				request.getSalesCreditFXRate(), //47
+
+				request.getPremiumSettlementCurrency(),
+				premiumSettlementDate,
+				request.getPremiumSettlementDaysOverride(),
+				request.getPremiumSettlementFXRate(), //51
+
+				request.getSalesComment(),
+				request.getTraderComment(),
+				request.getClientComment(), //54
+
+				request.getHedgePrice(),
+				request.getHedgeType(),
+				request.getTotalPremium(),
+				request.getPickedUpBy(), //58
+
+				savedByUser ); //59
+
+		if(result == null)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Failed to save request: " + request.getRequest());
+
+			return null;
+		}
+
+		java.sql.Date maturityDate;
+
+		for(OptionDetailImpl leg : request.getLegs())
+		{
+			maturityDate = UtilityMethods.convertToDate(leg.getMaturityDate());
+
+			if(maturityDate == null)
 			{
 				if(logger.isErrorEnabled())
-					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid trade date: " + request.getTradeDate());
+					logger.error("Cannot save leg: " + leg.getLegId() + " of request : " + request.getRequest()
+							+ " because of an invalid maturity date: " + leg.getMaturityDate());
 
-				throw new IllegalArgumentException("tradeDate");
+				this.platformTransactionManager.rollback(status);
+
+				throw new IllegalArgumentException("maturityDate");
 			}
 
-			java.sql.Date expiryDate = UtilityMethods.convertToDate(request.getExpiryDate());
-			if(expiryDate == null)
+			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,	result.getIdentifier(),
+
+					leg.getLegId(),
+					leg.getDelta(),
+					leg.getGamma(),
+					leg.getTheta(),
+					leg.getVega(),
+
+					leg.getRho(),
+					leg.getVolatility(),
+					leg.getDaysToExpiry(),
+					leg.getYearsToExpiry(),
+					maturityDate,
+
+					leg.getUnderlyingPrice(),
+					leg.getUnderlyingRIC(),
+					leg.getIsCall(),
+					leg.getIsEuropean(),
+					leg.getInterestRate(),
+
+					leg.getDayCountConvention(),
+					leg.getPremium(),
+					leg.getPremiumPercentage(),
+					leg.getStrike(),
+					leg.getStrikePercentage(),
+
+					leg.getSide().equals("BUY") ? 1 : 0,
+							leg.getQuantity(),
+							savedByUser))
 			{
 				if(logger.isErrorEnabled())
-					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid expiry date: " + request.getTradeDate());
+					logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
 
-				throw new IllegalArgumentException("expiryDate");
-			}
-
-			java.sql.Date premiumSettlementDate = UtilityMethods.convertToDate(request.getPremiumSettlementDate());
-			if(premiumSettlementDate == null)
-			{
-				if(logger.isErrorEnabled())
-					logger.error("Cannot save request: " + request.getRequest() + " because of an invalid premium settlement date: " + request.getPremiumSettlementDate());
-
-				throw new IllegalArgumentException("PremiumSettlementDate");
-			}
-
-			TransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
-			TransactionStatus status=this.platformTransactionManager.getTransaction(paramTransactionDefinition);
-
-			RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
-					request.getRequest(),
-					request.getBookCode(),
-					request.getClientId(),
-					request.getIsOTC(),
-					request.getStatus(), //6
-
-					tradeDate,
-					expiryDate,
-
-					request.getLotSize(),
-					request.getMultiplier(),
-					request.getContracts(),
-					request.getQuantity(), //12
-
-					request.getNotionalMillions(),
-					request.getNotionalFXRate(),
-					request.getNotionalCurrency(), //15
-
-					request.getDelta(),
-					request.getGamma(),
-					request.getVega(),
-					request.getTheta(),
-					request.getRho(), //20
-
-					request.getDeltaNotional(),
-					request.getGammaNotional(),
-					request.getVegaNotional(),
-					request.getThetaNotional(),
-					request.getRhoNotional(), //25
-
-					request.getDeltaShares(),
-					request.getGammaShares(),
-					request.getVegaShares(),
-					request.getThetaShares(),
-					request.getRhoShares(), //30
-
-					request.getAskFinalAmount(),
-					request.getAskFinalPercentage(),
-					request.getAskImpliedVol(),
-					request.getAskPremiumAmount(),
-					request.getAskPremiumPercentage(), //35
-
-					request.getBidFinalAmount(),
-					request.getBidFinalPercentage(),
-					request.getBidImpliedVol(),
-					request.getBidPremiumAmount(),
-					request.getBidPremiumPercentage(), //40
-
-					request.getPremiumAmount(),
-					request.getPremiumPercentage(),
-					request.getImpliedVol(), //43
-
-					request.getSalesCreditAmount(),
-					request.getSalesCreditPercentage(),
-					request.getSalesCreditCurrency(),
-					request.getSalesCreditFXRate(), //47
-
-					request.getPremiumSettlementCurrency(),
-					premiumSettlementDate,
-					request.getPremiumSettlementDaysOverride(),
-					request.getPremiumSettlementFXRate(), //51
-
-					request.getSalesComment(),
-					request.getTraderComment(),
-					request.getClientComment(), //54
-
-					request.getHedgePrice(),
-					request.getHedgeType(),
-					request.getTotalPremium(),
-					request.getPickedUpBy(), //58
-
-					savedByUser ); //59
-
-			if(result == null)
-			{
-				if(logger.isErrorEnabled())
-					logger.error("Failed to save request: " + request.getRequest());
+				this.platformTransactionManager.rollback(status);
 
 				return null;
 			}
-
-			java.sql.Date maturityDate;
-
-			for(OptionDetailImpl leg : request.getLegs())
-			{
-				maturityDate = UtilityMethods.convertToDate(leg.getMaturityDate());
-
-				if(maturityDate == null)
-				{
-					if(logger.isErrorEnabled())
-						logger.error("Cannot save leg: " + leg.getLegId() + " of request : " + request.getRequest()
-								+ " because of an invalid maturity date: " + leg.getMaturityDate());
-
-					this.platformTransactionManager.rollback(status);
-
-					throw new IllegalArgumentException("maturityDate");
-				}
-
-				if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,	result.getIdentifier(),
-
-						leg.getLegId(),
-						leg.getDelta(),
-						leg.getGamma(),
-						leg.getTheta(),
-						leg.getVega(),
-
-						leg.getRho(),
-						leg.getVolatility(),
-						leg.getDaysToExpiry(),
-						leg.getYearsToExpiry(),
-						maturityDate,
-
-						leg.getUnderlyingPrice(),
-						leg.getUnderlyingRIC(),
-						leg.getIsCall(),
-						leg.getIsEuropean(),
-						leg.getInterestRate(),
-
-						leg.getDayCountConvention(),
-						leg.getPremium(),
-						leg.getPremiumPercentage(),
-						leg.getStrike(),
-						leg.getStrikePercentage(),
-
-						leg.getSide().equals("BUY") ? 1 : 0,
-								leg.getQuantity(),
-								savedByUser))
-				{
-					if(logger.isErrorEnabled())
-						logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
-
-					this.platformTransactionManager.rollback(status);
-
-					return null;
-				}
-			}
-
-			this.platformTransactionManager.commit(status);
-
-			return result;
-		}
-		catch(Exception se)
-		{
-			if(logger.isErrorEnabled())
-				logger.error("Failed to save request: " + request.getRequest() + ". Exception thrown: " + se);
 		}
 
-		return null;
+		this.platformTransactionManager.commit(status);
+
+		return result;
 	}
 
+	/**
+	 * Updates the request details to the database. Also updates the option leg details.
+	 * Uses transaction management to ensure that both the request detail and the option leg are updated.
+	 * If the option leg is not updated then the request detail update is rolled back.
+	 *
+	 * @param  platformTransactionManager	the platformTransactionManager object that will manage the database transactions.
+	 * @throws NullPointerException			if platformTransactionManager parameter is null.
+	 * @throws IllegalArgumentException		if updatedByUser parameter is empty.
+	 * @throws IllegalArgumentException		if tradeDate or expiryDate or premiumSettlementDate parameters is empty.
+	 */
 	@Override
 	public boolean update(RequestDetailImpl request, String updatedByUser)
 	{
+		if(request  == null)
+			throw new NullPointerException("request");
+
+		if(updatedByUser.isEmpty())
+			throw new IllegalArgumentException("updatedByUser");
+
 		java.sql.Date tradeDate = UtilityMethods.convertToDate(request.getTradeDate());
 		if(tradeDate == null)
 		{
@@ -532,12 +585,27 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		return updateResult;
 	}
 
+	/**
+	 * Gets the request details matching the request identifier.
+	 *
+	 * @param  identifier					the identifier of the request whose details need to be retrieved.
+	 * @throws IllegalArgumentException		if identifier is less than or equal to zero.
+	 * @returns 							the request details
+	 */
 	@Override
 	public RequestDetailImpl getRequest(int identifier)
 	{
+		if(identifier <= 0)
+			throw new IllegalArgumentException("identifier");
+
 		return this.databaseExecutor.<RequestDetailImpl>getSingleResult(GET, new RequestParameterizedRowMapper(), identifier);
 	}
 
+	/**
+	 * Gets all the request details with a tradeDate equal to today.
+	 *
+	 * @returns 							the request details
+	 */
 	@Override
 	public RequestDetailListImpl getRequestsForToday()
 	{
@@ -551,6 +619,13 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		return requestsForToday;
 	}
 
+	/**
+	 * Converts a string date from .NET format to MYSQL DB format.
+	 *
+	 * @param  rawDate						the raw date format that needs to be converted.
+	 * @throws IllegalArgumentException		if rawDate is empty.
+	 * @returns 							the date string in the yyyy-MM-dd format.
+	 */
 	private String extractYYYYMMDDFormattedDate(String rawDate)
 	{
 		if(rawDate.isEmpty())
@@ -560,6 +635,13 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
 	}
 
+	/** constructs part of the WHERE clause for a single date or a data range.
+	 *
+	 * @param  dateName						the name of the date field, for example tradeDate.
+	 * @param  criterionValue				the value of the single date or date range.
+	 * @throws IllegalArgumentException		if dateName or criterionValue is empty.
+	 * @returns 							the part of the WHERE clause covering the date.
+	 */
 	private String constructDateWhereClause(String dateName, String criterionValue)
 	{
 		if(dateName.isEmpty())
@@ -587,6 +669,13 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		}
 	}
 
+	/** Retrieves the list of RFQs matching the criteria specified by the criteria list.
+	 *  The method constructs the SQL query on the fly.
+	 *
+	 * @param  criteria						the list of criteria to be used to search for the RFQs.
+	 * @throws NullPointerException			if criteria is null.
+	 * @returns 							the list of requests matching the criteria.
+	 */
 	@Override
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria)
 	{
@@ -642,9 +731,24 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		return requestsMatchingAdhocCriteria;
 	}
 
+	/** Retrieves the list of RFQs matching the criteria specified by the criteria owner and key lookups.
+	 *  The database procedure first uses the owner and key to lookup the saved search  criteria and then uses
+	 *  these criteria to return the list of matching RFQs.
+	 *
+	 * @param  criteriaOwner				the criteria owner lookup.
+	 * @param  criteriaKey					the criteria key lookup.
+	 * @throws IllegalArgumentException		if criteriaOwner or criteriaKey is empty.
+	 * @returns 							the list of requests matching the criteria specified by the owner and key lookups.
+	 */
 	@Override
 	public RequestDetailListImpl getRequestsMatchingExistingCriteria(String criteriaOwner, String criteriaKey)
 	{
+		if(criteriaOwner.isEmpty())
+			throw new IllegalArgumentException("criteriaOwner");
+
+		if(criteriaKey.isEmpty())
+			throw new IllegalArgumentException("criteriaKey");
+
 		RequestDetailListImpl requestsMatchingExistingCriteria = new RequestDetailListImpl();
 
 		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
