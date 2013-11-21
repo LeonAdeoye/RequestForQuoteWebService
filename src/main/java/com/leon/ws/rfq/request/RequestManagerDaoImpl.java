@@ -689,7 +689,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		OptionDetailListImpl optionLegs = new OptionDetailListImpl();
 
 		ArrayList<OptionDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
-				.<OptionDetailImpl>getResultSet(SELECT_OPTION_LEG, new OptionLegParameterizedRowMapper()));
+				.<OptionDetailImpl>getResultSet(SELECT_OPTION_LEG, new OptionLegParameterizedRowMapper(), requestId));
 
 		optionLegs.setOptionDetailList(resultSet);
 
