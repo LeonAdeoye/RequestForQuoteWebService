@@ -23,6 +23,48 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 {
 	private static final Logger logger = LoggerFactory.getLogger(RequestManagerDaoImpl.class);
 
+	private class OptionLegParameterizedRowMapper implements ParameterizedRowMapper<OptionDetailImpl>
+	{
+		@Override
+		public OptionDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			OptionDetailImpl optionLeg = new OptionDetailImpl();
+
+			optionLeg.setStrike(rs.getDouble("strike"));
+			optionLeg.setStrikePercentage(rs.getDouble("strikePercentage"));
+			optionLeg.setPremium(rs.getDouble("premium"));
+			optionLeg.setPremiumPercentage(rs.getDouble("premiumPercentage"));
+			optionLeg.setInterestRate(rs.getDouble("interestRate"));
+
+			optionLeg.setDelta(rs.getDouble("delta"));
+			optionLeg.setGamma(rs.getDouble("gamma"));
+			optionLeg.setTheta(rs.getDouble("theta"));
+			optionLeg.setVega(rs.getDouble("vega"));
+			optionLeg.setRho(rs.getDouble("rho"));
+
+			optionLeg.setLegId(rs.getInt("legId"));
+			optionLeg.setIsCall(rs.getString("isCall").equals("C"));
+			optionLeg.setIsEuropean(rs.getString("isEuropean").equals("E"));
+			optionLeg.setSide(rs.getString("side").equals("B") ? "BUY" : "SIDE");
+			optionLeg.setQuantity(rs.getInt("quantity"));
+
+
+			optionLeg.setVolatility(rs.getDouble("volatility"));
+			optionLeg.setDaysToExpiry(rs.getDouble("daysToExpiry"));
+			optionLeg.setYearsToExpiry(rs.getDouble("yearsToExpiry"));
+			optionLeg.setUnderlyingPrice(rs.getDouble("underlyingPrice"));
+			optionLeg.setUnderlyingRIC(rs.getString("underlyingRIC"));
+
+			optionLeg.setDayCountConvention(rs.getDouble("dayCountConvention"));
+
+			DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+			if(rs.getDate("maturityDate") != null)
+				optionLeg.setMaturityDate(df.format(rs.getDate("maturityDate")));
+
+			return optionLeg;
+		}
+	}
+
 	private class RequestParameterizedRowMapper implements ParameterizedRowMapper<RequestDetailImpl>
 	{
 		@Override
@@ -147,6 +189,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private static final String GET = "CALL request_GET (?)";
 	private static final String SELECT_TODAY = "CALL requests_SELECT_TODAY";
+	private static final String SELECT_OPTION_LEG = "CALL optionLeg_SELECT (?)";
 	private static final String SEARCH_WITH_EXISTING_CRITERIA = "CALL requests_SEARCH (?, ?)";
 
 	private GenericDatabaseCommandExecutor databaseExecutor;
@@ -365,8 +408,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
-					leg.getIsCall(),
-					leg.getIsEuropean(),
+					(leg.getIsCall() ? "C" : "P"),
+					(leg.getIsEuropean() ? "E" : "A"),
 					leg.getInterestRate(),
 
 					leg.getDayCountConvention(),
@@ -375,9 +418,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					leg.getStrike(),
 					leg.getStrikePercentage(),
 
-					leg.getSide().equals("BUY") ? 1 : 0,
-							leg.getQuantity(),
-							savedByUser))
+					(leg.getSide().equals("BUY") ? "B" : "S"),
+					leg.getQuantity(),
+					savedByUser))
 			{
 				if(logger.isErrorEnabled())
 					logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
@@ -559,8 +602,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
-					leg.getIsCall(),
-					leg.getIsEuropean(),
+					(leg.getIsCall() ? "C" : "P"),
+					(leg.getIsEuropean() ? "E" : "A"),
 
 					leg.getInterestRate(),
 					leg.getDayCountConvention(),
@@ -569,9 +612,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					leg.getStrike(),
 
 					leg.getStrikePercentage(),
-					leg.getSide().equals("BUY") ? 1 : 0,
-							leg.getQuantity(),
-							updatedByUser))
+					(leg.getSide().equals("BUY") ? "B" : "S"),
+					leg.getQuantity(),
+					updatedByUser))
 			{
 				if(logger.isErrorEnabled())
 					logger.error("Failed to update request leg: " + leg.getLegId() + " of request: " + request.getRequest());
@@ -588,7 +631,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	}
 
 	/**
-	 * Gets the request details matching the request identifier.
+	 * Retrieves the request details matching the request identifier.
+	 * Also retrieves the option legs associated with that RFQ.
 	 *
 	 * @param  identifier					the identifier of the request whose details need to be retrieved.
 	 * @throws IllegalArgumentException		if identifier is less than or equal to zero.
@@ -600,11 +644,17 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		if(identifier <= 0)
 			throw new IllegalArgumentException("identifier");
 
-		return this.databaseExecutor.<RequestDetailImpl>getSingleResult(GET, new RequestParameterizedRowMapper(), identifier);
+		RequestDetailImpl request = this.databaseExecutor.<RequestDetailImpl>getSingleResult
+				(GET, new RequestParameterizedRowMapper(), identifier);
+
+		request.setLegs(getRequestLegs(request.getIdentifier()));
+
+		return request;
 	}
 
 	/**
-	 * Gets all the request details with a tradeDate equal to today.
+	 * Retrieves the details of all the RFQ with a tradeDate equal to today.
+	 * Also retrieves the option legs associated with each RFQ.
 	 *
 	 * @returns 							the request details
 	 */
@@ -613,12 +663,37 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	{
 		RequestDetailListImpl requestsForToday = new RequestDetailListImpl();
 
-		ArrayList<RequestDetailImpl> resultSet = (ArrayList<RequestDetailImpl>) this.databaseExecutor
-				.<RequestDetailImpl>getResultSet(SELECT_TODAY, new RequestParameterizedRowMapper());
+		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
+				.<RequestDetailImpl>getResultSet(SELECT_TODAY, new RequestParameterizedRowMapper()));
+
+		for(RequestDetailImpl request : resultSet)
+			request.setLegs(getRequestLegs(request.getIdentifier()));
 
 		requestsForToday.setRequestDetailList(resultSet);
 
 		return requestsForToday;
+	}
+
+	/**
+	 * Retrieves the details of the option legs belonging to the RFQ with the requestId passes as a parameter.
+	 * 
+	 * @param requestId 				the identifier of the parent RFQ.
+	 * @returns OptionDetailListImpl 	the list of option leg details.
+	 * @throws IllegalArgumentException if the requestId is less than or equal to zero.
+	 */
+	private OptionDetailListImpl getRequestLegs(int requestId)
+	{
+		if(requestId <= 0)
+			throw new IllegalArgumentException("requestId");
+
+		OptionDetailListImpl optionLegs = new OptionDetailListImpl();
+
+		ArrayList<OptionDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
+				.<OptionDetailImpl>getResultSet(SELECT_OPTION_LEG, new OptionLegParameterizedRowMapper()));
+
+		optionLegs.setOptionDetailList(resultSet);
+
+		return optionLegs;
 	}
 
 	/**
@@ -637,7 +712,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT);
 	}
 
-	/** constructs part of the WHERE clause for a single date or a data range.
+	/** Constructs part of the WHERE clause for a single date or a data range.
 	 *
 	 * @param  dateName						the name of the date field, for example tradeDate.
 	 * @param  criterionValue				the value of the single date or date range.
@@ -673,6 +748,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	/** Retrieves the list of RFQs matching the criteria specified by the criteria list.
 	 *  The method constructs the SQL query on the fly.
+	 *  Also retrieves the option legs associated with each RFQ.
 	 *
 	 * @param  criteria						the list of criteria to be used to search for the RFQs.
 	 * @throws NullPointerException			if criteria is null.
@@ -728,6 +804,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
 				.<RequestDetailImpl>getResultSet(builder.toString(), new RequestParameterizedRowMapper()));
 
+		for(RequestDetailImpl request : resultSet)
+			request.setLegs(getRequestLegs(request.getIdentifier()));
+
 		requestsMatchingAdhocCriteria.setRequestDetailList(resultSet);
 
 		return requestsMatchingAdhocCriteria;
@@ -736,6 +815,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	/** Retrieves the list of RFQs matching the criteria specified by the criteria owner and key lookups.
 	 *  The database procedure first uses the owner and key to lookup the saved search  criteria and then uses
 	 *  these criteria to return the list of matching RFQs.
+	 *  Also retrieves the option legs associated with each RFQ.
 	 *
 	 * @param  criteriaOwner				the criteria owner lookup.
 	 * @param  criteriaKey					the criteria key lookup.
@@ -754,7 +834,11 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 		RequestDetailListImpl requestsMatchingExistingCriteria = new RequestDetailListImpl();
 
 		ArrayList<RequestDetailImpl> resultSet = new ArrayList<>(this.databaseExecutor
-				.<RequestDetailImpl>getResultSet(SEARCH_WITH_EXISTING_CRITERIA, new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey));
+				.<RequestDetailImpl>getResultSet(SEARCH_WITH_EXISTING_CRITERIA,
+						new RequestParameterizedRowMapper(), criteriaOwner, criteriaKey));
+
+		for(RequestDetailImpl request : resultSet)
+			request.setLegs(getRequestLegs(request.getIdentifier()));
 
 		requestsMatchingExistingCriteria.setRequestDetailList(resultSet);
 

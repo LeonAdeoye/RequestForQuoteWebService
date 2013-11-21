@@ -36,8 +36,21 @@ ApplicationListener, ApplicationEventPublisherAware
 		private final Random priceGenerator = new Random();
 		private final Random changeGenerator = new Random();
 
+		/**
+		 * Constructor
+		 * 
+		 * @param priceMean							the mean price used for the ND random number generator
+		 * @param priceVariance						the price variance used for the ND random number generator
+		 * @throws IllegalArgumentException			if priceMean <= 0 || priceVariance <= 0.
+		 */
 		private PriceGenerator(double priceMean, double priceVariance)
 		{
+			if(priceMean <= 0.0)
+				throw new IllegalArgumentException("priceMean");
+
+			if(priceVariance <= 0.0)
+				throw new IllegalArgumentException("priceVariance");
+
 			this.priceMean = priceMean;
 			this.priceVariance = priceVariance;
 		}
@@ -71,7 +84,7 @@ ApplicationListener, ApplicationEventPublisherAware
 	/**
 	 * Returns the next sleeping duration.
 	 *
-	 * @return	the randomly generated sleep duration
+	 * @returns	the randomly generated sleep duration
 	 */
 	private int getNextSleepDuration()
 	{
@@ -139,6 +152,7 @@ ApplicationListener, ApplicationEventPublisherAware
 			if(logger.isDebugEnabled())
 				logger.debug("Tagged request event received for request: " + taggedRequestEvent.getRequest());
 
+			// TODO fix exception thrown here
 			for(OptionDetailImpl optionLeg : taggedRequestEvent.getRequest().getLegs().getOptionDetailList())
 				add(optionLeg.getUnderlyingRIC(), optionLeg.getUnderlyingPrice(), 0.5);
 		}
@@ -170,8 +184,10 @@ ApplicationListener, ApplicationEventPublisherAware
 	{
 		if(underlyingRIC.isEmpty())
 			throw new IllegalArgumentException("underlyingRIC");
+
 		if(priceMean <= 0.0)
 			throw new IllegalArgumentException("priceMean");
+
 		if(priceVariance <= 0.0)
 			throw new IllegalArgumentException("priceVariance");
 
