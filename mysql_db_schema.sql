@@ -56,6 +56,37 @@ CREATE TABLE `holidays` (
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `optionleg`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `optionleg` (
+  `requestId` int(11) NOT NULL,
+  `legId` int(11) NOT NULL,
+  `delta` decimal(13,6) NOT NULL,
+  `gamma` decimal(13,6) NOT NULL,
+  `vega` decimal(13,6) NOT NULL,
+  `theta` decimal(13,6) NOT NULL,
+  `rho` decimal(13,6) NOT NULL,
+  `volatility` decimal(13,6) NOT NULL,
+  `daysToExpiry` decimal(13,6) NOT NULL,
+  `yearsToExpiry` decimal(13,6) NOT NULL,
+  `maturityDate` datetime NOT NULL,
+  `underlyingPrice` decimal(13,6) NOT NULL,
+  `underlyingRIC` varchar(10) NOT NULL,
+  `isCall` char(1) NOT NULL DEFAULT 'Y',
+  `isEuropean` varchar(45) NOT NULL DEFAULT 'Y',
+  `dayCountConvention` decimal(13,6) NOT NULL,
+  `interestRate` decimal(13,6) NOT NULL,
+  `premium` decimal(13,6) NOT NULL,
+  `premiumPercentage` decimal(13,6) NOT NULL,
+  `strike` decimal(13,6) NOT NULL,
+  `strikePercentage` decimal(13,6) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `side` int(11) NOT NULL DEFAULT '1',
+  `UpdatedBy` varchar(20) NOT NULL,
+  `Updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `requestforquotemain`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -121,7 +152,7 @@ CREATE TABLE `requestforquotemain` (
   `savedBy` varchar(20) NOT NULL,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `searches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -137,7 +168,7 @@ CREATE TABLE `searches` (
   `isFilter` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `owner_and_key_and_control_UNIQUE` (`owner`,`keyValue`,`controlName`)
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `underlyings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -557,6 +588,178 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `holidays_SELECT_ALL`()
 BEGIN
     SELECT * FROM holidays;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `optionLeg_SAVE` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `optionLeg_SAVE`(
+p_requestId INT, 
+p_legId INT, 
+p_delta DECIMAL(13,6),
+p_gamma DECIMAL(13,6),
+p_vega DECIMAL(13,6),
+p_theta DECIMAL(13,6),
+p_rho DECIMAL(13,6),
+p_volatility DECIMAL(13,6),
+p_daysToExpiry DECIMAL(13,6),
+p_yearsToExpiry DECIMAL(13,6),
+p_maturityDate DATETIME, 
+p_underlyingPrice DECIMAL(13,6),
+p_underlyingRIC VARCHAR(10), 
+p_isCall CHAR(1), 
+p_isEuropean CHAR(1), 
+p_dayCountConvention DECIMAL(13,6),
+p_interestRate DECIMAL(13,6),
+p_premium DECIMAL(13,6),
+p_premiumPercentage DECIMAL(13,6),
+p_strike DECIMAL(13,6),
+p_strikePercentage DECIMAL(13,6),
+p_quantity DECIMAL(13,6),
+p_side INT, 
+p_updatedBy VARCHAR(20)
+)
+BEGIN
+
+INSERT INTO `rfq_development`.`optionleg` 
+(requestId, 
+legId, 
+delta, 
+gamma, 
+vega, 
+theta, 
+rho, 
+volatility, 
+daysToExpiry, 
+yearsToExpiry, 
+maturityDate, 
+underlyingPrice, 
+underlyingRIC, 
+isCall, 
+isEuropean, 
+dayCountConvention, 
+interestRate, 
+premium, 
+premiumPercentage, 
+strike, 
+strikePercentage, 
+quantity, 
+side, 
+UpdatedBy, 
+Updated)
+VALUES
+(
+p_requestId, 
+p_legId, 
+p_delta, 
+p_gamma, 
+p_vega, 
+p_theta, 
+p_rho, 
+p_volatility, 
+p_daysToExpiry, 
+p_yearsToExpiry, 
+p_maturityDate, 
+p_underlyingPrice, 
+p_underlyingRIC, 
+p_isCall, 
+p_isEuropean, 
+p_dayCountConvention, 
+p_interestRate, 
+p_premium, 
+p_premiumPercentage, 
+p_strike, 
+p_strikePercentage, 
+p_quantity, 
+p_side, 
+p_updatedBy, 
+now()
+);
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `optionLeg_UPDATE` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `optionLeg_UPDATE`(
+p_requestId INT, 
+p_legId INT, 
+p_delta DECIMAL(13,6),
+p_gamma DECIMAL(13,6),
+p_vega DECIMAL(13,6),
+p_theta DECIMAL(13,6),
+p_rho DECIMAL(13,6),
+p_volatility DECIMAL(13,6),
+p_daysToExpiry DECIMAL(13,6),
+p_yearsToExpiry DECIMAL(13,6),
+p_maturityDate DATETIME, 
+p_underlyingPrice DECIMAL(13,6),
+p_underlyingRIC VARCHAR(10), 
+p_isCall CHAR(1), 
+p_isEuropean CHAR(1), 
+p_dayCountConvention DECIMAL(13,6),
+p_interestRate DECIMAL(13,6),
+p_premium DECIMAL(13,6),
+p_premiumPercentage DECIMAL(13,6),
+p_strike DECIMAL(13,6),
+p_strikePercentage DECIMAL(13,6),
+p_quantity DECIMAL(13,6),
+p_side INT, 
+p_updatedBy VARCHAR(20)
+)
+BEGIN
+    UPDATE `rfq_development`.`optionleg`
+    SET
+    `delta` = p_delta,
+    `gamma` = p_gamma,
+    `vega` = p_vega,
+    `theta` = p_theta,
+    `rho` = p_rho,
+
+    `volatility` = p_volatility,
+    `daysToExpiry` = p_daysToExpiry,
+    `yearsToExpiry` = p_yearsToExpiry,
+    `maturityDate` = p_maturityDate,
+    `underlyingPrice` = p_underlyingPrice,
+
+    `underlyingRIC` = p_underlyingRIC,
+    `isCall` = p_isCall,
+    `isEuropean` = p_isEuropean,
+    `dayCountConvention` = p_dayCountConvention,
+    `interestRate` = p_interestRate,
+
+    `premium` = p_premium,
+    `premiumPercentage` = p_premiumPercentage,
+    `strike` = p_strike,
+    `strikePercentage` = p_strikePercentage,
+    `quantity` = p_quantity,
+
+    `side` = p_side,
+    `UpdatedBy` = p_UpdatedBy
+    WHERE 
+    requestId = p_requestId AND legId = p_legId;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
