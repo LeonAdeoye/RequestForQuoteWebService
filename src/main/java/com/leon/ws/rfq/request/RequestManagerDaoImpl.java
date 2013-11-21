@@ -204,7 +204,6 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			TransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
 			TransactionStatus status=this.platformTransactionManager.getTransaction(paramTransactionDefinition);
 
-
 			RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
 					request.getRequest(),
 					request.getBookCode(),
@@ -283,6 +282,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			{
 				if(logger.isErrorEnabled())
 					logger.error("Failed to save request: " + request.getRequest());
+
+				return null;
 			}
 
 			java.sql.Date maturityDate;
@@ -312,9 +313,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 						leg.getRho(),
 						leg.getVolatility(),
-						maturityDate,
 						leg.getDaysToExpiry(),
 						leg.getYearsToExpiry(),
+						maturityDate,
 
 						leg.getUnderlyingPrice(),
 						leg.getUnderlyingRIC(),
@@ -328,9 +329,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 						leg.getStrike(),
 						leg.getStrikePercentage(),
 
-						leg.getSide(),
-						leg.getQuantity(),
-						savedByUser))
+						leg.getSide().equals("BUY") ? 1 : 0,
+								leg.getQuantity(),
+								savedByUser))
 				{
 					if(logger.isErrorEnabled())
 						logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
@@ -383,6 +384,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 			throw new IllegalArgumentException("PremiumSettlementDate");
 		}
+
+		TransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+		TransactionStatus status=this.platformTransactionManager.getTransaction(paramTransactionDefinition);
 
 		boolean updateResult =  this.databaseExecutor.<RequestDetailImpl>executePreparedStatement(UPDATE,
 				request.getIdentifier(),
@@ -459,6 +463,14 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 				updatedByUser); // 59
 
+		if(updateResult == false)
+		{
+			if(logger.isErrorEnabled())
+				logger.error("Failed to update request: " + request.getRequest());
+
+			return false;
+		}
+
 		java.sql.Date maturityDate;
 
 		for(OptionDetailImpl leg : request.getLegs())
@@ -471,7 +483,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					logger.error("Cannot update leg: " + leg.getLegId() + " of request : " + request.getRequest()
 							+ " because of an invalid maturity date: " + leg.getMaturityDate());
 
-				//this.databaseExecutor.rollbackTransaction();
+				this.platformTransactionManager.rollback(status);
 
 				throw new IllegalArgumentException("maturityDate");
 			}
@@ -486,9 +498,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 					leg.getRho(),
 					leg.getVolatility(),
-					maturityDate,
 					leg.getDaysToExpiry(),
 					leg.getYearsToExpiry(),
+					maturityDate,
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
@@ -502,12 +514,21 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					leg.getStrike(),
 
 					leg.getStrikePercentage(),
-					leg.getSide(),
-					leg.getQuantity(),
-					updatedByUser))
+					leg.getSide().equals("BUY") ? 1 : 0,
+							leg.getQuantity(),
+							updatedByUser))
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Failed to update request leg: " + leg.getLegId() + " of request: " + request.getRequest());
+
+				this.platformTransactionManager.rollback(status);
 
 				return false;
+			}
 		}
+
+		this.platformTransactionManager.commit(status);
+
 		return updateResult;
 	}
 
