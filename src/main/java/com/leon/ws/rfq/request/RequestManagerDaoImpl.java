@@ -205,7 +205,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	 * Uses transaction management to ensure that both the request detail and the option leg are saved.
 	 * If the option leg is not saved then the request detail save is rolled back.
 	 *
-	 * @param  platformTransactionManager	the platformTransactionManager object that will manage the database transactions.
+	 * @param  request						the request details that will be saved to the database.
+	 * @param  savedByUser					the user saving the request details.
 	 * @throws NullPointerException			if platformTransactionManager parameter is null.
 	 * @throws IllegalArgumentException		if savedByUser parameter is empty.
 	 * @throws IllegalArgumentException		if tradeDate or expiryDate or premiumSettlementDate parameters is empty.
@@ -397,7 +398,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	 * Uses transaction management to ensure that both the request detail and the option leg are updated.
 	 * If the option leg is not updated then the request detail update is rolled back.
 	 *
-	 * @param  platformTransactionManager	the platformTransactionManager object that will manage the database transactions.
+	 * @param  request						the request details that will be updated in the database.
+	 * @param  updatedByUser				the user updating the request details.
 	 * @throws NullPointerException			if platformTransactionManager parameter is null.
 	 * @throws IllegalArgumentException		if updatedByUser parameter is empty.
 	 * @throws IllegalArgumentException		if tradeDate or expiryDate or premiumSettlementDate parameters is empty.
