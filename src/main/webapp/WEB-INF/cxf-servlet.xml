@@ -2,9 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
-	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://cxf.apache.org/jaxws 
+						http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
@@ -98,6 +102,7 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     
     <bean id="requestManagerDao" class="com.leon.ws.rfq.request.RequestManagerDaoImpl">
     	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    	<property name="platformTransactionManager" ref="transactionManager"></property>
     </bean> 
     
     <bean id="reportingManagerDao" class="com.leon.ws.rfq.reporting.ReportingManagerDaoImpl">
@@ -115,13 +120,12 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
     	<property name="password" value="liverpool"/>
     	<property name="initialSize" value="3"/>
     	<property name="maxActive" value="5"/>
-    	<property name="defaultAutoCommit" value="false"/>
     </bean>
        
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
-	</bean>    
-    	
+	</bean>
+	   	
 	<jaxws:endpoint 	  id="underlyingMaintenanceController"	  implementor="#underlyingController"	  address="/UnderlyingMaintenance" />    	
 	<jaxws:endpoint 	  id="optionPricingController"	  implementor="#optionPricer"	  address="/PriceOption" />
 	<jaxws:endpoint 	  id="searchCriteriaController"	  implementor="#searchController"	  address="/SearchCriteria" />

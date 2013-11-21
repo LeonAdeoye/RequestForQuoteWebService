@@ -1,6 +1,5 @@
 package com.leon.ws.rfq.database;
 
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,23 +63,5 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 			logger.error("Exception thrown when getting a single result from a the prepared statement: ", exception);
 		}
 		return null;
-	}
-
-	@Override
-	public void setAutoCommit(boolean autoCommit) throws SQLException
-	{
-		this.getConnection().setAutoCommit(autoCommit);
-	}
-
-	@Override
-	public void commitTransaction() throws SQLException
-	{
-		this.getConnection().commit();
-	}
-
-	@Override
-	public void rollbackTransaction() throws SQLException
-	{
-		this.getConnection().rollback();
 	}
 }

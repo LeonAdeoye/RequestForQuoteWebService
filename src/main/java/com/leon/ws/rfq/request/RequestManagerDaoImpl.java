@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 import com.leon.ws.rfq.search.SearchCriteriaImpl;
@@ -124,12 +128,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 	private static final String SAVE_LEG =
 			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String UPDATE_LEG =
 			"CALL optionLeg_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ? )";
 
 	private static final String CLIENT_CRITERION = "Client";
@@ -146,19 +150,23 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	private static final String SEARCH_WITH_EXISTING_CRITERIA = "CALL requests_SEARCH (?, ?)";
 
 	private GenericDatabaseCommandExecutor databaseExecutor;
+	private PlatformTransactionManager platformTransactionManager;
 
 	RequestManagerDaoImpl() {}
 
 	RequestManagerDaoImpl(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
 		this.databaseExecutor = databaseExecutor;
-		this.databaseExecutor.setAutoCommit(true);
 	}
 
 	public void setDatabaseCommandExecutor(GenericDatabaseCommandExecutor databaseExecutor) throws SQLException
 	{
 		this.databaseExecutor = databaseExecutor;
-		this.databaseExecutor.setAutoCommit(true);
+	}
+
+	public void setPlatformTransactionManager(PlatformTransactionManager platformTransactionManager)
+	{
+		this.platformTransactionManager = platformTransactionManager;
 	}
 
 	@Override
@@ -193,7 +201,9 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				throw new IllegalArgumentException("PremiumSettlementDate");
 			}
 
-			this.databaseExecutor.setAutoCommit(false);
+			TransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+			TransactionStatus status=this.platformTransactionManager.getTransaction(paramTransactionDefinition);
+
 
 			RequestDetailImpl result = this.databaseExecutor.<RequestDetailImpl>getSingleResult(SAVE, new RequestParameterizedRowMapper(),
 					request.getRequest(),
@@ -273,8 +283,6 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			{
 				if(logger.isErrorEnabled())
 					logger.error("Failed to save request: " + request.getRequest());
-
-				this.databaseExecutor.rollbackTransaction();
 			}
 
 			java.sql.Date maturityDate;
@@ -289,12 +297,13 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 						logger.error("Cannot save leg: " + leg.getLegId() + " of request : " + request.getRequest()
 								+ " because of an invalid maturity date: " + leg.getMaturityDate());
 
-					this.databaseExecutor.rollbackTransaction();
+					this.platformTransactionManager.rollback(status);
 
 					throw new IllegalArgumentException("maturityDate");
 				}
 
-				if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,
+				if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(SAVE_LEG,	result.getIdentifier(),
+
 						leg.getLegId(),
 						leg.getDelta(),
 						leg.getGamma(),
@@ -311,14 +320,14 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 						leg.getUnderlyingRIC(),
 						leg.getIsCall(),
 						leg.getIsEuropean(),
-
 						leg.getInterestRate(),
+
 						leg.getDayCountConvention(),
 						leg.getPremium(),
 						leg.getPremiumPercentage(),
 						leg.getStrike(),
-
 						leg.getStrikePercentage(),
+
 						leg.getSide(),
 						leg.getQuantity(),
 						savedByUser))
@@ -326,17 +335,17 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					if(logger.isErrorEnabled())
 						logger.error("Failed to save request leg: " + leg.getLegId() + " of request: " + request.getRequest());
 
-					this.databaseExecutor.rollbackTransaction();
+					this.platformTransactionManager.rollback(status);
 
 					return null;
 				}
 			}
 
-			this.databaseExecutor.commitTransaction();
+			this.platformTransactionManager.commit(status);
 
 			return result;
 		}
-		catch(SQLException se)
+		catch(Exception se)
 		{
 			if(logger.isErrorEnabled())
 				logger.error("Failed to save request: " + request.getRequest() + ". Exception thrown: " + se);
@@ -467,7 +476,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				throw new IllegalArgumentException("maturityDate");
 			}
 
-			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(UPDATE_LEG,
+			if(!this.databaseExecutor.<OptionDetailImpl>executePreparedStatement(UPDATE_LEG, request.getIdentifier(),
+
 					leg.getLegId(),
 					leg.getDelta(),
 					leg.getGamma(),
