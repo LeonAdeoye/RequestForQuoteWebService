@@ -82,9 +82,10 @@ CREATE TABLE `optionleg` (
   `strike` decimal(13,6) NOT NULL,
   `strikePercentage` decimal(13,6) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `side` int(11) NOT NULL DEFAULT '1',
+  `side` varchar(1) NOT NULL DEFAULT 'Y',
   `UpdatedBy` varchar(20) NOT NULL,
-  `Updated` datetime NOT NULL
+  `Updated` datetime NOT NULL,
+  PRIMARY KEY (`requestId`,`legId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `requestforquotemain`;
@@ -627,7 +628,7 @@ p_premiumPercentage DECIMAL(13,6),
 p_strike DECIMAL(13,6),
 p_strikePercentage DECIMAL(13,6),
 p_quantity DECIMAL(13,6),
-p_side INT, 
+p_side VARCHAR(1), 
 p_updatedBy VARCHAR(20)
 )
 BEGIN
@@ -693,6 +694,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `optionLeg_SELECT` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `optionLeg_SELECT`(
+p_requestId INT
+)
+BEGIN
+    SELECT *
+    FROM optionLeg
+    WHERE requestId = p_requestId;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `optionLeg_UPDATE` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -726,7 +750,7 @@ p_premiumPercentage DECIMAL(13,6),
 p_strike DECIMAL(13,6),
 p_strikePercentage DECIMAL(13,6),
 p_quantity DECIMAL(13,6),
-p_side INT, 
+p_side VARCHAR(1), 
 p_updatedBy VARCHAR(20)
 )
 BEGIN
