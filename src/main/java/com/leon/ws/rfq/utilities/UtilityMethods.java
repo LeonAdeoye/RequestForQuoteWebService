@@ -44,15 +44,15 @@ public final class UtilityMethods
 	 * Converts a date stored as a string in specific format to a date in another string format.
 	 * If the conversion fails due parsing exception then an empty string is returned.
 	 * 
-	 * @param stringDate					the date in the initial string format.
+	 * @param inputDate					the date in the initial string format.
 	 * @param inputFormat					the string format of the date to be converted.
 	 * @param outputFormat					the string format of the date to be returned as the result of the conversion.
 	 * @return								the string of the date after the conversion to the desired format.
 	 * @throws IllegalArgumentException 	if the another of the input parameters are empty.
 	 */
-	public static String convertStringFormatOfDate(String stringDate, String inputFormat, String outputFormat)
+	public static String convertStringFormatOfDate(String inputDate, String inputFormat, String outputFormat)
 	{
-		if(stringDate.isEmpty())
+		if(inputDate.isEmpty())
 			throw new IllegalArgumentException("stringDate");
 
 		if(inputFormat.isEmpty())
@@ -63,13 +63,13 @@ public final class UtilityMethods
 
 		try
 		{
-			java.util.Date theDate = new SimpleDateFormat(inputFormat).parse(stringDate);
+			java.util.Date theDate = new SimpleDateFormat(inputFormat).parse(inputDate);
 			return new SimpleDateFormat(outputFormat).format(theDate);
 		}
 		catch(ParseException pe)
 		{
 			if(logger.isErrorEnabled())
-				logger.error("Failed to convert string [" + stringDate + "] from input string format [" + inputFormat +
+				logger.error("Failed to convert string [" + inputDate + "] from input string format [" + inputFormat +
 						"] to output string format [" + outputFormat + "]. Exception thrown: ", pe);
 		}
 		return "";
