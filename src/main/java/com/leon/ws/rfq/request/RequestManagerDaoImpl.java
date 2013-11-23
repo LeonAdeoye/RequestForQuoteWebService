@@ -653,7 +653,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	}
 
 	/**
-	 * Retrieves the details of all the RFQ with a tradeDate equal to today.
+	 * Retrieves the details of all the RFQs with a tradeDate equal to today.
 	 * Also retrieves the option legs associated with each RFQ.
 	 *
 	 * @returns 							the request details
