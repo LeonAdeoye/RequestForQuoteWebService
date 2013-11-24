@@ -82,4 +82,10 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 		return this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
 				new ReportDataParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
 	}
+	
+	@Override
+	public List<GreeksPerCategoryReportDataImpl> getGreeksByCategory(String categoryType, List<String> greeksToBeIncluded, Calendar maturityDateFrom, Calendar maturityDateTo, double minimumGreek)
+	{
+		return null;
+	}
 }
