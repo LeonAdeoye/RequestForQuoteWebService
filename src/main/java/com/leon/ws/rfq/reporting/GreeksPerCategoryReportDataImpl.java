@@ -12,7 +12,7 @@ public class GreeksPerCategoryReportDataImpl
 	private double greekTotal;
 	private String greekType;
 
-	public GreeksPerCategoryReportDataImpl(String categoryValue, double greekTotal, String greekType)
+	public GreeksPerCategoryReportDataImpl(String categoryValue, String greekType, double greekTotal)
 	{
 		this.categoryValue = categoryValue;
 		this.greekTotal = greekTotal;

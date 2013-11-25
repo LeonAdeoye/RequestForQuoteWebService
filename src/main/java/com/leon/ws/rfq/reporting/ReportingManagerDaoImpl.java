@@ -14,13 +14,13 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 {
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
-	private static final String REQUESTS_COUNT_BY_BOOKCODE = "BookCode";
-	private static final String REQUESTS_COUNT_BY_CLIENT = "Client";
-	private static final String REQUESTS_COUNT_BY_UNDERLYING = "Underlying";
-	private static final String REQUESTS_COUNT_BY_INITIATOR = "Initiator";
-	private static final String REQUESTS_COUNT_BY_TRADEDATE = "TradeDate";
-	private static final String REQUESTS_COUNT_BY_PICKER = "Picker";
-	private static final String REQUESTS_COUNT_BY_STATUS = "Status";
+	private static final String BOOKCODE_CATEGORY = "BookCode";
+	private static final String CLIENT_CATEGORY = "Client";
+	private static final String UNDERLYING_CATEGORY = "Underlying";
+	private static final String INITIATOR_CATEGORY = "Initiator";
+	private static final String TRADEDATE_CATEGORY = "TradeDate";
+	private static final String PICKER_CATEGORY = "Picker";
+	private static final String STATUS_CATEGORY = "Status";
 
 	private static final String REQUESTS_COUNT_BY_BOOKCODE_GET = "CALL requestsCountByBookCode(?, ?)";
 	private static final String REQUESTS_COUNT_BY_CLIENT_GET = "CALL requestsCountByClient(?, ?)";
@@ -30,35 +30,74 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String REQUESTS_COUNT_BY_PICKER_GET = "CALL requestsCountByPicker(?, ?)";
 	private static final String REQUESTS_COUNT_BY_STATUS_GET = "CALL requestsCountByStatus(?, ?)";
 
-	private class ReportDataParameterizedRowMapper implements ParameterizedRowMapper<RequestCountReportDataImpl>
+	private static final String GREEKS_BY_BOOKCODE_GET = "CALL GreeksByBookCode(?, ?)";
+	private static final String GREEKS_BY_CLIENT_GET = "CALL GreeksByClient(?, ?)";
+	private static final String GREEKS_BY_UNDERLYING_GET = "CALL GreeksByUnderlying(?, ?)";
+	private static final String GREEKS_BY_INITIATOR_GET = "CALL GreeksByUnderlying(?, ?)";
+	private static final String GREEKS_BY_TRADEDATE_GET = "CALL GreeksByTradeDate(?, ?)";
+	private static final String GREEKS_BY_PICKER_GET = "CALL GreeksByPicker(?, ?)";
+	private static final String GREEKS_BY_STATUS_GET = "CALL GreeksByStatus(?, ?)";
+
+	private class RequestCountPerCatgeoryReportParameterizedRowMapper implements ParameterizedRowMapper<RequestCountReportDataImpl>
 	{
 		@Override
 		public RequestCountReportDataImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			RequestCountReportDataImpl reportDataRow = new RequestCountReportDataImpl(rs.getString("categoryValue"), rs.getInt("requestCount"));
-
-			return reportDataRow;
+			return new RequestCountReportDataImpl(rs.getString("categoryValue"), rs.getInt("requestCount"));
+		}
+	}
+	
+	private class GreeksPerCatgeoryReportParameterizedRowMapper implements ParameterizedRowMapper<GreeksPerCategoryReportDataImpl>
+	{
+		@Override
+		public GreeksPerCategoryReportDataImpl mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			return new GreeksPerCategoryReportDataImpl(rs.getString("categoryValue"),
+					rs.getString("greekType"), rs.getDouble("greekTotal"));
 		}
 	}
 
-	private String getPreparedStatement(String categoryType)
+	private String getRequestCountPerCategoryPreparedStatement(String categoryType)
 	{
 		switch(categoryType)
 		{
-		case REQUESTS_COUNT_BY_BOOKCODE:
+		case BOOKCODE_CATEGORY:
 			return REQUESTS_COUNT_BY_BOOKCODE_GET;
-		case REQUESTS_COUNT_BY_CLIENT:
+		case CLIENT_CATEGORY:
 			return REQUESTS_COUNT_BY_CLIENT_GET;
-		case REQUESTS_COUNT_BY_UNDERLYING:
+		case UNDERLYING_CATEGORY:
 			return REQUESTS_COUNT_BY_UNDERLYING_GET;
-		case REQUESTS_COUNT_BY_INITIATOR:
+		case INITIATOR_CATEGORY:
 			return REQUESTS_COUNT_BY_INITIATOR_GET;
-		case REQUESTS_COUNT_BY_TRADEDATE:
+		case TRADEDATE_CATEGORY:
 			return REQUESTS_COUNT_BY_TRADEDATE_GET;
-		case REQUESTS_COUNT_BY_PICKER:
+		case PICKER_CATEGORY:
 			return REQUESTS_COUNT_BY_PICKER_GET;
-		case REQUESTS_COUNT_BY_STATUS:
+		case STATUS_CATEGORY:
 			return REQUESTS_COUNT_BY_STATUS_GET;
+
+		}
+		return null;
+	}
+	
+	private String getGreeksPerCategoryPreparedStatement(String categoryType)
+	{
+		switch(categoryType)
+		{
+		case BOOKCODE_CATEGORY:
+			return GREEKS_BY_BOOKCODE_GET;
+		case CLIENT_CATEGORY:
+			return GREEKS_BY_CLIENT_GET;
+		case UNDERLYING_CATEGORY:
+			return GREEKS_BY_UNDERLYING_GET;
+		case INITIATOR_CATEGORY:
+			return GREEKS_BY_INITIATOR_GET;
+		case TRADEDATE_CATEGORY:
+			return GREEKS_BY_TRADEDATE_GET;
+		case PICKER_CATEGORY:
+			return GREEKS_BY_PICKER_GET;
+		case STATUS_CATEGORY:
+			return GREEKS_BY_STATUS_GET;
 
 		}
 		return null;
@@ -79,13 +118,14 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	@Override
 	public List<RequestCountReportDataImpl> getRequestsByCategory(String categoryType,Calendar fromDate, int minimumCount)
 	{
-		return this.databaseExecutor.getResultSet(getPreparedStatement(categoryType),
-				new ReportDataParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
+		return this.databaseExecutor.getResultSet(getRequestCountPerCategoryPreparedStatement(categoryType),
+				new RequestCountPerCatgeoryReportParameterizedRowMapper(), new Date(fromDate.getTime().getTime()), minimumCount);
 	}
 	
 	@Override
 	public List<GreeksPerCategoryReportDataImpl> getGreeksByCategory(String categoryType, List<String> greeksToBeIncluded, Calendar maturityDateFrom, Calendar maturityDateTo, double minimumGreek)
 	{
-		return null;
+		return this.databaseExecutor.getResultSet(getGreeksPerCategoryPreparedStatement(categoryType),
+				new GreeksPerCatgeoryReportParameterizedRowMapper(), new Date(maturityDateFrom.getTime().getTime()), new Date(maturityDateTo.getTime().getTime()), minimumGreek);
 	}
 }
