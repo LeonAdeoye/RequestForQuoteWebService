@@ -14,7 +14,6 @@ public interface ReportingController
 			@WebParam(name="minimumCount") int minimumCount);
 
 	List<GreeksPerCategoryReportDataImpl> getGreeksByCategory(@WebParam(name="categoryType")String categoryType,
-			@WebParam(name="greeksToBeIncluded")List<String> greeksToBeIncluded,
 			@WebParam(name="MaturityDatefrom")GregorianCalendar maturityDateFrom,
 			@WebParam(name="MaturityDateTo")GregorianCalendar maturityDateTo,
 			@WebParam(name="minimumGreek")double minimumGreek);

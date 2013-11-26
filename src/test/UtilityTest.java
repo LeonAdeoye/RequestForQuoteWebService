@@ -19,7 +19,6 @@ public class UtilityTest
 		assertEquals(new GregorianCalendar(2012, DECEMBER, 23).getTime() , UtilityMethods.convertToDate("12/23/2012"));
 	}
 
-
 	@Test(expected = IllegalArgumentException.class)
 	public void test_convertToDate_emptyDateString_throwsIllegalArgumentException()
 	{
