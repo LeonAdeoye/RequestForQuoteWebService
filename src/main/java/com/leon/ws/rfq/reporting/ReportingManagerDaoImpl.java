@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
+import com.leon.ws.rfq.utilities.UtilityMethods;
 
 public class ReportingManagerDaoImpl implements ReportingManagerDao
 {
@@ -21,7 +22,7 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String TRADEDATE_CATEGORY = "TradeDate";
 	private static final String PICKER_CATEGORY = "Picker";
 	private static final String STATUS_CATEGORY = "Status";
-
+	
 	private static final String REQUESTS_COUNT_BY_BOOKCODE_GET = "CALL requestsCountByBookCode(?, ?)";
 	private static final String REQUESTS_COUNT_BY_CLIENT_GET = "CALL requestsCountByClient(?, ?)";
 	private static final String REQUESTS_COUNT_BY_UNDERLYING_GET = "CALL requestsCountByUnderlying(?, ?)";
@@ -30,13 +31,13 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String REQUESTS_COUNT_BY_PICKER_GET = "CALL requestsCountByPicker(?, ?)";
 	private static final String REQUESTS_COUNT_BY_STATUS_GET = "CALL requestsCountByStatus(?, ?)";
 
-	private static final String GREEKS_BY_BOOKCODE_GET = "CALL GreeksByBookCode(?, ?)";
-	private static final String GREEKS_BY_CLIENT_GET = "CALL GreeksByClient(?, ?)";
-	private static final String GREEKS_BY_UNDERLYING_GET = "CALL GreeksByUnderlying(?, ?)";
-	private static final String GREEKS_BY_INITIATOR_GET = "CALL GreeksByUnderlying(?, ?)";
-	private static final String GREEKS_BY_TRADEDATE_GET = "CALL GreeksByTradeDate(?, ?)";
-	private static final String GREEKS_BY_PICKER_GET = "CALL GreeksByPicker(?, ?)";
-	private static final String GREEKS_BY_STATUS_GET = "CALL GreeksByStatus(?, ?)";
+	private static final String GREEKS_BY_BOOKCODE_GET = "CALL GreeksByBookCode(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_CLIENT_GET = "CALL GreeksByClient(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_UNDERLYING_GET = "CALL GreeksByUnderlying(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_INITIATOR_GET = "CALL GreeksByUnderlying(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_TRADEDATE_GET = "CALL GreeksByTradeDate(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_PICKER_GET = "CALL GreeksByPicker(?, ?, ?, ?, ?)";
+	private static final String GREEKS_BY_STATUS_GET = "CALL GreeksByStatus(?, ?, ?, ?, ?)";
 
 	private class RequestCountPerCatgeoryReportParameterizedRowMapper implements ParameterizedRowMapper<RequestCountReportDataImpl>
 	{
@@ -123,9 +124,13 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	}
 	
 	@Override
-	public List<GreeksPerCategoryReportDataImpl> getGreeksByCategory(String categoryType, List<String> greeksToBeIncluded, Calendar maturityDateFrom, Calendar maturityDateTo, double minimumGreek)
+	public List<GreeksPerCategoryReportDataImpl> getGreeksByCategory(String categoryType, List<String> greeksToBeIncluded,
+			Calendar maturityDateFrom, Calendar maturityDateTo, double minimumGreek)
 	{
+		String greeks = UtilityMethods.join(greeksToBeIncluded, ",");
+		
 		return this.databaseExecutor.getResultSet(getGreeksPerCategoryPreparedStatement(categoryType),
-				new GreeksPerCatgeoryReportParameterizedRowMapper(), new Date(maturityDateFrom.getTime().getTime()), new Date(maturityDateTo.getTime().getTime()), minimumGreek);
+				new GreeksPerCatgeoryReportParameterizedRowMapper(), new Date(maturityDateFrom.getTime().getTime()),
+				new Date(maturityDateTo.getTime().getTime()), greeks, minimumGreek);
 	}
 }

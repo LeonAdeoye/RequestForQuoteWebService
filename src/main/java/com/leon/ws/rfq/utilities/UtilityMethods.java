@@ -3,6 +3,7 @@ package com.leon.ws.rfq.utilities;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public final class UtilityMethods
 	 * Converts a date stored as a string in specific format to a date in another string format.
 	 * If the conversion fails due parsing exception then an empty string is returned.
 	 * 
-	 * @param inputDate					the date in the initial string format.
+	 * @param inputDate						the date in the initial string format.
 	 * @param inputFormat					the string format of the date to be converted.
 	 * @param outputFormat					the string format of the date to be returned as the result of the conversion.
 	 * @return								the string of the date after the conversion to the desired format.
@@ -84,6 +85,36 @@ public final class UtilityMethods
 	{
 		long bits = Double.doubleToLongBits(value);
 		return (int)(bits ^ (bits >>> 32));
+	}
+	
+	/**
+	 * Concatenates elements in a structure which implements the Iterable interface using a delimiter.
+	 * 
+	 * @param iterable 							the structure implementing the Iterable interface.
+	 * @param delimiter 						the delimiter to be used for the concatenation
+	 * @return 									the concatenated string with each element separated by the delimiter.
+	 * @throws NullPointerException				if the iterable reference is null.
+	 * @throws IllegalArgumentException			if the delimiter is not set.
+	 */
+	public static String join(Iterable<? extends CharSequence> iterable, String delimiter)
+	{
+		if(iterable == null)
+			throw new NullPointerException("iterable");
+		
+		if(delimiter.isEmpty())
+			throw new IllegalArgumentException("delimiter");
+	    
+		Iterator<? extends CharSequence> iter = iterable.iterator();
+	    
+	    if (!iter.hasNext())
+	    	return "";
+	    
+	    StringBuilder buffer = new StringBuilder(iter.next());
+	    
+	    while (iter.hasNext())
+	    	buffer.append(delimiter).append(iter.next());
+	    
+	    return buffer.toString();
 	}
 }
 

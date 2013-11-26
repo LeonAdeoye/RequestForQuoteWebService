@@ -2,6 +2,7 @@ import static java.util.Calendar.DECEMBER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
@@ -74,5 +75,32 @@ public class UtilityTest
 	public void test_convertStringFormatOfDate_validDOTNETDate_validOuput()
 	{
 		assertEquals("2012-12-23", UtilityMethods.convertStringFormatOfDate("12/23/2012 7:54:00 PM", UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT));
+	}
+	
+	@SuppressWarnings("serial")
+	@Test(expected = IllegalArgumentException.class)
+	public void test_join_emptyDelimiter_throwsIllegalArgumentException()
+	{
+		UtilityMethods.join(new ArrayList<String>() { { add("A"); add("B"); } }, "");
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void test_join_nullList_throwsNullPointerException()
+	{
+		UtilityMethods.join(null, "");
+	}
+	
+	@SuppressWarnings("serial")
+	@Test
+	public void test_join_listWithTwoItemsAndCommaDelimiter_validConcatenatedString()
+	{
+		assertEquals("A,B", UtilityMethods.join(new ArrayList<String>() { { add("A"); add("B"); } }, ","));
+	}
+	
+	@SuppressWarnings("serial")
+	@Test
+	public void test_join_listWithOneItemAndCommaDelimiter_validConcatenatedString()
+	{
+		assertEquals("A", UtilityMethods.join(new ArrayList<String>() { { add("A"); } }, ","));
 	}
 }
