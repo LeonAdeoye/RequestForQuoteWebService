@@ -15,12 +15,14 @@ public class ReportErrorTest
 	private static ReportingController reportingController;
 	private final String categoryType;
 	private final GregorianCalendar fromDate;
+	private final GregorianCalendar ToDate;
 	private final int minimumCount;
 
 	public ReportErrorTest()
 	{
 		this.categoryType = "BookCode";
 		this.fromDate = new GregorianCalendar(2013,10,1);
+		this.ToDate = new GregorianCalendar(2013,11,1);
 		this.minimumCount = 0;
 	}
 
@@ -78,6 +80,20 @@ public class ReportErrorTest
 	{
 		// Act
 		reportingController.getRequestsByCategory(this.categoryType, this.fromDate, Integer.MIN_VALUE);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_getGreeksByCategory_NegativeMinimumGreek_IllegalArgumentExceptionShouldBeThrown()
+	{
+		// Act
+		reportingController.getGreeksByCategory(this.categoryType, this.fromDate, this.ToDate, -0.01);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_getGreeksByCategory_EmptyCategoryType_IllegalArgumentExceptionShouldBeThrown()
+	{
+		// Act
+		reportingController.getGreeksByCategory("", this.fromDate, this.ToDate, 0.0);
 	}
 }
 
