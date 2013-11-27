@@ -33,7 +33,7 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String GREEKS_BY_BOOKCODE_GET = "CALL greeksByBookCode(?, ?, ?)";
 	private static final String GREEKS_BY_CLIENT_GET = "CALL greeksByClient(?, ?, ?)";
 	private static final String GREEKS_BY_UNDERLYING_GET = "CALL greeksByUnderlying(?, ?, ?)";
-	private static final String GREEKS_BY_INITIATOR_GET = "CALL greeksByUnderlying(?, ?, ?)";
+	private static final String GREEKS_BY_INITIATOR_GET = "CALL greeksByInitiator(?, ?, ?)";
 	private static final String GREEKS_BY_TRADEDATE_GET = "CALL greeksByTradeDate(?, ?, ?)";
 	private static final String GREEKS_BY_PICKER_GET = "CALL greeksByPicker(?, ?, ?)";
 	private static final String GREEKS_BY_STATUS_GET = "CALL greeksByStatus(?, ?, ?)";

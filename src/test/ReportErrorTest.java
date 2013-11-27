@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.util.Assert;
 
+import com.leon.ws.rfq.reporting.GreeksPerCategoryReportDataImpl;
 import com.leon.ws.rfq.reporting.ReportingController;
 import com.leon.ws.rfq.reporting.RequestCountReportDataImpl;
 
@@ -94,6 +95,26 @@ public class ReportErrorTest
 	{
 		// Act
 		reportingController.getGreeksByCategory("", this.fromDate, this.ToDate, 0.0);
+	}
+	
+	@Test
+	public void test_getGreeksByCategory_MinimumGreekMaxValue_NoResultsReturned()
+	{
+		// Act
+		List<GreeksPerCategoryReportDataImpl> result = reportingController.getGreeksByCategory
+				(this.categoryType, this.fromDate, this.ToDate, Double.MAX_VALUE);
+		// Assert
+		Assert.isTrue(result.size() == 0);
+	}
+	
+	@Test
+	public void test_getGreeksByCategory_ToDatePrecedesFromDate_NoResultsReturned()
+	{
+		// Act
+		List<GreeksPerCategoryReportDataImpl> result = reportingController.getGreeksByCategory
+				(this.categoryType, this.ToDate, this.fromDate, 0.0);
+		// Assert
+		Assert.isTrue(result.size() == 0);
 	}
 }
 
