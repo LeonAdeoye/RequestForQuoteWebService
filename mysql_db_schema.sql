@@ -509,6 +509,198 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `greeksByBookCode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `greeksByBookCode`(
+p_maturityDateFrom DATETIME,
+P_maturityDateTo DATETIME,
+p_minimumGreeks DECIMAL(13,3)
+)
+BEGIN   
+    SELECT 
+        IFNULL(bookCode,'NONE') categoryValue,
+        SUM(delta) delta,
+        SUM(gamma) gamma,
+        SUM(vega) vega,
+        SUM(theta) theta,
+        SUM(rho) rho
+    FROM 
+        requestforquotemain
+    WHERE
+        tradeDate <= p_maturityDateTo
+    AND
+        tradeDate >= p_maturityDateFrom
+    GROUP By 
+        bookCode
+    HAVING 
+        ABS(SUM(delta)) > p_minimumGreeks
+    AND 
+        ABS(SUM(gamma)) > p_minimumGreeks
+    AND
+        ABS(SUM(vega)) > p_minimumGreeks
+    AND 
+        ABS(SUM(theta)) > p_minimumGreeks
+    AND
+        ABS(SUM(rho)) > p_minimumGreeks;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `greeksByClient` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `greeksByClient`(
+p_maturityDateFrom DATETIME,
+P_maturityDateTo DATETIME,
+p_minimumGreeks DECIMAL(13,3)
+)
+BEGIN
+    SELECT 
+        IFNULL(cl.name,'NONE') categoryValue, 
+        SUM(rfqs.delta) delta,
+        SUM(rfqs.gamma) gamma,
+        SUM(rfqs.vega) vega,
+        SUM(rfqs.theta) theta,
+        SUM(rfqs.rho) rho
+    FROM 
+        requestforquotemain rfqs, clients cl
+    WHERE
+        rfqs.tradeDate <= p_maturityDateTo
+    AND
+        rfqs.tradeDate >= p_maturityDateFrom
+    AND
+        cl.identifier = rfqs.clientId
+    GROUP By 
+        rfqs.tradeDate
+    HAVING 
+        ABS(SUM(rfqs.delta)) > p_minimumGreeks
+    AND 
+        ABS(SUM(rfqs.gamma)) > p_minimumGreeks
+    AND
+        ABS(SUM(rfqs.vega)) > p_minimumGreeks
+    AND 
+        ABS(SUM(rfqs.theta)) > p_minimumGreeks
+    AND
+        ABS(SUM(rfqs.rho)) > p_minimumGreeks;
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `greeksByStatus` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `greeksByStatus`(
+p_maturityDateFrom DATETIME,
+P_maturityDateTo DATETIME,
+p_minimumGreeks DECIMAL(13,3)
+)
+BEGIN
+    SELECT 
+        IFNULL(status,'NONE') categoryValue,
+        SUM(delta) delta,
+        SUM(gamma) gamma,
+        SUM(vega) vega,
+        SUM(theta) theta,
+        SUM(rho) rho
+    FROM 
+        requestforquotemain
+    WHERE
+        tradeDate <= p_maturityDateTo
+    AND
+        tradeDate >= p_maturityDateFrom
+    GROUP By 
+        status
+    HAVING 
+        ABS(SUM(delta)) > p_minimumGreeks
+    AND 
+        ABS(SUM(gamma)) > p_minimumGreeks
+    AND
+        ABS(SUM(vega)) > p_minimumGreeks
+    AND 
+        ABS(SUM(theta)) > p_minimumGreeks
+    AND
+        ABS(SUM(rho)) > p_minimumGreeks;
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `greeksByTradeDate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `greeksByTradeDate`(
+p_maturityDateFrom DATETIME,
+P_maturityDateTo DATETIME,
+p_minimumGreeks DECIMAL(13,3)
+)
+BEGIN
+    SELECT 
+        IFNULL(DATE(tradeDate),'NONE') categoryValue,
+        SUM(delta) delta,
+        SUM(gamma) gamma,
+        SUM(vega) vega,
+        SUM(theta) theta,
+        SUM(rho) rho
+    FROM 
+        requestforquotemain
+    WHERE
+        tradeDate <= p_maturityDateTo
+    AND
+        tradeDate >= p_maturityDateFrom
+    GROUP By 
+        tradeDate
+    HAVING 
+        ABS(SUM(delta)) > p_minimumGreeks
+    AND 
+        ABS(SUM(gamma)) > p_minimumGreeks
+    AND
+        ABS(SUM(vega)) > p_minimumGreeks
+    AND 
+        ABS(SUM(theta)) > p_minimumGreeks
+    AND
+        ABS(SUM(rho)) > p_minimumGreeks;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `holidays_DELETE` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
