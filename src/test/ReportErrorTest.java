@@ -116,5 +116,35 @@ public class ReportErrorTest
 		// Assert
 		Assert.isTrue(result.size() == 0);
 	}
+	
+	@Test
+	public void test_getRequestsByCategory_MinimumCountMaxValue_NoResultsReturned()
+	{
+		// Act
+		List<RequestCountReportDataImpl> result = reportingController.getRequestsByCategory
+				(this.categoryType, this.fromDate, Integer.MAX_VALUE);
+		// Assert
+		Assert.isTrue(result.size() == 0);
+	}
+	
+	@Test
+	public void test_getRequestsByCategory_FutureFromDate_NoResultsReturned()
+	{
+		// Act
+		List<RequestCountReportDataImpl> result = reportingController.getRequestsByCategory
+				(this.categoryType, new GregorianCalendar(2020,12,23), 0);
+		// Assert
+		Assert.isTrue(result.size() == 0);
+	}
+	
+	@Test
+	public void test_getGreeksByCategory_FutureFromAndToDate_NoResultsReturned()
+	{
+		// Act
+		List<GreeksPerCategoryReportDataImpl> result = reportingController.getGreeksByCategory
+				(this.categoryType, new GregorianCalendar(2020,1,23), new GregorianCalendar(2020,12,23), 0.0);
+		// Assert
+		Assert.isTrue(result.size() == 0);
+	}
 }
 
