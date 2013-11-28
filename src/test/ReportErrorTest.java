@@ -22,8 +22,8 @@ public class ReportErrorTest
 	public ReportErrorTest()
 	{
 		this.categoryType = "BookCode";
-		this.fromDate = new GregorianCalendar(2013,10,1);
-		this.ToDate = new GregorianCalendar(2013,11,1);
+		this.fromDate = new GregorianCalendar(2013,1,1);
+		this.ToDate = new GregorianCalendar();
 		this.minimumCount = 0;
 	}
 
