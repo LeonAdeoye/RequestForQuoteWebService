@@ -29,7 +29,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 		if(location.isEmpty())
 			throw new IllegalArgumentException("location");
 
-		if(holidayDate == null)
+		if(holidayDate.isEmpty())
 			throw new IllegalArgumentException("holidayDate");
 
 		return this.dao.delete(location, holidayDate);

@@ -50,13 +50,15 @@ public class HolidayTest extends TestCase
 	@Test
 	public void test_addOneValidHolidayToLiverpool_LiverpoolHolidaysIncrementedByOne()
 	{
+		this.holidayController.delete("TEST_LOCATION", "23 Dec 2013");
+		
 		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		List<HolidayImpl> after = this.holidayController.get("TEST_LOCATION");
 		assertEquals("Test holiday not saved for TEST_LOCATION", 1, after.size());
 
 		this.holidayController.delete("TEST_LOCATION", "23 Dec 2013");
 		after = this.holidayController.get("TEST_LOCATION");
-		assertEquals("Test holiday not saved for TEST_LOCATION", 0, after.size());
+		assertEquals("Test holiday not deleted for TEST_LOCATION", 0, after.size());
 	}
 
 	@Override
