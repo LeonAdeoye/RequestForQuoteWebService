@@ -12,6 +12,13 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 {
 	private static final Logger logger = LoggerFactory.getLogger(GenericDatabaseCommandExecutorImpl.class);
 
+	/**
+	 * Executes a prepared statement pass a parameter and returns a boolean result if the successful.
+	 * 
+	 *  @param preparedStatement		the SQL prepared statement to execute.
+	 *  @param params					the variable arguments array.
+	 *  @returns						true if successful; false otherwise.
+	 */
 	@Override
 	public <T> boolean executePreparedStatement(String preparedStatement,Object... params)
 	{
@@ -31,6 +38,13 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 		return false;
 	}
 
+	/**
+	 * Returns a result set list resulting from the execution of the prepared statement.
+	 * 
+	 *  @param preparedStatement		the SQL prepared statement to execute.
+	 *  @param params					the variable arguments array.
+	 *  @returns						list of type T; an empty list otherwise.
+	 */
 	@Override
 	public <T> List<T> getResultSet(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
 	{
@@ -48,6 +62,13 @@ public final class GenericDatabaseCommandExecutorImpl extends SimpleJdbcDaoSuppo
 		return new LinkedList<T>();
 	}
 
+	/**
+	 * Returns a single result set resulting from the execution of the prepared statement.
+	 * 
+	 *  @param preparedStatement		the SQL prepared statement to execute.
+	 *  @param params					the variable arguments array.
+	 *  @returns						an object of type T; null otherwise.
+	 */
 	@Override
 	public <T> T getSingleResult(String preparedStatement, ParameterizedRowMapper<T> rowMapper, Object... params)
 	{
