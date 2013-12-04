@@ -48,7 +48,7 @@ public final class HolidayControllerImpl implements HolidayController, Applicati
 			throw new IllegalArgumentException("savedBy");
 
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user [" + savedBy + "] to save holida with date [" + holidayDate + "].");
+			logger.debug("Received request from user [" + savedBy + "] to save holiday with date [" + holidayDate + "].");
 
 		boolean isSaved = this.dao.save(location, holidayDate, savedBy);
 

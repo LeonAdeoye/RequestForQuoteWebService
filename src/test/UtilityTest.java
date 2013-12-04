@@ -71,7 +71,7 @@ public class UtilityTest
 	}
 
 	@Test
-	public void test_convertStringFormatOfDate_validDOTNETDate_validOuput()
+	public void test_convertStringFormatOfDate_validDOTNETDate_validDBDate()
 	{
 		assertEquals("2012-12-23", UtilityMethods.convertStringFormatOfDate("12/23/2012 7:54:00 PM", UtilityMethods.DOTNET_DATE_STRING_FORMAT, UtilityMethods.DB_DATE_STRING_FORMAT));
 	}
