@@ -34,9 +34,9 @@ public class HolidayTest extends AbstractJUnit4SpringContextTests
 	public void test_save_AddValidTestHoliday_TotalCountOfHolidaysIncrementedByOne()
 	{
 		// Arrange
-		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		
 		// Act
+		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		List<HolidayImpl> after = this.holidayController.get("TEST_LOCATION");
 		// Assert
 		assertEquals("Test holiday not saved for TEST_LOCATION", 1, after.size());
@@ -47,9 +47,9 @@ public class HolidayTest extends AbstractJUnit4SpringContextTests
 	{
 		// Arrange
 		List<HolidayImpl> before = this.holidayController.getAll();
+		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		
 		// Act
-		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		List<HolidayImpl> after = this.holidayController.getAll();
 		
 		// Assert

@@ -14,6 +14,7 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	private static final String SAVE = "CALL books_SAVE (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL books_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL = "CALL books_SELECT_ALL";
+	private static final String SELECT = "CALL books_SELECT (?)";
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	private class BookDetailParameterizedRowMapper implements ParameterizedRowMapper<BookDetailImpl>
@@ -61,5 +62,11 @@ public final class BookManagerDaoImpl implements BookManagerDao
 	public List<BookDetailImpl> getAll()
 	{
 		return this.databaseExecutor.<BookDetailImpl>getResultSet(SELECT_ALL, new BookDetailParameterizedRowMapper());
+	}
+
+	@Override
+	public BookDetailImpl get(String bookCode)
+	{
+		return this.databaseExecutor.<BookDetailImpl>getSingleResult(SELECT, new BookDetailParameterizedRowMapper(), bookCode);
 	}
 }
