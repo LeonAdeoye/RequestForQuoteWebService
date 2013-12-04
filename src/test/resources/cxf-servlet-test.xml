@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://cxf.apache.org/jaxws 
+						http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<bean id="blackScholesModel" class="com.leon.ws.rfq.option.model.BlackScholesModelImpl"/>
+	
+	<bean id="marketDataService" class="com.leon.ws.rfq.marketdata.MarketDataServiceImpl" 
+		init-method="initialize"/>
+		
+	<bean id="parametricDataService" class="com.leon.ws.rfq.parametric.ParametricDataServiceImpl" 
+		init-method="initialize"/>
+	
+	<bean id="clientCommunicator" class="com.leon.ws.rfq.communicator.ClientCommunicatorImpl"
+		init-method="initialize" destroy-method="dispose">
+		<constructor-arg value="127.0.0.1"/>
+		<constructor-arg value="1972"/>
+	</bean>
+	
+	<bean id="priceSimulator" class="com.leon.ws.rfq.simulation.PriceSimulatorImpl"	init-method="initialize">
+		<constructor-arg value="500"/>
+		<constructor-arg value="2000"/>
+	</bean>	
+	
+	<bean id="optionPricer" class="com.leon.ws.rfq.option.model.OptionPricingControllerImpl">
+		<constructor-arg ref="blackScholesModel"/>
+    	<constructor-arg ref="marketDataService"/>
+    	<constructor-arg ref="parametricDataService"/>		
+	</bean>
+	
+	<bean id="asyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+	
+	<bean id='applicationEventMulticaster' class='org.springframework.context.event.SimpleApplicationEventMulticaster'>
+      <property name='taskExecutor' ref="asyncTaskExecutor"/>
+  	</bean>
+		
+	<bean id="chatMediator" class="com.leon.ws.rfq.chat.ChatMediatorImpl">
+		<constructor-arg ref="chatMessageDao"/>
+	</bean>
+	
+    <bean id="searchController" class="com.leon.ws.rfq.search.SearchControllerImpl">
+    	<property name="searchManagerDao" ref="searchManagerDao"/>
+    </bean>
+    
+    <bean id="clientController" class="com.leon.ws.rfq.client.ClientControllerImpl">
+    	<property name="clientManagerDao" ref="clientManagerDao"/>
+    </bean>
+    
+    <bean id="requestController" class="com.leon.ws.rfq.request.RequestControllerImpl">
+    	<property name="requestManagerDao" ref="requestManagerDao"/>
+    </bean>    
+    
+    <bean id="bookController" class="com.leon.ws.rfq.book.BookControllerImpl">
+    	<property name="bookManagerDao" ref="bookManagerDao"/>
+    </bean>
+    
+    <bean id="underlyingController" class="com.leon.ws.rfq.underlying.UnderlyingControllerImpl">
+    	<property name="underlyingManagerDao" ref="underlyingManagerDao"/>
+    </bean>    
+    
+    <bean id="holidayController" class="com.leon.ws.rfq.holiday.HolidayControllerImpl">
+    	<property name="holidayDao" ref="holidayDao"/>
+    </bean> 
+
+    <bean id="reportingController" class="com.leon.ws.rfq.reporting.ReportingControllerImpl">
+    	<property name="reportingManagerDao" ref="reportingManagerDao"/>
+    </bean> 
+    
+    <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+    
+    <bean id="clientManagerDao" class="com.leon.ws.rfq.client.ClientManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+
+    <bean id="underlyingManagerDao" class="com.leon.ws.rfq.underlying.UnderlyingManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+    
+    <bean id="bookManagerDao" class="com.leon.ws.rfq.book.BookManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+    
+    <bean id="chatMessageDao" class="com.leon.ws.rfq.chat.ChatMessageDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+    
+    <bean id="holidayDao" class="com.leon.ws.rfq.holiday.HolidayDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean>
+    
+    <bean id="requestManagerDao" class="com.leon.ws.rfq.request.RequestManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    	<property name="platformTransactionManager" ref="transactionManager"></property>
+    </bean> 
+    
+    <bean id="reportingManagerDao" class="com.leon.ws.rfq.reporting.ReportingManagerDaoImpl">
+    	<property name="databaseCommandExecutor" ref="databaseCommandExecutor"/>
+    </bean> 
+    
+    <bean id="databaseCommandExecutor" class="com.leon.ws.rfq.database.GenericDatabaseCommandExecutorImpl">
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>    
+       
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    	<property name="url" value="jdbc:mysql://localhost/rfq_development"/>
+    	<property name="username" value="root"/>
+    	<property name="password" value="liverpool"/>
+	</bean>    
+       
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	   	
+	<jaxws:endpoint 	  id="underlyingMaintenanceController"	  implementor="#underlyingController"	  address="/UnderlyingMaintenance" />    	
+	<jaxws:endpoint 	  id="optionPricingController"	  implementor="#optionPricer"	  address="/PriceOption" />
+	<jaxws:endpoint 	  id="searchCriteriaController"	  implementor="#searchController"	  address="/SearchCriteria" />
+	<jaxws:endpoint 	  id="clientMaintenanceController"	  implementor="#clientController"	  address="/ClientMaintenance" />
+	<jaxws:endpoint 	  id="bookMaintenanceController"	  implementor="#bookController"	  address="/BookMaintenance" />
+	<jaxws:endpoint 	  id="chatController"	  				implementor="#chatMediator"	  address="/Chat" />
+	<jaxws:endpoint 	  id="holidayMaintenanceController"	  implementor="#holidayController"	  address="/HolidayMaintenance" />
+	<jaxws:endpoint 	  id="requestMaintenanceController"	  implementor="#requestController"	  address="/RequestMaintenance" />
+	<jaxws:endpoint 	  id="reportController"	  implementor="#reportingController"	  address="/Report" />
+</beans>
