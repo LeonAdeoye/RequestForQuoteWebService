@@ -6,6 +6,7 @@ public interface ClientManagerDao
 {
 	ClientDetailImpl save(String name, String tier, String savedBy);
 	List<ClientDetailImpl> getAll();
+	ClientDetailImpl get(int identifier);
 	boolean updateTier(int identifier, String tier, String updatedBy);
 	boolean updateValidity(int identifier, boolean isValid, String updatedBy);
 }

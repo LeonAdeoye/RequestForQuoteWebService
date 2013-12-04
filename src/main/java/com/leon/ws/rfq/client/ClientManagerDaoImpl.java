@@ -26,6 +26,7 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	private static final String UPDATE_TIER = "CALL clients_UPDATE_TIER (?, ?, ?)";
 	private static final String UPDATE_VALIDITY = "CALL clients_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SELECT_ALL = "CALL clients_SELECT_ALL";
+	private static final String SELECT = "CALL clients_SELECT (?)";
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
 	ClientManagerDaoImpl()
@@ -65,5 +66,11 @@ public final class ClientManagerDaoImpl implements ClientManagerDao
 	public List<ClientDetailImpl> getAll()
 	{
 		return this.databaseExecutor.<ClientDetailImpl>getResultSet(SELECT_ALL, new ClientParameterizedRowMapper());
+	}
+
+	@Override
+	public ClientDetailImpl get(int identifier)
+	{
+		return this.databaseExecutor.<ClientDetailImpl>getSingleResult(SELECT, new ClientParameterizedRowMapper(), identifier);
 	}
 }

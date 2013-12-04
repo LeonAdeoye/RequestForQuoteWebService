@@ -55,7 +55,7 @@ public class BookDaoTest extends AbstractJUnit4SpringContextTests
 		List<BookDetailImpl> after = this.bookDao.getAll();
 		
 		// Assert
-		assertEquals("getAll does not return saved book", before.size() + 1, after.size());
+		assertEquals("getAll does not return saved books", before.size() + 1, after.size());
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class BookDaoTest extends AbstractJUnit4SpringContextTests
 		BookDetailImpl newBook = this.bookDao.get("TEST");
 		
 		// Assert
-		assertNotNull("delete method does not remove newly saved book", newBook);
+		assertNotNull("get method does not retrieve newly saved book", newBook);
 	}
 	
 	@Test
@@ -98,7 +98,8 @@ public class BookDaoTest extends AbstractJUnit4SpringContextTests
 		BookDetailImpl bookAfterUpdate = this.bookDao.get("TEST");
 		
 		// Assert
-		assertNotEquals("delete method does not remove newly saved book", bookAfterSave.getIsValid(), bookAfterUpdate.getIsValid());
+		assertNotEquals("updateValidity method does not update validity of book",
+				bookAfterSave.getIsValid(), bookAfterUpdate.getIsValid());
 	}
 	
 	@Before
