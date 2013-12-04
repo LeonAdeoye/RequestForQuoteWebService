@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.transaction.TransactionDefinition;
@@ -34,12 +33,20 @@ public class HolidayTest extends AbstractJUnit4SpringContextTests
 	public HolidayTest() {}
 
 	@Test
-	@Rollback(true)
 	public void test_addOneValidHoliday_HolidaysIncrementedByOne()
 	{
 		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
 		List<HolidayImpl> after = this.holidayController.get("TEST_LOCATION");
 		assertEquals("Test holiday not saved for TEST_LOCATION", 1, after.size());
+	}
+	
+	@Test
+	public void test_getAll_HolidaysIncrementedByOne()
+	{
+		List<HolidayImpl> before = this.holidayController.getAll();
+		this.holidayController.save("TEST_LOCATION", "23 Dec 2013", "testuser");
+		List<HolidayImpl> after = this.holidayController.getAll();
+		assertEquals("Test holiday not saved for TEST_LOCATION", before.size() + 1, after.size());
 	}
 	
 	@Before
