@@ -10,4 +10,5 @@ public interface UnderlyingManagerDao
 
 	List<UnderlyingDetailImpl> getAll();
 
+	UnderlyingDetailImpl get(String ric);
 }

@@ -11,6 +11,7 @@ import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 public class UnderlyingManagerDaoImpl implements UnderlyingManagerDao
 {
 	private static final String SELECT_ALL = "CALL underlyings_SELECT_ALL";
+	private static final String SELECT = "CALL underlyings_SELECT (?)";
 	private static final String UPDATE_VALIDITY = "CALL underlyings_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SAVE = "CALL underlyings_SAVE (?, ?, ?)";
 
@@ -54,5 +55,11 @@ public class UnderlyingManagerDaoImpl implements UnderlyingManagerDao
 	public List<UnderlyingDetailImpl> getAll()
 	{
 		return this.databaseExecutor.<UnderlyingDetailImpl>getResultSet(SELECT_ALL, new UnderlyingDetailParameterizedRowMapper());
+	}
+
+	@Override
+	public UnderlyingDetailImpl get(String ric)
+	{
+		return this.databaseExecutor.<UnderlyingDetailImpl>getSingleResult(SELECT, new UnderlyingDetailParameterizedRowMapper(), ric);
 	}
 }
