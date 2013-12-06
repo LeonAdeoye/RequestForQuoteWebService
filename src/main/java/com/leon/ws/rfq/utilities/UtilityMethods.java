@@ -93,7 +93,7 @@ public final class UtilityMethods
 	 * @param iterable 							the structure implementing the Iterable interface.
 	 * @param delimiter 						the delimiter to be used for the concatenation
 	 * @return 									the concatenated string with each element separated by the delimiter.
-	 * @throws NullPointerException				if the iterable reference is null.
+	 * @throws NullPointerException				if the Iterable reference is null.
 	 * @throws IllegalArgumentException			if the delimiter is not set.
 	 */
 	public static String join(Iterable<? extends CharSequence> iterable, String delimiter)

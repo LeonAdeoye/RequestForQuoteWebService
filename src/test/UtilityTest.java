@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.leon.ws.rfq.utilities.UtilityMethods;
 
-
 public class UtilityTest
 {
 	@Test

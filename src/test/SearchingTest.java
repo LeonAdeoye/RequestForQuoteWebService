@@ -1,73 +1,103 @@
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.junit.*; 
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.search.SearchController;
 import com.leon.ws.rfq.search.SearchCriterionImpl;
 
-public class SearchingTest extends TestCase
+@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
+public class SearchingTest extends AbstractJUnit4SpringContextTests
 {
-	private static final Logger logger = LoggerFactory.getLogger(SearchingTest.class);
+	@Autowired
 	private SearchController searcher;
 	
-	public SearchingTest(String name)
-	{		
-		super(name);
-		initializeBean();
-	}
-	
-	private void initializeBean()
-	{
-		try
-		{			
-			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml"); 
-			searcher = (SearchController) context.getBean("searchController");
-			
-			if(logger.isDebugEnabled())
-				logger.debug("Successfully wired bean search controller from file system application context.");			
-		}
-		catch(BeansException be)
-		{
-			logger.error("Failed to load application context for search controller!", be);
-		}
-	}	
-	
+	public SearchingTest() {}
+		
 	@Before
 	public void setUp()
 	{
+		assertNotNull("autowired holiday controller should not be null", this.searcher);
 	}
 	
 	public void test_saveAndDelete_addTwoValidCriterionSameOwnerSameKey_twoCriteriaShouldBeAddedWithSameOwnerAndKey()
-	{	
-		searcher.save("bob", "bob", "bob", "bob", true, true);			
-		searcher.save("bob", "bob", "ethan", "ethan", true, true);
+	{
+		this.searcher.save("bob", "bob", "bob", "bob", true, true);
+		this.searcher.save("bob", "bob", "ethan", "ethan", true, true);
 		
-		List<SearchCriterionImpl> startList = searcher.get("bob", "bob");
+		List<SearchCriterionImpl> startList = this.searcher.get("bob", "bob");
 		assertEquals("List size of newly added criteria does not match expectations!", 2, startList.size());
 				
-		searcher.delete("bob", "bob");
-		List<SearchCriterionImpl> endList = searcher.get("bob", "bob");
-		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());				
+		this.searcher.delete("bob", "bob");
+		List<SearchCriterionImpl> endList = this.searcher.get("bob", "bob");
+		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());
 	}
 	
 	public void test_saveAndDelete_AddValidCriterion_RetrievedCriterionJustAddedShouldMatchExpected()
 	{
-		searcher.save("bob", "bob", "bob", "bob", true, true);
-		List<SearchCriterionImpl> list = searcher.get("bob", "bob");		
-		SearchCriterionImpl expectedCriterion = new SearchCriterionImpl("bob", "bob", "bob", "bob", true, true);						
+		this.searcher.save("bob", "bob", "bob", "bob", true, true);
+		List<SearchCriterionImpl> list = this.searcher.get("bob", "bob");
+		SearchCriterionImpl expectedCriterion = new SearchCriterionImpl("bob", "bob", "bob", "bob", true, true);
 		assertTrue("Newly added criteria does not match expectations!", list.contains(expectedCriterion));
 		
-		searcher.delete("bob", "bob");
-		List<SearchCriterionImpl> endList = searcher.get("bob", "bob");
-		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());				
+		this.searcher.delete("bob", "bob");
+		List<SearchCriterionImpl> endList = this.searcher.get("bob", "bob");
+		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());
 		
-	}	
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_Save_InvalidOnwer_ThrowsIllegalArgumentException()
+	{
+		this.searcher.save("", "bob", "bob", "bob", true, true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_Save_InvalidKey_ThrowsIllegalArgumentException()
+	{
+		this.searcher.save("bob", "", "bob", "bob", true, true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_Save_InvalidControlName_ThrowsIllegalArgumentException()
+	{
+		this.searcher.save("bob", "bob", "", "bob", true, true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_Save_InvalidControlValue_ThrowsIllegalArgumentException()
+	{
+		this.searcher.save("bob", "bob", "bob", "", true, true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_delete_InvalidOwner_ThrowsIllegalArgumentException()
+	{
+		this.searcher.delete("", "bob");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_delete_InvalidKey_ThrowsIllegalArgumentException()
+	{
+		this.searcher.delete("bob", "");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_updatePrivacy_InvalidOwner_ThrowsIllegalArgumentException()
+	{
+		this.searcher.updatePrivacy("", "bob", false);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_updatePrivacy_InvalidKey_ThrowsIllegalArgumentException()
+	{
+		this.searcher.updatePrivacy("bob", "", false);
+	}
 }
