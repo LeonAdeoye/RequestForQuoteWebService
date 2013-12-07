@@ -5,51 +5,35 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.underlying.UnderlyingController;
 import com.leon.ws.rfq.underlying.UnderlyingManagerDao;
 
-public class UnderlyingTest
+@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
+public class UnderlyingTest extends AbstractJUnit4SpringContextTests
 {
-	@Rule public JUnitRuleMockery mockContext = new JUnitRuleMockery();
-	private static final Logger logger = LoggerFactory.getLogger(BookTest.class);
+	@Rule
+	public JUnitRuleMockery mockContext = new JUnitRuleMockery();
+	
+	@Autowired
 	private UnderlyingController underlyingController;
-	private UnderlyingManagerDao daoMock;
+	
+	private final UnderlyingManagerDao daoMock = this.mockContext.mock(UnderlyingManagerDao.class);
 
-	public UnderlyingTest()
-	{
-		initializeBean();
-	}
+	public UnderlyingTest() {}
 
 	@BeforeClass
 	public static void oneTimeSetUp()
 	{
 	}
 
-	private void initializeBean()
-	{
-		try
-		{
-			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-			this.underlyingController = (UnderlyingController) context.getBean("underlyingController");
-			this.daoMock = this.mockContext.mock(UnderlyingManagerDao.class);
-			this.underlyingController.setUnderlyingManagerDao(this.daoMock);
-		}
-		catch(BeansException be)
-		{
-			if(logger.isErrorEnabled())
-				logger.error("Failed to load application context for book controller!", be);
-		}
-	}
-
 	@Before
 	public void setUp()
 	{
+		this.underlyingController.setUnderlyingManagerDao(this.daoMock);
 	}
 
 	@Test

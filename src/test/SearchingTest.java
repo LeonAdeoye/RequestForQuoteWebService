@@ -1,23 +1,26 @@
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.search.SearchController;
-import com.leon.ws.rfq.search.SearchCriterionImpl;
+import com.leon.ws.rfq.search.SearchManagerDao;
 
 @ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
 public class SearchingTest extends AbstractJUnit4SpringContextTests
 {
+	@Rule public JUnitRuleMockery mockContext = new JUnitRuleMockery();
+	
 	@Autowired
 	private SearchController searcher;
+	
+	private final SearchManagerDao daoMock = this.mockContext.mock(SearchManagerDao.class);
 	
 	public SearchingTest() {}
 		
@@ -27,30 +30,49 @@ public class SearchingTest extends AbstractJUnit4SpringContextTests
 		assertNotNull("autowired holiday controller should not be null", this.searcher);
 	}
 	
-	public void test_saveAndDelete_addTwoValidCriterionSameOwnerSameKey_twoCriteriaShouldBeAddedWithSameOwnerAndKey()
+	@Test
+	public void test_save_DaoSaveMethodCalled()
 	{
-		this.searcher.save("bob", "bob", "bob", "bob", true, true);
-		this.searcher.save("bob", "bob", "ethan", "ethan", true, true);
-		
-		List<SearchCriterionImpl> startList = this.searcher.get("bob", "bob");
-		assertEquals("List size of newly added criteria does not match expectations!", 2, startList.size());
-				
-		this.searcher.delete("bob", "bob");
-		List<SearchCriterionImpl> endList = this.searcher.get("bob", "bob");
-		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());
+		// arrange
+		this.mockContext.checking(new Expectations() {{  oneOf (SearchingTest.this.daoMock).save("test", "test", "test", "test", true, true); }});
+		// act
+		this.searcher.save("test", "test", "test", "test", true, true);
+	}
+
+	@Test
+	public void test_delete_DaoDeleteMethodCalled()
+	{
+		// arrange
+		this.mockContext.checking(new Expectations() {{  oneOf (SearchingTest.this.daoMock).delete("test", "test"); }});
+		// act
+		this.searcher.delete("test", "test");
+	}
+
+	@Test
+	public void test_updatePrivacy_DaoUpdatePrivacyMethodCalled()
+	{
+		// arrange
+		this.mockContext.checking(new Expectations() {{  oneOf (SearchingTest.this.daoMock).updatePrivacy("test", "test", true); }});
+		// act
+		this.searcher.updatePrivacy("test", "test", true);
+	}
+
+	@Test
+	public void test_getAll_DaoGetAllMethodCalled()
+	{
+		// arrange
+		this.mockContext.checking(new Expectations() {{  oneOf (SearchingTest.this.daoMock).getAll(); }});
+		// act
+		this.searcher.getAll();
 	}
 	
-	public void test_saveAndDelete_AddValidCriterion_RetrievedCriterionJustAddedShouldMatchExpected()
+	@Test
+	public void test_get_DaoGetMethodCalled()
 	{
-		this.searcher.save("bob", "bob", "bob", "bob", true, true);
-		List<SearchCriterionImpl> list = this.searcher.get("bob", "bob");
-		SearchCriterionImpl expectedCriterion = new SearchCriterionImpl("bob", "bob", "bob", "bob", true, true);
-		assertTrue("Newly added criteria does not match expectations!", list.contains(expectedCriterion));
-		
-		this.searcher.delete("bob", "bob");
-		List<SearchCriterionImpl> endList = this.searcher.get("bob", "bob");
-		assertEquals("List size of after deletion of newly added criteria does not match expectations!", 0, endList.size());
-		
+		// arrange
+		this.mockContext.checking(new Expectations() {{  oneOf (SearchingTest.this.daoMock).get("test", "test"); }});
+		// act
+		this.searcher.get("test", "test");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

@@ -2,81 +2,60 @@ import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.book.BookController;
 import com.leon.ws.rfq.book.BookManagerDao;
 
-public class BookTest
+@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
+public class BookTest extends AbstractJUnit4SpringContextTests
 {
 	@Rule public JUnitRuleMockery mockContext = new JUnitRuleMockery();
-	private static final Logger logger = LoggerFactory.getLogger(BookTest.class);
+	
+	@Autowired
 	private BookController bookController;
-	private BookManagerDao daoMock;
+	
+	private final BookManagerDao daoMock = this.mockContext.mock(BookManagerDao.class);
 
 	public BookTest()
 	{
-		initializeBean();
-	}
-
-	@BeforeClass
-	public static void oneTimeSetUp()
-	{
-	}
-
-	private void initializeBean()
-	{
-		try
-		{
-			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-			this.bookController = (BookController) context.getBean("bookController");
-			this.daoMock = this.mockContext.mock(BookManagerDao.class);
-			this.bookController.setBookManagerDao(this.daoMock);
-		}
-		catch(BeansException be)
-		{
-			if(logger.isErrorEnabled())
-				logger.error("Failed to load application context for book controller!", be);
-		}
 	}
 
 	@Before
 	public void setUp()
 	{
+		this.bookController.setBookManagerDao(this.daoMock);
 	}
 
 	@Test
 	public void test_save_DaoSaveMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).save("test bookCode", "test entity", "test user"); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).save("test", "test", "test"); }});
 		// act
-		this.bookController.save("test bookCode", "test entity", "test user");
+		this.bookController.save("test", "test", "test");
 	}
 
 	@Test
 	public void test_delete_DaoDeleteMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).delete("test bookCode"); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).delete("test"); }});
 		// act
-		this.bookController.delete("test bookCode");
+		this.bookController.delete("test");
 	}
 
 	@Test
 	public void test_updateValidity_DaoUpdateValidityMethodCalled()
 	{
 		// arrange
-		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).updateValidity("test bookCode", true); }});
+		this.mockContext.checking(new Expectations() {{  oneOf (BookTest.this.daoMock).updateValidity("test", true); }});
 		// act
-		this.bookController.updateValidity("test bookCode", true);
+		this.bookController.updateValidity("test", true);
 	}
 
 	@Test
@@ -92,21 +71,21 @@ public class BookTest
 	public void test_save_emptyBookCode_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("", "test entity", "test user");
+		this.bookController.save("", "test", "test");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test_save_emptyEntity_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("test bookCode", "", "test user");
+		this.bookController.save("test", "", "test");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test_save_emptyUser_illegalArgumentExceptionThrown()
 	{
 		// act
-		this.bookController.save("test bookCode", "test entity", "");
+		this.bookController.save("test", "test", "");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -127,5 +106,4 @@ public class BookTest
 	public void tearDown()
 	{
 	}
-
 }

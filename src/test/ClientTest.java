@@ -2,54 +2,31 @@ import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.client.ClientController;
 import com.leon.ws.rfq.client.ClientManagerDao;
 
-public class ClientTest
+@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
+public class ClientTest extends AbstractJUnit4SpringContextTests
 {
-	@Rule public JUnitRuleMockery mockContext = new JUnitRuleMockery();
-	private static final Logger logger = LoggerFactory.getLogger(ClientTest.class);
+	@Rule public final JUnitRuleMockery mockContext = new JUnitRuleMockery();
+	
+	@Autowired
 	private ClientController clientController;
-	private ClientManagerDao daoMock;
+	
+	private final ClientManagerDao daoMock = this.mockContext.mock(ClientManagerDao.class);
 
-	public ClientTest()
-	{
-		initializeBean();
-	}
-
-	@BeforeClass
-	public static void oneTimeSetUp()
-	{
-	}
-
-	private void initializeBean()
-	{
-		try
-		{
-			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-			this.clientController = (ClientController) context.getBean("clientController");
-			this.daoMock = this.mockContext.mock(ClientManagerDao.class);
-			this.clientController.setClientManagerDao(this.daoMock);
-		}
-		catch(BeansException be)
-		{
-			if(logger.isErrorEnabled())
-				logger.error("Failed to load application context for client controller!", be);
-		}
-	}
+	public ClientTest() {}
 
 	@Before
 	public void setUp()
 	{
+		this.clientController.setClientManagerDao(this.daoMock);
 	}
 
 	@Test
