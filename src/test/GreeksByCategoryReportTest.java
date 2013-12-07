@@ -36,10 +36,11 @@ public class GreeksByCategoryReportTest
 	{
 		return Arrays.asList(new Object[][]
 				{
-				{"Client", new GregorianCalendar(2013,1,1), new GregorianCalendar(), 0.0},
-				{"Status", new GregorianCalendar(2013,1,1), new GregorianCalendar(), 0.0},
-				{"TradeDate", new GregorianCalendar(2013,1,1), new GregorianCalendar(), 0.0},
-				{"BookCode", new GregorianCalendar(2013,1,1), new GregorianCalendar(), 0.0}
+				{"Client", new GregorianCalendar(2013,1,1), new GregorianCalendar(2020,1,1), 0.0},
+				{"Status", new GregorianCalendar(2013,1,1), new GregorianCalendar(2020,1,1), 0.0},
+				{"TradeDate", new GregorianCalendar(2013,1,1), new GregorianCalendar(2020,1,1), 0.0},
+				{"BookCode", new GregorianCalendar(2013,1,1), new GregorianCalendar(2020,1,1), 0.0},
+				{"MaturityDate", new GregorianCalendar(2013,1,1), new GregorianCalendar(2020,1,1), 0.0}
 				});
 	}
 
@@ -57,7 +58,7 @@ public class GreeksByCategoryReportTest
 		// Act
 		List<GreeksPerCategoryReportDataImpl> result = reportingController.getGreeksByCategory(this.categoryType, this.fromDate, this.toDate, this.minimumGreeks);
 		// Assert
-		Assert.isTrue(result.size() > 1);
+		Assert.isTrue(result.size() > 0);
 	}
 	
 }

@@ -19,6 +19,7 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String UNDERLYING_CATEGORY = "Underlying";
 	private static final String INITIATOR_CATEGORY = "Initiator";
 	private static final String TRADEDATE_CATEGORY = "TradeDate";
+	private static final String MATURITYDATE_CATEGORY = "MaturityDate";
 	private static final String PICKER_CATEGORY = "Picker";
 	private static final String STATUS_CATEGORY = "Status";
 	
@@ -27,6 +28,7 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String REQUESTS_COUNT_BY_UNDERLYING_GET = "CALL requestsCountByUnderlying(?, ?)";
 	private static final String REQUESTS_COUNT_BY_INITIATOR_GET = "CALL requestsCountByInitiator(?, ?)";
 	private static final String REQUESTS_COUNT_BY_TRADEDATE_GET = "CALL requestsCountByTradeDate(?, ?)";
+	private static final String REQUESTS_COUNT_BY_MATURITYDATE_GET = "CALL requestsCountByMaturityDate(?, ?)";
 	private static final String REQUESTS_COUNT_BY_PICKER_GET = "CALL requestsCountByPicker(?, ?)";
 	private static final String REQUESTS_COUNT_BY_STATUS_GET = "CALL requestsCountByStatus(?, ?)";
 
@@ -35,6 +37,7 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 	private static final String GREEKS_BY_UNDERLYING_GET = "CALL greeksByUnderlying(?, ?, ?)";
 	private static final String GREEKS_BY_INITIATOR_GET = "CALL greeksByInitiator(?, ?, ?)";
 	private static final String GREEKS_BY_TRADEDATE_GET = "CALL greeksByTradeDate(?, ?, ?)";
+	private static final String GREEKS_BY_MATURITYDATE_GET = "CALL greeksByMaturityDate(?, ?, ?)";
 	private static final String GREEKS_BY_PICKER_GET = "CALL greeksByPicker(?, ?, ?)";
 	private static final String GREEKS_BY_STATUS_GET = "CALL greeksByStatus(?, ?, ?)";
 
@@ -72,6 +75,8 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 			return REQUESTS_COUNT_BY_INITIATOR_GET;
 		case TRADEDATE_CATEGORY:
 			return REQUESTS_COUNT_BY_TRADEDATE_GET;
+		case MATURITYDATE_CATEGORY:
+			return REQUESTS_COUNT_BY_MATURITYDATE_GET;
 		case PICKER_CATEGORY:
 			return REQUESTS_COUNT_BY_PICKER_GET;
 		case STATUS_CATEGORY:
@@ -95,6 +100,8 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 			return GREEKS_BY_INITIATOR_GET;
 		case TRADEDATE_CATEGORY:
 			return GREEKS_BY_TRADEDATE_GET;
+		case MATURITYDATE_CATEGORY:
+			return GREEKS_BY_MATURITYDATE_GET;
 		case PICKER_CATEGORY:
 			return GREEKS_BY_PICKER_GET;
 		case STATUS_CATEGORY:
