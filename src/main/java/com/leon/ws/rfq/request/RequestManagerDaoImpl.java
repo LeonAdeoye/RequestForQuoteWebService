@@ -45,7 +45,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			optionLeg.setLegId(rs.getInt("legId"));
 			optionLeg.setIsCall(rs.getString("isCall").equals("C"));
 			optionLeg.setIsEuropean(rs.getString("isEuropean").equals("E"));
-			optionLeg.setSide(rs.getString("side").equals("B") ? "BUY" : "SIDE");
+			optionLeg.setSide(rs.getString("side").equals("B") ? "BUY" : "SELL");
 			optionLeg.setQuantity(rs.getInt("quantity"));
 
 
