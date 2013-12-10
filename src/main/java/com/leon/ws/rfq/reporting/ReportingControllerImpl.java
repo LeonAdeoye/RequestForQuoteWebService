@@ -93,4 +93,44 @@ public class ReportingControllerImpl implements ReportingController
 
 		return this.dao.getGreeksByCategory(categoryType, maturityDateFrom, maturityDateTo, minimumGreek);
 	}
+	
+	/**
+	 * Returns a list of greek totals for each category type value.
+	 *
+	 * @param inputType						the input type for each count: UnderlyingPrice, InterestRate, Volatility, etc.
+	 * @param maturityDateFrom				the maturity date from which the RFQs will be included in the report.
+	 * @param maturityDateTo				the maturity date up until which the RFQs will be included in the report.
+	 * @param minimumInput					the minimum input value to be used for the interpolation.
+	 * @param maximumInput					the maximum input value to be used for the interpolation.
+	 * @throws IllegalArgumentException		if the categoryType is empty or the minimumGreek is < 0.0.
+	 * @throws NullPointerException			if maturityDateTo is null or maturityDateFrom is null.
+	 */
+	@Override
+	@WebMethod
+	public List<GreeksPerInputReportDataImpl> getGreeksByInput(String inputType, GregorianCalendar maturityDateFrom,
+			GregorianCalendar maturityDateTo, double minimumInput, double maximumInput)
+	{
+		if(inputType.isEmpty())
+			throw new IllegalArgumentException("inputType");
+
+		if(minimumInput < 0.0)
+			throw new IllegalArgumentException("minimumInput");
+
+		if(maximumInput < 0.0)
+			throw new IllegalArgumentException("maximumInput");
+			
+		if(maturityDateTo == null)
+			throw new NullPointerException("maturityDateTo");
+
+		if(maturityDateFrom == null)
+			throw new NullPointerException("maturityDateFrom");
+
+		if(logger.isDebugEnabled())
+			logger.debug("Received report request for greeks by input type: " + inputType +
+					", within maturity date from: " + maturityDateFrom + " to: " + maturityDateTo +
+					", and with minimum input value to be excluded: " + minimumInput +
+					", and with maximum input value to be excluded: " + maximumInput);
+
+		return this.dao.getGreeksByInput(inputType, maturityDateFrom, maturityDateTo, minimumInput, maximumInput);
+	}
 }
