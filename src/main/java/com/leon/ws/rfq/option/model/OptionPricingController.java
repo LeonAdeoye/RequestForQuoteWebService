@@ -1,8 +1,8 @@
 package com.leon.ws.rfq.option.model;
 
-import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebService;
 
 
 @WebService(name="OptionPricingController")
@@ -30,12 +30,17 @@ public interface OptionPricingController
 			@WebParam(name="dayCountConvention") double dayCountConvention);
 	
 	@WebMethod
-	String getModelDetails();	
+	String getModelDetails();
 	
 	@WebMethod
 	OptionPriceResultSet calculateRange(@WebParam(name="rangeKey") String rangeKey,
 			@WebParam(name="startValue") double startValue,
 			@WebParam(name="endValue") double endValue,
-			@WebParam(name="increment") double increment); 
+			@WebParam(name="increment") double increment);
 	
+	@WebMethod
+	public void calculatePricingRange(@WebParam(name="requestId") int requestId,
+			@WebParam(name="inputType") String inputType,
+			@WebParam(name="minimumInput") double minimumInput,
+			@WebParam(name="maximumInput") double maximumInput);
 }
