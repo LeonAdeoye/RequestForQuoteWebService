@@ -1,7 +1,9 @@
 package com.leon.ws.rfq.reporting;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -9,11 +11,17 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.leon.ws.rfq.option.model.OptionPricingModel;
+import com.leon.ws.rfq.request.RequestDetailImpl;
+import com.leon.ws.rfq.request.RequestManagerDao;
+
 @WebService(serviceName="ReportingController", endpointInterface="com.leon.ws.rfq.reporting.ReportingController")
 public class ReportingControllerImpl implements ReportingController
 {
 	private final static Logger logger = LoggerFactory.getLogger(ReportingControllerImpl.class);
-	private ReportingManagerDao dao;
+	private ReportingManagerDao reportingManagerDao;
+	private RequestManagerDao requestManagerDao;
+	private OptionPricingModel model;
 
 	/**
 	 * Default constructor
@@ -21,15 +29,35 @@ public class ReportingControllerImpl implements ReportingController
 	public ReportingControllerImpl() {}
 
 	/**
-	 * Default constructor.
-	 * @throws NullPointerException			if ReportingManagerDao is null.
+	 * Sets the DAO property
+	 * @throws NullPointerException			if reportingManagerDao parameter reference is null.
 	 */
-	public void setReportingManagerDao(ReportingManagerDao dao)
+	public void setReportingManagerDao(ReportingManagerDao reportingManagerDao)
 	{
-		if(dao == null)
-			throw new NullPointerException("dao");
+		if(reportingManagerDao == null)
+			throw new NullPointerException("reportingManagerDao");
 
-		this.dao = dao;
+		this.reportingManagerDao = reportingManagerDao;
+	}
+
+	/**
+	 * Sets the model property
+	 * @throws NullPointerException			if model parameter reference is null.
+	 */
+	public void setOptionPricer(OptionPricingModel model)
+	{
+		if(model == null)
+			throw new NullPointerException("model");
+		
+		this.model = model;
+	}
+	
+	public void setRequestManagerDao(RequestManagerDao requestManagerDao)
+	{
+		if(requestManagerDao == null)
+			throw new NullPointerException("requestManagerDao");
+		
+		this.requestManagerDao = requestManagerDao;
 	}
 
 	/**
@@ -57,7 +85,7 @@ public class ReportingControllerImpl implements ReportingController
 			logger.debug("Received reporting data request for category: " + categoryType +
 					", from date: " + fromDate + " , and with minimum count: " + minimumCount);
 
-		return this.dao.getRequestsByCategory(categoryType, fromDate, minimumCount);
+		return this.reportingManagerDao.getRequestsByCategory(categoryType, fromDate, minimumCount);
 	}
 
 	/**
@@ -91,15 +119,14 @@ public class ReportingControllerImpl implements ReportingController
 					", within maturity date from: " + maturityDateFrom + " to: " + maturityDateTo +
 					", and with minimum greek value to be excluded: " + minimumGreek);
 
-		return this.dao.getGreeksByCategory(categoryType, maturityDateFrom, maturityDateTo, minimumGreek);
+		return this.reportingManagerDao.getGreeksByCategory(categoryType, maturityDateFrom, maturityDateTo, minimumGreek);
 	}
 	
 	/**
 	 * Returns a list of greek totals for each category type value.
 	 *
 	 * @param inputType						the input type for each count: UnderlyingPrice, InterestRate, Volatility, etc.
-	 * @param maturityDateFrom				the maturity date from which the RFQs will be included in the report.
-	 * @param maturityDateTo				the maturity date up until which the RFQs will be included in the report.
+	 * @param requestId						the requestId of the RFQ to be priced.
 	 * @param minimumInput					the minimum input value to be used for the interpolation.
 	 * @param maximumInput					the maximum input value to be used for the interpolation.
 	 * @throws IllegalArgumentException		if the categoryType is empty or the minimumGreek is < 0.0.
@@ -107,11 +134,13 @@ public class ReportingControllerImpl implements ReportingController
 	 */
 	@Override
 	@WebMethod
-	public List<GreeksPerInputReportDataImpl> getGreeksByInput(String inputType, GregorianCalendar maturityDateFrom,
-			GregorianCalendar maturityDateTo, double minimumInput, double maximumInput)
+	public List<GreeksPerInputReportDataImpl> getGreeksByInput(String inputType, int requestId, double minimumInput, double maximumInput, double increment)
 	{
 		if(inputType.isEmpty())
 			throw new IllegalArgumentException("inputType");
+		
+		if(requestId <= 0)
+			throw new IllegalArgumentException("requestId");
 
 		if(minimumInput < 0.0)
 			throw new IllegalArgumentException("minimumInput");
@@ -119,18 +148,36 @@ public class ReportingControllerImpl implements ReportingController
 		if(maximumInput < 0.0)
 			throw new IllegalArgumentException("maximumInput");
 			
-		if(maturityDateTo == null)
-			throw new NullPointerException("maturityDateTo");
-
-		if(maturityDateFrom == null)
-			throw new NullPointerException("maturityDateFrom");
-
+		if(increment <= 0.0)
+			throw new IllegalArgumentException("increment");
+		
+		
 		if(logger.isDebugEnabled())
 			logger.debug("Received report request for greeks by input type: " + inputType +
-					", within maturity date from: " + maturityDateFrom + " to: " + maturityDateTo +
+					", with request id: " + requestId +
 					", and with minimum input value to be excluded: " + minimumInput +
-					", and with maximum input value to be excluded: " + maximumInput);
+					", and with maximum input value to be excluded: " + maximumInput +
+					", and with increment: " + increment);
 
-		return this.dao.getGreeksByInput(inputType, maturityDateFrom, maturityDateTo, minimumInput, maximumInput);
+		RequestDetailImpl request = this.requestManagerDao.getRequest(requestId);
+		
+		Map<String, Double> input = new HashMap<>();
+		input.put(OptionPricingModel.VOLATILITY, request.getVolatiltiy());
+		input.put(OptionPricingModel.UNDERLYING_PRICE, request.getUnderlyingPrice());
+		input.put(OptionPricingModel.STRIKE, request.getStrike());
+		input.put(OptionPricingModel.TIME_TO_EXPIRY, request.getTimeToExpiry());
+		input.put(OptionPricingModel.INTEREST_RATE, request.getInterestRate());
+		
+		try
+		{
+			this.model.calculateRange(input, inputType, minimumInput, maximumInput, increment);
+		}
+		
+		catch(Exception e)
+		{
+			
+		}
+		
+		return null;
 	}
 }

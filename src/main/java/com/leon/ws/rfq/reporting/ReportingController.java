@@ -22,8 +22,8 @@ public interface ReportingController
 	
 	List<GreeksPerInputReportDataImpl> getGreeksByInput(
 			@WebParam(name="inputType")String inputType,
-			@WebParam(name="maturityDateFrom")GregorianCalendar maturityDateFrom,
-			@WebParam(name="maturityDateTo")GregorianCalendar maturityDateTo,
-			@WebParam(name="minimumInput")double minimumInput,
-			@WebParam(name="maximumInput")double maximumInput);
+			@WebParam(name="requestId") int requestId,
+			@WebParam(name="minimumInput") double minimumInput,
+			@WebParam(name="maximumInput") double maximumInput,
+			@WebParam(name="increment") double increment);
 }

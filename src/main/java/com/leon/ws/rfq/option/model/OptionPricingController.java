@@ -37,10 +37,4 @@ public interface OptionPricingController
 			@WebParam(name="startValue") double startValue,
 			@WebParam(name="endValue") double endValue,
 			@WebParam(name="increment") double increment);
-	
-	@WebMethod
-	public void calculatePricingRange(@WebParam(name="requestId") int requestId,
-			@WebParam(name="inputType") String inputType,
-			@WebParam(name="minimumInput") double minimumInput,
-			@WebParam(name="maximumInput") double maximumInput);
 }
