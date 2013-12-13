@@ -74,6 +74,8 @@
 
     <bean id="reportingController" class="com.leon.ws.rfq.reporting.ReportingControllerImpl">
     	<property name="reportingManagerDao" ref="reportingManagerDao"/>
+    	<property name="requestManagerDao" ref="requestManagerDao"/>
+    	<property name="optionPricer" ref="blackScholesModel"/>
     </bean> 
     
     <bean id="searchManagerDao" class="com.leon.ws.rfq.search.SearchManagerDaoImpl">

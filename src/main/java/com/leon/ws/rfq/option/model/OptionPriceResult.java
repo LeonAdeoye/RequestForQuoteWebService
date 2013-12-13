@@ -2,6 +2,8 @@ package com.leon.ws.rfq.option.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.leon.ws.rfq.utilities.UtilityMethods;
+
 @XmlRootElement(name="OptionPriceResult")
 public final class OptionPriceResult
 {
@@ -49,18 +51,12 @@ public final class OptionPriceResult
 	public int hashCode()
 	{
 		int result = 17;
-		long value = Double.doubleToLongBits(this.delta);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
-		value = Double.doubleToLongBits(this.gamma);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
-		value = Double.doubleToLongBits(this.theta);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
-		value = Double.doubleToLongBits(this.vega);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
-		value = Double.doubleToLongBits(this.rho);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
-		value = Double.doubleToLongBits(this.price);
-		result = (37 * result) + (int) (value ^ (value >>> 32));
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.delta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.gamma);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.vega);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.theta);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rho);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.price);
 		return result;
 	}
 

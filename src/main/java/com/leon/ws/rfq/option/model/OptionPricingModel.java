@@ -3,7 +3,7 @@ import java.util.Map;
  
 public interface OptionPricingModel
 {
-        static final String DELTA = "DELTA";    
+        static final String DELTA = "DELTA";
         static final String GAMMA = "GAMMA";
         static final String VEGA = "VEGA";
         static final String THETA = "THETA";
@@ -17,7 +17,11 @@ public interface OptionPricingModel
         static final  String TIME_TO_EXPIRY = "TIME_TO_EXPIRY";
              
         OptionPriceResult calculate(Map<String, Double> input) throws Exception;
-        OptionPriceResultSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment) throws Exception;
+        
+        ExtrapolationSet calculateRange(Map<String, Double> input, String rangeKey, double startValue,
+        		double endValue, double increment) throws Exception;
+        
         void setToCall(boolean isCallOption);
+        
         void setToEuropean(boolean isEuropeanOption);
 }

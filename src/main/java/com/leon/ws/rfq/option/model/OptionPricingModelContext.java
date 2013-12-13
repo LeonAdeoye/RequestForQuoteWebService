@@ -6,7 +6,7 @@ import java.util.Map;
 final class  OptionPricingModelContext
 {
         private OptionPricingModel model = null;
-        private Map<String, Double> input = new HashMap<String, Double>();
+        private final Map<String, Double> input = new HashMap<String, Double>();
         private double dayCountConvention = 250.0;
                
         OptionPricingModelContext(OptionPricingModel model)
@@ -37,15 +37,15 @@ final class  OptionPricingModelContext
         
         void setToCall(boolean isCallOption)
         {
-                if(model != null)
-                        model.setToCall(isCallOption);
+                if(this.model != null)
+                        this.model.setToCall(isCallOption);
         }
        
         void setToEuropean(boolean isEuropeanOption)
         {
-                if(model != null)
-                        model.setToEuropean(isEuropeanOption);
-        }      
+                if(this.model != null)
+                        this.model.setToEuropean(isEuropeanOption);
+        }
        
         void setDayCountConvention(double dayCountConvention)
         {
@@ -74,21 +74,21 @@ final class  OptionPricingModelContext
         
         void setDaysToExpiry(double daysToExpiry)
         {
-                this.input.put(OptionPricingModel.TIME_TO_EXPIRY , daysToExpiry / dayCountConvention);
+                this.input.put(OptionPricingModel.TIME_TO_EXPIRY , daysToExpiry / this.dayCountConvention);
         }
        
         void setYearsToExpiry(double yearsToExpiry)
         {
                 this.input.put(OptionPricingModel.TIME_TO_EXPIRY , yearsToExpiry);
-        }      
+        }
                
         OptionPriceResult calculate() throws Exception
         {
-                return model.calculate(this.input);            
+                return this.model.calculate(this.input);
         }
        
-        OptionPriceResultSet calculateRange(String rangeKey, double startValue, double endValue, double increment) throws Exception
+        ExtrapolationSet calculateRange(String rangeKey, double startValue, double endValue, double increment) throws Exception
         {
-                return model.calculateRange(this.input, rangeKey, startValue, endValue, increment);
+                return this.model.calculateRange(this.input, rangeKey, startValue, endValue, increment);
         }
 }

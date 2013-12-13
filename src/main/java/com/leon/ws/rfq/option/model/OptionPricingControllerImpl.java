@@ -134,7 +134,7 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	
 	@Override
 	@WebMethod
-	public OptionPriceResultSet calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
+	public ExtrapolationSet calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
 	{
 		try
 		{

@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -138,12 +137,5 @@ public class ReportingManagerDaoImpl implements ReportingManagerDao
 		return this.databaseExecutor.getResultSet(getGreeksPerCategoryPreparedStatement(categoryType),
 				new GreeksPerCatgeoryReportParameterizedRowMapper(), new Date(maturityDateFrom.getTime().getTime()),
 				new Date(maturityDateTo.getTime().getTime()), minimumGreek);
-	}
-
-	@Override
-	public List<GreeksPerInputReportDataImpl> getGreeksByInput(String inputType, GregorianCalendar maturityDateFrom,
-			GregorianCalendar maturityDateTo, double minimumInput,	double maximumInput)
-	{
-		return null;
 	}
 }

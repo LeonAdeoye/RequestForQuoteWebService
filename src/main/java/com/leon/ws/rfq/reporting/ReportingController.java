@@ -6,6 +6,8 @@ import java.util.List;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import com.leon.ws.rfq.option.model.ExtrapolationSet;
+
 @WebService(name="ReportingController")
 public interface ReportingController
 {
@@ -20,10 +22,10 @@ public interface ReportingController
 			@WebParam(name="maturityDateTo")GregorianCalendar maturityDateTo,
 			@WebParam(name="minimumGreek")double minimumGreek);
 	
-	List<GreeksPerInputReportDataImpl> getGreeksByInput(
-			@WebParam(name="inputType")String inputType,
+	ExtrapolationSet getGreeksExtrapolation(
 			@WebParam(name="requestId") int requestId,
-			@WebParam(name="minimumInput") double minimumInput,
-			@WebParam(name="maximumInput") double maximumInput,
-			@WebParam(name="increment") double increment);
+			@WebParam(name="rangeVariable") String rangeVariable,
+			@WebParam(name="rangeMinimum") double rangeMinimum,
+			@WebParam(name="rangeMaximum") double rangeMaximum,
+			@WebParam(name="rangeIncrement") double rangeIncrement);
 }

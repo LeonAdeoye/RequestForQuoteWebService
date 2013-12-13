@@ -11,7 +11,9 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.leon.ws.rfq.option.model.ExtrapolationSet;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
+import com.leon.ws.rfq.request.OptionDetailImpl;
 import com.leon.ws.rfq.request.RequestDetailImpl;
 import com.leon.ws.rfq.request.RequestManagerDao;
 
@@ -29,7 +31,7 @@ public class ReportingControllerImpl implements ReportingController
 	public ReportingControllerImpl() {}
 
 	/**
-	 * Sets the DAO property
+	 * Sets the reporting DAO property
 	 * @throws NullPointerException			if reportingManagerDao parameter reference is null.
 	 */
 	public void setReportingManagerDao(ReportingManagerDao reportingManagerDao)
@@ -52,6 +54,10 @@ public class ReportingControllerImpl implements ReportingController
 		this.model = model;
 	}
 	
+	/**
+	 * Sets the request DAO property
+	 * @throws NullPointerException			if requestManagerDao parameter reference is null.
+	 */
 	public void setRequestManagerDao(RequestManagerDao requestManagerDao)
 	{
 		if(requestManagerDao == null)
@@ -125,59 +131,79 @@ public class ReportingControllerImpl implements ReportingController
 	/**
 	 * Returns a list of greek totals for each category type value.
 	 *
-	 * @param inputType						the input type for each count: UnderlyingPrice, InterestRate, Volatility, etc.
+	 * @param rangeVariable					the range variable used for the extrapolation.
 	 * @param requestId						the requestId of the RFQ to be priced.
-	 * @param minimumInput					the minimum input value to be used for the interpolation.
-	 * @param maximumInput					the maximum input value to be used for the interpolation.
+	 * @param rangeMinimum					the minimum range value to be used for the extrapolation.
+	 * @param rangeMaximum					the maximum range value to be used for the extrapolation.
+	 * @param rangeIncrement				the increment of the range variable used for the extrapolation.
 	 * @throws IllegalArgumentException		if the categoryType is empty or the minimumGreek is < 0.0.
 	 * @throws NullPointerException			if maturityDateTo is null or maturityDateFrom is null.
 	 */
 	@Override
 	@WebMethod
-	public List<GreeksPerInputReportDataImpl> getGreeksByInput(String inputType, int requestId, double minimumInput, double maximumInput, double increment)
+	public ExtrapolationSet getGreeksExtrapolation(int requestId, String rangeVariable,
+			double rangeMinimum, double rangeMaximum, double rangeIncrement)
 	{
-		if(inputType.isEmpty())
-			throw new IllegalArgumentException("inputType");
-		
 		if(requestId <= 0)
 			throw new IllegalArgumentException("requestId");
+		
+		if(rangeVariable.isEmpty())
+			throw new IllegalArgumentException("rangeVariable");
 
-		if(minimumInput < 0.0)
-			throw new IllegalArgumentException("minimumInput");
+		if(rangeMinimum < 0.0)
+			throw new IllegalArgumentException("rangeMinimum");
 
-		if(maximumInput < 0.0)
-			throw new IllegalArgumentException("maximumInput");
+		if(rangeMaximum < 0.0)
+			throw new IllegalArgumentException("rangeMaximum");
 			
-		if(increment <= 0.0)
-			throw new IllegalArgumentException("increment");
+		if(rangeIncrement <= 0.0)
+			throw new IllegalArgumentException("rangeIncrement");
 		
 		
 		if(logger.isDebugEnabled())
-			logger.debug("Received report request for greeks by input type: " + inputType +
-					", with request id: " + requestId +
-					", and with minimum input value to be excluded: " + minimumInput +
-					", and with maximum input value to be excluded: " + maximumInput +
-					", and with increment: " + increment);
-
-		RequestDetailImpl request = this.requestManagerDao.getRequest(requestId);
+			logger.debug("Received range calculation report request for request id: " + requestId +
+					",using range variable: " + rangeVariable +
+					", and with inclusive minimum range value: " + rangeMinimum +
+					", and with inclusive maximum range value: " + rangeMaximum +
+					", and with range increment: " + rangeIncrement);
 		
-		Map<String, Double> input = new HashMap<>();
-		input.put(OptionPricingModel.VOLATILITY, request.getVolatiltiy());
-		input.put(OptionPricingModel.UNDERLYING_PRICE, request.getUnderlyingPrice());
-		input.put(OptionPricingModel.STRIKE, request.getStrike());
-		input.put(OptionPricingModel.TIME_TO_EXPIRY, request.getTimeToExpiry());
-		input.put(OptionPricingModel.INTEREST_RATE, request.getInterestRate());
+		ExtrapolationSet extrapolationSet = new ExtrapolationSet();
 		
 		try
 		{
-			this.model.calculateRange(input, inputType, minimumInput, maximumInput, increment);
+			RequestDetailImpl request = this.requestManagerDao.getRequest(requestId);
+			
+			if(request == null)
+			{
+				if(logger.isErrorEnabled())
+					logger.error("Failed to retrieve request details for RFQ with identifier: " + requestId);
+				
+				return extrapolationSet;
+			}
+							
+			Map<String, Double> input = new HashMap<>();
+			 
+			
+			for(OptionDetailImpl leg : request.getLegs())
+			{
+				input.put(OptionPricingModel.VOLATILITY, leg.getVolatility());
+				input.put(OptionPricingModel.UNDERLYING_PRICE, leg.getUnderlyingPrice());
+				input.put(OptionPricingModel.STRIKE, leg.getStrike());
+				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getDaysToExpiry());
+				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
+				
+				extrapolationSet.merge(this.model.calculateRange(input, rangeVariable,
+						rangeMinimum, rangeMaximum, rangeIncrement));
+				
+				input.clear();
+			}
 		}
-		
 		catch(Exception e)
 		{
-			
+			if(logger.isErrorEnabled())
+				logger.error("Failed to complete range calculation. Exception thrown: " + e);
 		}
 		
-		return null;
+		return extrapolationSet;
 	}
 }

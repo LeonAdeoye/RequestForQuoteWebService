@@ -60,6 +60,5 @@ public class GreeksByCategoryReportTest
 		// Assert
 		Assert.isTrue(result.size() > 0);
 	}
-	
 }
 
