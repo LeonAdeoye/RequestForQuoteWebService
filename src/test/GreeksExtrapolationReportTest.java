@@ -16,8 +16,7 @@ import com.leon.ws.rfq.option.model.OptionPricingModel;
 import com.leon.ws.rfq.reporting.ReportingController;
 
 @RunWith(value = Parameterized.class)
-//@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
-public class GreeksExtrapolationReportTest //extends AbstractJUnit4SpringContextTests
+public class GreeksExtrapolationReportTest
 {
 	//@Autowired
 	private static ReportingController reportingController;
@@ -65,10 +64,7 @@ public class GreeksExtrapolationReportTest //extends AbstractJUnit4SpringContext
 		assertNotNull(reportingController);
 		// Act
 		ExtrapolationSet result = reportingController.getGreeksExtrapolation(this.requestId, this.rangeVariable, this.rangeMinimum, this.rangeMaximum, this.rangeIncrement);
-		
-		System.out.print(result);
-		System.out.print(result.getExtrapolationPoints());
-		System.out.print(result.getExtrapolationPoints().size());
+
 		// Assert
 		Assert.isTrue(result.getExtrapolationPoints().size() > 0);
 	}
