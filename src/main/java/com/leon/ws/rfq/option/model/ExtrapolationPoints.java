@@ -3,15 +3,16 @@ package com.leon.ws.rfq.option.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace = "com.leon.ws.rfq.reporting")
-public final class ExtrapolationSet
+@XmlRootElement(name="ExtrapolationPoints", namespace = "com.leon.ws.rfq.reporting")
+public final class ExtrapolationPoints
 {
-	@XmlElementWrapper(name = "extrapolationSet")
+	@XmlElementWrapper(name = "extrapolationPoints")
 	@XmlElement(name = "ExtrapolationPoint")
 	
 	private final Map<Double, ExtrapolationPoint> extrapolationMap = new HashMap<Double, ExtrapolationPoint>();
@@ -31,7 +32,7 @@ public final class ExtrapolationSet
 					new ExtrapolationPoint(extrapolationKeyValue, optionPriceResult));
 	}
 	
-	public void merge(ExtrapolationSet input)
+	public void merge(ExtrapolationPoints input)
 	{
 		if(input == null)
 			throw new NullPointerException("input");
@@ -45,5 +46,20 @@ public final class ExtrapolationSet
 	public ArrayList<ExtrapolationPoint> getExtrapolationPoints()
 	{
 		return new ArrayList<ExtrapolationPoint>(this.extrapolationMap.values());
+	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		for(Entry<Double, ExtrapolationPoint> entry : this.extrapolationMap.entrySet())
+		{
+			builder.append("\n{ Range value: ");
+			builder.append(entry.getKey());
+			builder.append(" Option result set:");
+			builder.append(entry.getValue());
+			builder.append(" }");
+		}
+		return builder.toString();
 	}
 }

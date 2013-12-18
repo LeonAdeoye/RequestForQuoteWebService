@@ -18,7 +18,7 @@ public interface OptionPricingModel
              
         OptionPriceResult calculate(Map<String, Double> input) throws Exception;
         
-        ExtrapolationSet calculateRange(Map<String, Double> input, String rangeKey, double startValue,
+        ExtrapolationPoints calculateRange(Map<String, Double> input, String rangeKey, double startValue,
         		double endValue, double increment) throws Exception;
         
         void setToCall(boolean isCallOption);

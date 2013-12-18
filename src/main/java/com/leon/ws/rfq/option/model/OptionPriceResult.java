@@ -17,17 +17,17 @@ public final class OptionPriceResult
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder("\nDelta=");
+		StringBuilder sb = new StringBuilder("\n Delta=");
 		sb.append(this.delta);
-		sb.append("\nGamma=");
+		sb.append("\n Gamma=");
 		sb.append(this.gamma);
-		sb.append("\nVega=");
+		sb.append("\n Vega=");
 		sb.append(this.vega);
-		sb.append("\nTheta=");
+		sb.append("\n Theta=");
 		sb.append(this.theta);
-		sb.append("\nRho=");
+		sb.append("\n Rho=");
 		sb.append(this.rho);
-		sb.append("\nPrice=");
+		sb.append("\n Price=");
 		sb.append(this.price);
 		return sb.toString();
 	}

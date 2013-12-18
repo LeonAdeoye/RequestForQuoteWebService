@@ -8,7 +8,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.leon.ws.rfq.option.model.ExtrapolationSet;
+import com.leon.ws.rfq.option.model.ExtrapolationPoints;
 import com.leon.ws.rfq.option.model.OptionPriceResult;
 import com.leon.ws.rfq.option.model.OptionPricingController;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
@@ -108,7 +108,7 @@ public class PricingTest extends TestCase
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
 				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
 		
-		ExtrapolationSet results = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY ,
+		ExtrapolationPoints results = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY ,
 				this.startOfRange, this.endOfRange1, this.increment);
 		
 		assertEquals("Calculated range resultSet size does not match expectations!",
@@ -120,7 +120,7 @@ public class PricingTest extends TestCase
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
 				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
 		
-		ExtrapolationSet resultSet = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY,
+		ExtrapolationPoints resultSet = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY,
 				this.startOfRange, this.endOfRange2, this.increment);
 		
 		OptionPriceResult[] actualResultSet = new OptionPriceResult[resultSet.getExtrapolationPoints().size()];

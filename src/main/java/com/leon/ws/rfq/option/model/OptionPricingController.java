@@ -33,7 +33,7 @@ public interface OptionPricingController
 	String getModelDetails();
 	
 	@WebMethod
-	ExtrapolationSet calculateRange(@WebParam(name="rangeKey") String rangeKey,
+	ExtrapolationPoints calculateRange(@WebParam(name="rangeKey") String rangeKey,
 			@WebParam(name="startValue") double startValue,
 			@WebParam(name="endValue") double endValue,
 			@WebParam(name="increment") double increment);

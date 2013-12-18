@@ -87,7 +87,7 @@ final class  OptionPricingModelContext
                 return this.model.calculate(this.input);
         }
        
-        ExtrapolationSet calculateRange(String rangeKey, double startValue, double endValue, double increment) throws Exception
+        ExtrapolationPoints calculateRange(String rangeKey, double startValue, double endValue, double increment) throws Exception
         {
                 return this.model.calculateRange(this.input, rangeKey, startValue, endValue, increment);
         }

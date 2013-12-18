@@ -11,7 +11,7 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.leon.ws.rfq.option.model.ExtrapolationSet;
+import com.leon.ws.rfq.option.model.ExtrapolationPoints;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
 import com.leon.ws.rfq.request.OptionDetailImpl;
 import com.leon.ws.rfq.request.RequestDetailImpl;
@@ -141,7 +141,7 @@ public class ReportingControllerImpl implements ReportingController
 	 */
 	@Override
 	@WebMethod
-	public ExtrapolationSet getGreeksExtrapolation(int requestId, String rangeVariable,
+	public ExtrapolationPoints getGreeksExtrapolation(int requestId, String rangeVariable,
 			double rangeMinimum, double rangeMaximum, double rangeIncrement)
 	{
 		if(requestId <= 0)
@@ -161,13 +161,13 @@ public class ReportingControllerImpl implements ReportingController
 		
 		
 		if(logger.isDebugEnabled())
-			logger.debug("Received range calculation report request for request id: " + requestId +
-					",using range variable: " + rangeVariable +
-					", and with inclusive minimum range value: " + rangeMinimum +
-					", and with inclusive maximum range value: " + rangeMaximum +
+			logger.debug("Received request for a greeks extrapolation report for request id: " + requestId +
+					", using range variable: " + rangeVariable +
+					", with inclusive minimum range value: " + rangeMinimum +
+					", with inclusive maximum range value: " + rangeMaximum +
 					", and with range increment: " + rangeIncrement);
 		
-		ExtrapolationSet extrapolationSet = new ExtrapolationSet();
+		ExtrapolationPoints extrapolationPoints = new ExtrapolationPoints();
 		
 		try
 		{
@@ -178,7 +178,7 @@ public class ReportingControllerImpl implements ReportingController
 				if(logger.isErrorEnabled())
 					logger.error("Failed to retrieve request details for RFQ with identifier: " + requestId);
 				
-				return extrapolationSet;
+				return extrapolationPoints;
 			}
 							
 			Map<String, Double> input = new HashMap<>();
@@ -192,7 +192,7 @@ public class ReportingControllerImpl implements ReportingController
 				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getDaysToExpiry());
 				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
 				
-				extrapolationSet.merge(this.model.calculateRange(input, rangeVariable,
+				extrapolationPoints.merge(this.model.calculateRange(input, rangeVariable,
 						rangeMinimum, rangeMaximum, rangeIncrement));
 				
 				input.clear();
@@ -204,6 +204,9 @@ public class ReportingControllerImpl implements ReportingController
 				logger.error("Failed to complete range calculation. Exception thrown: " + e);
 		}
 		
-		return extrapolationSet;
+		if(logger.isDebugEnabled())
+			logger.debug(extrapolationPoints.toString());
+		
+		return extrapolationPoints;
 	}
 }

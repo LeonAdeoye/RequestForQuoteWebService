@@ -86,9 +86,9 @@ public final class BlackScholesModelImpl implements OptionPricingModel
         }*/
         
         @Override
-		public ExtrapolationSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment) throws Exception
+		public ExtrapolationPoints calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment) throws Exception
         {
-        		ExtrapolationSet result = new ExtrapolationSet();
+        		ExtrapolationPoints result = new ExtrapolationPoints();
                 try
                 {
                         for(double value = startValue; value <= endValue; value += increment)

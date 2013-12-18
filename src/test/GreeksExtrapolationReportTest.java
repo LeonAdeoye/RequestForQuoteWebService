@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.Assert;
 
-import com.leon.ws.rfq.option.model.ExtrapolationSet;
+import com.leon.ws.rfq.option.model.ExtrapolationPoints;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
 import com.leon.ws.rfq.reporting.ReportingController;
 
@@ -62,7 +62,7 @@ public class GreeksExtrapolationReportTest
 	{
 		assertNotNull(reportingController);
 		// Act
-		ExtrapolationSet result = reportingController.getGreeksExtrapolation(this.requestId, this.rangeVariable, this.rangeMinimum, this.rangeMaximum, this.rangeIncrement);
+		ExtrapolationPoints result = reportingController.getGreeksExtrapolation(this.requestId, this.rangeVariable, this.rangeMinimum, this.rangeMaximum, this.rangeIncrement);
 
 		// Assert
 		Assert.isTrue(result.getExtrapolationPoints().size() > 0);
