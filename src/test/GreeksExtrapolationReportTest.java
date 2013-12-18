@@ -18,7 +18,6 @@ import com.leon.ws.rfq.reporting.ReportingController;
 @RunWith(value = Parameterized.class)
 public class GreeksExtrapolationReportTest
 {
-	//@Autowired
 	private static ReportingController reportingController;
 	
 	int requestId;

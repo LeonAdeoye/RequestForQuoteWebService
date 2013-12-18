@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace = "com.leon.ws.rfq.option.model")
+@XmlRootElement(namespace = "com.leon.ws.rfq.reporting")
 public final class ExtrapolationSet
 {
-	@XmlElementWrapper(name = "extrapolationPoints")
+	@XmlElementWrapper(name = "extrapolationSet")
 	@XmlElement(name = "ExtrapolationPoint")
 	
 	private final Map<Double, ExtrapolationPoint> extrapolationMap = new HashMap<Double, ExtrapolationPoint>();
