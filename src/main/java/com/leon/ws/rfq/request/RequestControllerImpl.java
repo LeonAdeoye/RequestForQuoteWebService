@@ -73,7 +73,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * 
 	 * For each request a TaggedRequestEvent is published.
 	 * @param request						the request to be updated.
-	 * @param savedBy						the identifier of the user performing the update.
+	 * @param updatedBy						the identifier of the user performing the update.
 	 * @throws NullPointerException			if the request reference is null.
 	 * @throws IllegalArgumentException		if the user identifier string is empty.
 	 * @return								true if the update is successful, false otherwise.
