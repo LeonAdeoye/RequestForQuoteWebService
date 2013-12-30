@@ -20,6 +20,12 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 	public RequestControllerImpl() {}
 
+	/**
+	 * Sets the DAO reference property.
+	 * 
+	 * @param dao						the RequestManagerDao.
+	 * @throws NullPointerException		if the DAO reference is null.
+	 */
 	public void setRequestManagerDao(RequestManagerDao dao)
 	{
 		if(dao == null)
@@ -31,9 +37,11 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	/**
 	 * Saves the incoming request to the database using the DAO interface reference.
 	 * For each request a TaggedRequestEvent is published.
+	 * 
 	 * @param request						the request to be saved.
 	 * @param savedBy						the identifier of the user performing the save.
-	 * @throws IllegalArgumentException		if the request reference is null or the user identifier string is empty.
+	 * @throws IllegalArgumentException		if the user identifier string is empty.
+	 * @throws NullPointerException			if the request reference is null.
 	 * @returns 							the identifier of the newly saved request, -1 otherwise.
 	 */
 	@Override
@@ -62,10 +70,12 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 	/**
 	 * Updates the incoming request to the database using the DAO interface reference.
+	 * 
 	 * For each request a TaggedRequestEvent is published.
 	 * @param request						the request to be updated.
 	 * @param savedBy						the identifier of the user performing the update.
-	 * @throws IllegalArgumentException		if the request reference is null or the user identifier string is empty.
+	 * @throws NullPointerException			if the request reference is null.
+	 * @throws IllegalArgumentException		if the user identifier string is empty.
 	 * @returns								true if the update is successful, false otherwise.
 	 */
 	@Override
@@ -91,6 +101,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 	/**
 	 * Returns a reference to the request which matches the identifier parameter.
+	 * 
 	 * @param identifier					the unique identifier of request to be retrieved by the DAO reference.
 	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
 	 * @throws IllegalArgumentException		if the identifier of the request is less than or equal to zero.
@@ -114,6 +125,12 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return request;
 	}
 
+	/**
+	 * Returns a reference to all requests with a trade date of today.
+	 * 
+	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
+	 * @returns								the request references if retrieval is successful, null otherwise.
+	 */
 	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsForToday(boolean rePrice)
@@ -133,6 +150,14 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return requests;
 	}
 
+	/**
+	 * Returns a reference to all requests matching adhoc search criteria.
+	 * 
+	 * @param criteria						the adhoc search criteria.
+	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
+	 * @throws NullPointerException			if the criteria reference is null.
+	 * @returns								the request references if retrieval is successful, null otherwise.
+	 */
 	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria, boolean rePrice)
@@ -155,6 +180,16 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return requests;
 	}
 
+	/**
+	 * Returns a reference to all requests matching existing search criteria.
+	 * 
+	 * @param criteriaOwner					the existing search criteria owner.
+	 * @param criteriaKey					the existing search criteria key.
+	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
+	 * @throws IllegalArgumentException		if the criteriaOwner string is empty.
+	 * @throws IllegalArgumentException		if the criteriaKey string is empty.
+	 * @returns								the request references if retrieval is successful, null otherwise.
+	 */
 	@Override
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingExistingCriteria(String criteriaOwner, String criteriaKey, boolean rePrice)
@@ -181,6 +216,12 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return requests;
 	}
 
+	/**
+	 * Sets the application publisher reference property.
+	 * 
+	 * @param applicationEventPublisher		the applicationEventPublisher.
+	 * @throws NullPointerException			if the applicationEventPublisher reference is null.
+	 */
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
