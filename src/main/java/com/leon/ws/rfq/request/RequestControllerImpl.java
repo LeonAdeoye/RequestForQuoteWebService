@@ -41,7 +41,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	public int save(RequestDetailImpl request, String savedBy)
 	{
 		if(request == null)
-			throw new IllegalArgumentException("request");
+			throw new NullPointerException("request");
 
 		if(savedBy.isEmpty())
 			throw new IllegalArgumentException("savedBy");
@@ -73,7 +73,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	public boolean update(RequestDetailImpl request, String updatedBy)
 	{
 		if(request == null)
-			throw new IllegalArgumentException("request");
+			throw new NullPointerException("request");
 
 		if(updatedBy.isEmpty())
 			throw new IllegalArgumentException("updatedBy");
@@ -137,6 +137,9 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingAdhocCriteria(SearchCriteriaImpl criteria, boolean rePrice)
 	{
+		if(criteria == null)
+			throw new NullPointerException("criteria");
+		
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  +
 					" RFQs matching the adhoc criteria [" + criteria + "].");
@@ -156,6 +159,12 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	@WebMethod
 	public RequestDetailListImpl getRequestsMatchingExistingCriteria(String criteriaOwner, String criteriaKey, boolean rePrice)
 	{
+		if(criteriaOwner.isEmpty())
+			throw new IllegalArgumentException("criteriaOwner");
+		
+		if(criteriaKey.isEmpty())
+			throw new IllegalArgumentException("criteriaKey");
+		
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  +
 					" RFQs matching the existing criteria with owner ["	+ criteriaOwner +
