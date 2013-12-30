@@ -28,6 +28,14 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		this.dao = dao;
 	}
 
+	/**
+	 * Saves the incoming request to the database using the DAO interface reference.
+	 * For each request a TaggedRequestEvent is published.
+	 * @param request						the request to be saved.
+	 * @param savedBy						the identifier of the user performing the save.
+	 * @throws IllegalArgumentException		if the request reference is null or the user identifier string is empty.
+	 * @returns 							the identifier of the newly saved request, -1 otherwise.
+	 */
 	@Override
 	@WebMethod
 	public int save(RequestDetailImpl request, String savedBy)
@@ -52,6 +60,14 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return -1;
 	}
 
+	/**
+	 * Updates the incoming request to the database using the DAO interface reference.
+	 * For each request a TaggedRequestEvent is published.
+	 * @param request						the request to be updated.
+	 * @param savedBy						the identifier of the user performing the update.
+	 * @throws IllegalArgumentException		if the request reference is null or the user identifier string is empty.
+	 * @returns								true if the update is successful, false otherwise.
+	 */
 	@Override
 	@WebMethod
 	public boolean update(RequestDetailImpl request, String updatedBy)
@@ -73,10 +89,20 @@ public final class RequestControllerImpl implements RequestController, Applicati
 		return success;
 	}
 
+	/**
+	 * Returns a reference to the request which matches the identifier parameter.
+	 * @param identifier					the unique identifier of request to be retrieved by the DAO reference.
+	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
+	 * @throws IllegalArgumentException		if the identifier of the request is less than or equal to zero.
+	 * @returns								the request reference if retrieval is successful, null otherwise.
+	 */
 	@Override
 	@WebMethod
 	public RequestDetailImpl getRequest(int identifier, boolean rePrice)
 	{
+		if(identifier <= 0)
+			throw new IllegalArgumentException("identifier");
+		
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to retrieve" + (rePrice ? " (and reprice)" : "")  + " RFQ with identifier [" + identifier + "].");
 
