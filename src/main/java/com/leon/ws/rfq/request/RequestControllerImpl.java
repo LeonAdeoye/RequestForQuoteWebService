@@ -42,7 +42,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * @param savedBy						the identifier of the user performing the save.
 	 * @throws IllegalArgumentException		if the user identifier string is empty.
 	 * @throws NullPointerException			if the request reference is null.
-	 * @returns 							the identifier of the newly saved request, -1 otherwise.
+	 * @return 								the identifier of the newly saved request if the save is successful, -1 otherwise.
 	 */
 	@Override
 	@WebMethod
@@ -76,7 +76,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * @param savedBy						the identifier of the user performing the update.
 	 * @throws NullPointerException			if the request reference is null.
 	 * @throws IllegalArgumentException		if the user identifier string is empty.
-	 * @returns								true if the update is successful, false otherwise.
+	 * @return								true if the update is successful, false otherwise.
 	 */
 	@Override
 	@WebMethod
@@ -105,7 +105,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * @param identifier					the unique identifier of request to be retrieved by the DAO reference.
 	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
 	 * @throws IllegalArgumentException		if the identifier of the request is less than or equal to zero.
-	 * @returns								the request reference if retrieval is successful, null otherwise.
+	 * @return								the request reference if the retrieval is successful, null otherwise.
 	 */
 	@Override
 	@WebMethod
@@ -129,7 +129,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * Returns a reference to all requests with a trade date of today.
 	 * 
 	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
-	 * @returns								the request references if retrieval is successful, null otherwise.
+	 * @return								the request references if retrieval is successful, null otherwise.
 	 */
 	@Override
 	@WebMethod
@@ -156,7 +156,7 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * @param criteria						the adhoc search criteria.
 	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
 	 * @throws NullPointerException			if the criteria reference is null.
-	 * @returns								the request references if retrieval is successful, null otherwise.
+	 * @return								the request references if retrieval is successful, null otherwise.
 	 */
 	@Override
 	@WebMethod
@@ -186,9 +186,8 @@ public final class RequestControllerImpl implements RequestController, Applicati
 	 * @param criteriaOwner					the existing search criteria owner.
 	 * @param criteriaKey					the existing search criteria key.
 	 * @param rePrice						the boolean flag indicator if the RFQ is to be re-priced.
-	 * @throws IllegalArgumentException		if the criteriaOwner string is empty.
-	 * @throws IllegalArgumentException		if the criteriaKey string is empty.
-	 * @returns								the request references if retrieval is successful, null otherwise.
+	 * @throws IllegalArgumentException		if the criteriaOwner or the criteriaKey string is empty.
+	 * @return								the request references if retrieval is successful, null otherwise.
 	 */
 	@Override
 	@WebMethod
