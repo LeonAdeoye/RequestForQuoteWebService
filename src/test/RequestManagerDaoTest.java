@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -207,5 +208,68 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
 		// Assert
 		assertNotNull("request should NOT be null", result);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedAskFinalAmountShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Ask final amount should be 1.0", 1.0, result.getAskFinalAmount(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedAskFinalPercentageShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Ask final percentage should be 2.0", 2.0, result.getAskFinalPercentage(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedAskImpliedVolShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Ask implied vol should be 3.0", 3.0, result.getAskImpliedVol(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedAskPremiumAmountShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Ask premium amount should be 4.0", 4.0, result.getAskPremiumAmount(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedAskPremiumPercentageShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Ask premium percentage should be 5.0", 5.0, result.getAskPremiumPercentage(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedBidFinalAmountShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Bid final amount should be 6.0", 6.0, result.getBidFinalAmount(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedBidFinalPercentageShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Bid final percentage should be 7.0", 7.0, result.getBidFinalPercentage(), 0.1);
 	}
 }
