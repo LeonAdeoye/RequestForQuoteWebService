@@ -25,7 +25,7 @@ public final class UtilityMethods
 	 */
 	public static java.sql.Date convertToDate(String dateToConvert)
 	{
-		if(dateToConvert.isEmpty())
+		if((dateToConvert == null) || dateToConvert.isEmpty())
 			throw new IllegalArgumentException("dateToConvert");
 
 		try
@@ -53,13 +53,13 @@ public final class UtilityMethods
 	 */
 	public static String convertStringFormatOfDate(String inputDate, String inputFormat, String outputFormat)
 	{
-		if(inputDate.isEmpty())
+		if((inputDate == null) || inputDate.isEmpty())
 			throw new IllegalArgumentException("stringDate");
 
-		if(inputFormat.isEmpty())
+		if((inputFormat == null) || inputFormat.isEmpty())
 			throw new IllegalArgumentException("inputFormat");
 
-		if(outputFormat.isEmpty())
+		if((outputFormat == null) || outputFormat.isEmpty())
 			throw new IllegalArgumentException("outputFormat");
 
 		try
