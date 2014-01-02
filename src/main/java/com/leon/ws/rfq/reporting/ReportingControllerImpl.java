@@ -161,7 +161,7 @@ public class ReportingControllerImpl implements ReportingController
 		
 		
 		if(logger.isDebugEnabled())
-			logger.debug("Received request for a greeks extrapolation report for request id: " + requestId +
+			logger.debug("Received request for a greek extrapolation report for request id: " + requestId +
 					", using range variable: " + rangeVariable +
 					", with inclusive minimum range value: " + rangeMinimum +
 					", with inclusive maximum range value: " + rangeMaximum +
