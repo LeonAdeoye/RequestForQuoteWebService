@@ -24,6 +24,7 @@ public final class RequestDetailImpl
 
 	private String tradeDate;
 	private String expiryDate;
+	private double dayCountConvention;
 
 	private double notionalMillions;
 	private double notionalFXRate;
@@ -197,6 +198,16 @@ public final class RequestDetailImpl
 	public void setExpiryDate(String expiryDate)
 	{
 		this.expiryDate = expiryDate;
+	}
+	
+	public void setDayCountConvention(double dayCountConvention)
+	{
+		this.dayCountConvention = dayCountConvention;
+	}
+	
+	public double getDayCountConvention()
+	{
+		return this.dayCountConvention;
 	}
 
 	public int getLotSize()
@@ -790,6 +801,8 @@ public final class RequestDetailImpl
 		buf.append(this.strike);
 		buf.append(", Time to expiry: ");
 		buf.append(this.timeToExpiry);
+		buf.append(", Day count convention: ");
+		buf.append(this.dayCountConvention);
 		buf.append(", Underlying Price: ");
 		buf.append(this.underlyingPrice);
 
@@ -930,6 +943,7 @@ public final class RequestDetailImpl
 				(this.underlyingPrice == param.underlyingPrice) &&
 				(this.interestRate == param.interestRate) &&
 				(this.timeToExpiry == param.timeToExpiry) &&
+				(this.dayCountConvention == param.dayCountConvention) &&
 
 				(this.deltaShares == param.deltaShares) &&
 				(this.gammaShares == param.gammaShares) &&
@@ -1007,6 +1021,7 @@ public final class RequestDetailImpl
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.strike);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.interestRate);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.timeToExpiry);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.dayCountConvention);
 
 		if(this.legs != null)
 		{

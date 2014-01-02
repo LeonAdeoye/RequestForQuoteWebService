@@ -189,7 +189,7 @@ public class ReportingControllerImpl implements ReportingController
 				input.put(OptionPricingModel.VOLATILITY, leg.getVolatility());
 				input.put(OptionPricingModel.UNDERLYING_PRICE, leg.getUnderlyingPrice());
 				input.put(OptionPricingModel.STRIKE, leg.getStrike());
-				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getDaysToExpiry());
+				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getYearsToExpiry());
 				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
 				
 				extrapolationPoints.merge(this.model.calculateRange(input, rangeVariable,
