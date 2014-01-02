@@ -64,7 +64,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		this.request.setBidPremiumAmount(8.0);
 		this.request.setBidPremiumPercentage(9.0);
 		this.request.setBookCode("AB01");
-		this.request.setClientComment("test comment");
+		this.request.setClientComment("client comment");
 		this.request.setClientId(1);
 		this.request.setContracts(2);
 		this.request.setDelta(10.0);
@@ -271,5 +271,86 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
 		// Assert
 		assertEquals("Bid final percentage should be 7.0", 7.0, result.getBidFinalPercentage(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedBidPremiumAmountShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Bid premium amount should be 8.0", 8.0, result.getBidPremiumAmount(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedBidPremiumPercentageShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Bid premium percentage should be 9.0", 9.0, result.getBidPremiumPercentage(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedBookCodeShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Book code should be AB01", "AB01", result.getBookCode());
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedClientCommentShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Client comment should be client comment", "client comment", result.getClientComment());
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedClientIdShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Client id should be 1", 1, result.getClientId());
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedContractsShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Contracts should be 2", 2, result.getContracts());
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedDeltaShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Delta should be 10.0", 10.0, result.getDelta(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedDeltaNotionaLShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Delta notional should be 11.0", 11.0, result.getDeltaNotional(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompleteRequest_SavedDeltaSharesBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
 	}
 }
