@@ -1,4 +1,4 @@
-import static org.junit.Assert.assertEquals;
+					import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -71,6 +71,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		this.request.setDeltaNotional(11.0);
 		this.request.setDeltaShares(12.0);
 		this.request.setExpiryDate("12/23/2014");
+		this.request.setDayCountConvention(250.0);
 		this.request.setGamma(13.0);
 		this.request.setGammaNotional(14.0);
 		this.request.setGammaShares(15.0);
@@ -337,7 +338,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 	}
 	
 	@Test
-	public void test_save_CompleteRequest_SavedDeltaNotionaLShouldBeRetrieved()
+	public void test_save_CompleteRequest_SavedDeltaNotionalShouldBeRetrieved()
 	{
 		// Act
 		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
@@ -346,11 +347,38 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 	}
 	
 	@Test
-	public void test_save_CompleteRequest_SavedDeltaSharesBeRetrieved()
+	public void test_save_CompletedRequest_SavedDeltaSharesShouldBeRetrieved()
 	{
 		// Act
 		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
 		// Assert
 		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompletedRequest_SavedExpiryDateShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Expiry date should be 23/12/2014", "23/12/2014", result.getExpiryDate());
+	}
+	
+	@Test
+	public void test_save_CompletedRequest_SavedDayCountConventionShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Day count convention should be 250.0", 250.0, result.getDayCountConvention(), 0.1);
+	}
+	
+	@Test
+	public void test_save_CompletedRequest_SavedGammaShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
+		// Assert
+		assertEquals("Gamma should be 13.0", 13.0, result.getGamma(), 0.1);
 	}
 }
