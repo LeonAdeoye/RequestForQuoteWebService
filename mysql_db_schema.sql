@@ -41,7 +41,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `id_UNIQUE` (`identifier`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `holidays`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -54,7 +54,7 @@ CREATE TABLE `holidays` (
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `location_date_index` (`location`,`holidayDate`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `optionleg`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -151,9 +151,10 @@ CREATE TABLE `requestforquotemain` (
   `bidPremiumAmount` decimal(13,3) DEFAULT NULL,
   `bidPremiumPercentage` decimal(13,3) DEFAULT NULL,
   `savedBy` varchar(20) NOT NULL,
+  `dayCountConvention` decimal(13,3) DEFAULT '250.000',
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `searches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -169,7 +170,7 @@ CREATE TABLE `searches` (
   `isFilter` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`id`),
   UNIQUE KEY `owner_and_key_and_control_UNIQUE` (`owner`,`keyValue`,`controlName`)
-) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `underlyings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1407,6 +1408,7 @@ p_status VARCHAR(20),
 
 p_tradeDate DATETIME, 
 p_expiryDate DATETIME,
+p_dayCountConvention DECIMAL(13,3),
 				
 p_lotSize INT(10),
 p_multiplier INT(10), 
@@ -1488,7 +1490,8 @@ BEGIN
     multiplier, 
     quantity, 
     tradeDate, 
-    expiryDate, 
+    expiryDate,
+    dayCountConvention,
     premiumSettlementCurrency, 
     premiumSettlementDate, 
     premiumSettlementDaysOverride, 
@@ -1549,7 +1552,8 @@ BEGIN
     p_multiplier, 
     p_quantity, 
     p_tradeDate, 
-    p_expiryDate, 
+    p_expiryDate,
+    p_dayCountConvention,
     p_premiumSettlementCurrency, 
     p_premiumSettlementDate, 
     p_premiumSettlementDaysOverride, 
@@ -1624,6 +1628,7 @@ p_status VARCHAR(20),
 
 p_tradeDate DATETIME, 
 p_expiryDate DATETIME,
+p_dayCountConvention DECIMAL(13,3),
 				
 p_lotSize INT(10),
 p_multiplier INT(10), 
@@ -1704,7 +1709,8 @@ BEGIN
     multiplier = p_multiplier, 
     quantity = p_quantity, 
     tradeDate = p_tradeDate, 
-    expiryDate = p_expiryDate, 
+    expiryDate = p_expiryDate,
+    dayCountConvention = p_dayCountConvention,
     premiumSettlementCurrency = p_premiumSettlementCurrency, 
     premiumSettlementDate = p_premiumSettlementDate, 
     premiumSettlementDaysOverride = p_premiumSettlementDaysOverride, 

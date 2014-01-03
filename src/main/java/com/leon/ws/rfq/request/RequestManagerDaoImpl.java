@@ -83,6 +83,8 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 				request.setTradeDate(df.format(rs.getDate("tradeDate")));
 			if(rs.getDate("expiryDate") != null)
 				request.setExpiryDate(df.format(rs.getDate("expiryDate"))); //8
+			
+			request.setNotionalMillions(rs.getDouble("dayCountConvention"));
 
 			request.setLotSize(rs.getInt("lotSize"));
 			request.setMultiplier(rs.getInt("multiplier"));
@@ -158,7 +160,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	private static final String UPDATE =
 			"CALL request_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
@@ -166,7 +168,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; //59
 
 	private static final String SAVE_LEG =
 			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
@@ -302,6 +304,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 				tradeDate,
 				expiryDate,
+				request.getDayCountConvention(),
 
 				request.getLotSize(),
 				request.getMultiplier(),
@@ -496,6 +499,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 
 				tradeDate,
 				expiryDate, //8
+				request.getDayCountConvention(),
 
 				request.getLotSize(),
 				request.getMultiplier(),
