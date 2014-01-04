@@ -212,173 +212,51 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 	}
 	
 	@Test
-	public void test_save_CompleteRequest_SavedAskFinalAmountShouldBeRetrieved()
+	public void test_save_CompleteRequest_SavedFieldsShouldBeRetrieved()
 	{
 		// Act
 		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
 		// Assert
 		assertEquals("Ask final amount should be 1.0", 1.0, result.getAskFinalAmount(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedAskFinalPercentageShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Ask final percentage should be 2.0", 2.0, result.getAskFinalPercentage(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedAskImpliedVolShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Ask implied vol should be 3.0", 3.0, result.getAskImpliedVol(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedAskPremiumAmountShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Ask premium amount should be 4.0", 4.0, result.getAskPremiumAmount(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedAskPremiumPercentageShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Ask premium percentage should be 5.0", 5.0, result.getAskPremiumPercentage(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedBidFinalAmountShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Bid final amount should be 6.0", 6.0, result.getBidFinalAmount(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedBidFinalPercentageShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Bid final percentage should be 7.0", 7.0, result.getBidFinalPercentage(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedBidPremiumAmountShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Bid premium amount should be 8.0", 8.0, result.getBidPremiumAmount(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedBidPremiumPercentageShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Bid premium percentage should be 9.0", 9.0, result.getBidPremiumPercentage(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedBookCodeShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Book code should be AB01", "AB01", result.getBookCode());
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedClientCommentShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Client comment should be client comment", "client comment", result.getClientComment());
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedClientIdShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Client id should be 1", 1, result.getClientId());
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedContractsShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Contracts should be 2", 2, result.getContracts());
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedDeltaShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Delta should be 10.0", 10.0, result.getDelta(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompleteRequest_SavedDeltaNotionalShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Delta notional should be 11.0", 11.0, result.getDeltaNotional(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompletedRequest_SavedDeltaSharesShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompletedRequest_SavedExpiryDateShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Expiry date should be 23/12/2014", "23/12/2014", result.getExpiryDate());
-	}
-	
-	@Test
-	public void test_save_CompletedRequest_SavedDayCountConventionShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Day count convention should be 250.0", 250.0, result.getDayCountConvention(), 0.1);
-	}
-	
-	@Test
-	public void test_save_CompletedRequest_SavedGammaShouldBeRetrieved()
-	{
-		// Act
-		RequestDetailImpl result = this.requestManagerDao.save(this.request, "testUser");
-		// Assert
+
 		assertEquals("Gamma should be 13.0", 13.0, result.getGamma(), 0.1);
+
+		assertEquals("Gamma notional should be 14.0", 14.0, result.getGammaNotional(), 0.1);
+
+		assertEquals("Gamma shares should be 15.0", 15.0, result.getGammaShares(), 0.1);
 	}
 }
