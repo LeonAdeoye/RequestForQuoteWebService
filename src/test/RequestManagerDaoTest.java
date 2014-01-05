@@ -1,6 +1,7 @@
 					import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -249,7 +250,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 
 		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
 
-		assertEquals("Expiry date should be 23/12/2014", "23/12/2014", result.getExpiryDate());
+		assertEquals("Expiry date should be 12/23/2014", "12/23/2014", result.getExpiryDate());
 
 		assertEquals("Day count convention should be 250.0", 250.0, result.getDayCountConvention(), 0.1);
 
@@ -258,5 +259,39 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		assertEquals("Gamma notional should be 14.0", 14.0, result.getGammaNotional(), 0.1);
 
 		assertEquals("Gamma shares should be 15.0", 15.0, result.getGammaShares(), 0.1);
+		
+		assertEquals("Hedge price should be 16.0", 16.0, result.getHedgePrice(), 0.1);
+		
+		assertEquals("Hedge type should be test", "test", result.getHedgePrice());
+		
+		assertEquals("Implied vol should be 17.0", 17.0, result.getImpliedVol(), 0.1);
+		
+		assertEquals("Interest rate should be 18.0", 18.0, result.getInterestRate(), 0.1);
+		
+		assertTrue("IsOTC should be true", result.getIsOTC());
+		
+		assertEquals("Lot size should be 3", 3, result.getLotSize());
+		
+		assertEquals("Multiplier should be 4", 4, result.getMultiplier());
+		
+		assertEquals("Notional currency should be USD", "USD", result.getNotionalCurrency());
+		
+		assertEquals("Notional FX rate should be 19.0", 19.0, result.getNotionalFXRate(), 0.1);
+		
+		assertEquals("Notional millions should be 20.0", 20.0, result.getNotionalMillions(), 0.1);
+		
+		assertEquals("Picked up by should be test", "test", result.getPickedUpBy());
+
+		assertEquals("Premium amount should be 21.0", 21.0, result.getPremiumAmount(), 0.1);
+		
+		assertEquals("Premium percentage should be 22.0", 22.0, result.getPremiumPercentage(), 0.1);
+		
+		assertEquals("Premium settlement currency should be USD", "USD", result.getPremiumSettlementCurrency());
+		
+		assertEquals("Premium settlement date should be 12/23/2014", "12/23/2014", result.getPremiumSettlementDate());
+		
+		assertEquals("Premium settlement days override should be 5", 5, result.getPremiumSettlementDaysOverride());
+		
+		assertEquals("Premium settlement FX rate should be 23.0", 23.0, result.getPremiumSettlementFXRate(), 0.1);
 	}
 }
