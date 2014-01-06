@@ -250,7 +250,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 
 		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
 
-		assertEquals("Expiry date should be 12/23/2014", "12/23/2014", result.getExpiryDate());
+		assertEquals("Expiry date should be 12/23/2014", "23 Dec 2014", result.getExpiryDate());
 
 		assertEquals("Day count convention should be 250.0", 250.0, result.getDayCountConvention(), 0.1);
 
