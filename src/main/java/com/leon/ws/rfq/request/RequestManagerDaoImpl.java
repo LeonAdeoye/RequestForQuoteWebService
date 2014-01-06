@@ -84,7 +84,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			if(rs.getDate("expiryDate") != null)
 				request.setExpiryDate(df.format(rs.getDate("expiryDate"))); //8
 			
-			request.setNotionalMillions(rs.getDouble("dayCountConvention"));
+			request.setDayCountConvention(rs.getDouble("dayCountConvention"));
 
 			request.setLotSize(rs.getInt("lotSize"));
 			request.setMultiplier(rs.getInt("multiplier"));
