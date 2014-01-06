@@ -293,5 +293,52 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		assertEquals("Premium settlement days override should be 5", 5, result.getPremiumSettlementDaysOverride());
 		
 		assertEquals("Premium settlement FX rate should be 23.0", 23.0, result.getPremiumSettlementFXRate(), 0.1);
+		
+		assertEquals("Request should be test", "test", result.getRequest());
+		
+		assertEquals("Rho should be 24.0", 24.0, result.getRho(), 0.1);
+		
+		assertEquals("Rho notional should be 25.0", 25.0, result.getRhoNotional(), 0.1);
+		
+		assertEquals("Rho shares should be 26.0", 26.0, result.getRhoShares(), 0.1);
+		
+		assertEquals("Sales comment should be test", "test", result.getSalesComment());
+		
+		assertEquals("Sales credit amount should be 27.0", 27.0, result.getSalesCreditAmount(), 0.1);
+		
+		assertEquals("Sales credit currency should be USD", "USD", result.getSalesCreditCurrency());
+		
+		assertEquals("Sales credit FX rate should be 28.0", 28.0, result.getSalesCreditFXRate(), 0.1);
+		
+		assertEquals("Sales credit percentage should be 29.0", 29.0, result.getSalesCreditPercentage(), 0.1);
+		
+		assertEquals("Status should be test", "test", result.getStatus());
+		
+		assertEquals("Strike should be 30.0", 30.0, result.getStrike(), 0.1);
+		
+		assertEquals("Theta should be 31.0", 31.0, result.getTheta(), 0.1);
+		
+		assertEquals("Theta notional should be 32.0", 32.0, result.getThetaNotional(), 0.1);
+		
+		assertEquals("Theta shares should be 33.0", 33.0, result.getThetaShares(), 0.1);
+		
+		assertEquals("Time to expiry should be 34.0", 34.0, result.getTimeToExpiry(), 0.1);
+		
+		assertEquals("Total premium should be 35.0", 35.0, result.getTotalPremium(), 0.1);
+		
+		assertEquals("Trade date should be 12/23/2013", "12/23/2013", result.getTradeDate());
+		
+		assertEquals("Traders comment should be test", "test", result.getTraderComment());
+		
+		assertEquals("Underlying price should be 100.0", 100.0, result.getUnderlyingPrice(), 0.1);
+		
+		assertEquals("Vega should be 36.0", 36.0, result.getVega(), 0.1);
+		
+		assertEquals("Vega notional should be 37.0", 37.0, result.getVegaNotional(), 0.1);
+		
+		assertEquals("Vega shares should be 38.0", 38.0, result.getVegaShares(), 0.1);
+		
+		assertEquals("Volatility should be 39.0", 39.0, result.getVolatility(), 0.1);
+				
 	}
 }

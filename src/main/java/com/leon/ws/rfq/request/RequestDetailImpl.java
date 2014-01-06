@@ -700,7 +700,7 @@ public final class RequestDetailImpl
 		this.hedgeType = hedgeType;
 	}
 	
-	public double getVolatiltiy()
+	public double getVolatility()
 	{
 		return this.volatility;
 	}
