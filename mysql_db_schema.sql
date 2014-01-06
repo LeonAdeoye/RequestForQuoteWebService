@@ -154,7 +154,7 @@ CREATE TABLE `requestforquotemain` (
   `dayCountConvention` decimal(13,3) DEFAULT '250.000',
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier_UNIQUE` (`identifier`)
-) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `searches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1566,7 +1566,7 @@ BEGIN
     p_traderComment, 
     p_clientComment, 
     p_premiumAmount, 
-    premiumPercentage, 
+    p_premiumPercentage, 
     p_impliedVol, 
     p_delta, 
     p_gamma, 
