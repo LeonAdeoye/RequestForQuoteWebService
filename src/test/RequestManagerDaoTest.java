@@ -79,7 +79,6 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		this.request.setHedgePrice(16.0);
 		this.request.setHedgeType("test");
 		this.request.setImpliedVol(17.0);
-		this.request.setInterestRate(18.0);
 		this.request.setIsOTC(true);
 		this.request.setLotSize(3);
 		this.request.setMultiplier(4);
@@ -103,19 +102,15 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		this.request.setSalesCreditFXRate(28.0);
 		this.request.setSalesCreditPercentage(29.0);
 		this.request.setStatus("test");
-		this.request.setStrike(30.0);
 		this.request.setTheta(31.0);
 		this.request.setThetaNotional(32.0);
 		this.request.setThetaShares(33.0);
-		this.request.setTimeToExpiry(34.0);
 		this.request.setTotalPremium(35.0);
 		this.request.setTradeDate("12/23/2013");
 		this.request.setTraderComment("test");
-		this.request.setUnderlyingPrice(100);
 		this.request.setVega(36.0);
 		this.request.setVegaNotional(37.0);
 		this.request.setVegaShares(38.0);
-		this.request.setVolatility(39.0);
 	}
 	
 	@After
@@ -250,7 +245,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 
 		assertEquals("Delta shares should be 12.0", 12.0, result.getDeltaShares(), 0.1);
 
-		assertEquals("Expiry date should be 12/23/2014", "23 Dec 2014", result.getExpiryDate());
+		assertEquals("Expiry date should be 23 Dec 2014", "23 Dec 2014", result.getExpiryDate());
 
 		assertEquals("Day count convention should be 250.0", 250.0, result.getDayCountConvention(), 0.1);
 
@@ -265,8 +260,6 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		assertEquals("Hedge type should be test", "test", result.getHedgeType());
 		
 		assertEquals("Implied vol should be 17.0", 17.0, result.getImpliedVol(), 0.1);
-		
-		//assertEquals("Interest rate should be 18.0", 18.0, result.getInterestRate(), 0.1);
 		
 		assertTrue("IsOTC should be true", result.getIsOTC());
 		
@@ -288,7 +281,7 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		
 		assertEquals("Premium settlement currency should be USD", "USD", result.getPremiumSettlementCurrency());
 		
-		assertEquals("Premium settlement date should be 12/23/2014", "12/23/2014", result.getPremiumSettlementDate());
+		assertEquals("Premium settlement date should be 23 Dec 2014", "23 Dec 2014", result.getPremiumSettlementDate());
 		
 		assertEquals("Premium settlement days override should be 5", 5, result.getPremiumSettlementDaysOverride());
 		
@@ -314,31 +307,24 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		
 		assertEquals("Status should be test", "test", result.getStatus());
 		
-		assertEquals("Strike should be 30.0", 30.0, result.getStrike(), 0.1);
-		
 		assertEquals("Theta should be 31.0", 31.0, result.getTheta(), 0.1);
 		
 		assertEquals("Theta notional should be 32.0", 32.0, result.getThetaNotional(), 0.1);
 		
 		assertEquals("Theta shares should be 33.0", 33.0, result.getThetaShares(), 0.1);
 		
-		assertEquals("Time to expiry should be 34.0", 34.0, result.getTimeToExpiry(), 0.1);
-		
 		assertEquals("Total premium should be 35.0", 35.0, result.getTotalPremium(), 0.1);
 		
-		assertEquals("Trade date should be 12/23/2013", "12/23/2013", result.getTradeDate());
+		assertEquals("Trade date should be 23 Dec 2013", "23 Dec 2013", result.getTradeDate());
 		
 		assertEquals("Traders comment should be test", "test", result.getTraderComment());
-		
-		assertEquals("Underlying price should be 100.0", 100.0, result.getUnderlyingPrice(), 0.1);
 		
 		assertEquals("Vega should be 36.0", 36.0, result.getVega(), 0.1);
 		
 		assertEquals("Vega notional should be 37.0", 37.0, result.getVegaNotional(), 0.1);
 		
 		assertEquals("Vega shares should be 38.0", 38.0, result.getVegaShares(), 0.1);
-		
-		assertEquals("Volatility should be 39.0", 39.0, result.getVolatility(), 0.1);
+	
 				
 	}
 }

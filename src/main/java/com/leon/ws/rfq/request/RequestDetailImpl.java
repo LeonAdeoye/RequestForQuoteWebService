@@ -82,12 +82,6 @@ public final class RequestDetailImpl
 	private String hedgeType;
 	private double hedgePrice;
 	private double totalPremium;
-	
-	private double volatility;
-	private double interestRate;
-	private double underlyingPrice;
-	private double strike;
-	private double timeToExpiry;
 
 	private ArrayList<OptionDetailImpl> legs;
 
@@ -699,56 +693,6 @@ public final class RequestDetailImpl
 	{
 		this.hedgeType = hedgeType;
 	}
-	
-	public double getVolatility()
-	{
-		return this.volatility;
-	}
-	
-	public void setVolatility(double volatility)
-	{
-		this.volatility = volatility;
-	}
-
-	public double getUnderlyingPrice()
-	{
-		return this.underlyingPrice;
-	}
-	
-	public void setUnderlyingPrice(double underlyingPrice)
-	{
-		this.underlyingPrice = underlyingPrice;
-	}
-
-	public double getStrike()
-	{
-		return this.strike;
-	}
-	
-	public void setStrike(double strike)
-	{
-		this.strike = strike;
-	}
-
-	public double getTimeToExpiry()
-	{
-		return this.timeToExpiry;
-	}
-	
-	public void setTimeToExpiry(double timeToExpiry)
-	{
-		this.timeToExpiry = timeToExpiry;
-	}
-
-	public double getInterestRate()
-	{
-		return this.interestRate;
-	}
-	
-	public void setInterestRate(double interestRate)
-	{
-		this.interestRate = interestRate;
-	}
 
 	@Override
 	public String toString()
@@ -793,18 +737,8 @@ public final class RequestDetailImpl
 		buf.append(", Rho shares: ");
 		buf.append(this.rhoShares);
 		
-		buf.append(", Volatility: ");
-		buf.append(this.volatility);
-		buf.append(", Interest Rate: ");
-		buf.append(this.interestRate);
-		buf.append(", Strike: ");
-		buf.append(this.strike);
-		buf.append(", Time to expiry: ");
-		buf.append(this.timeToExpiry);
 		buf.append(", Day count convention: ");
 		buf.append(this.dayCountConvention);
-		buf.append(", Underlying Price: ");
-		buf.append(this.underlyingPrice);
 
 		buf.append(", Bid final amount: ");
 		buf.append(this.bidFinalAmount);
@@ -938,11 +872,6 @@ public final class RequestDetailImpl
 				(this.salesCreditFXRate == param.salesCreditFXRate) &&
 				(this.salesCreditPercentage == param.salesCreditPercentage) &&
 				
-				(this.strike == param.strike) &&
-				(this.volatility == param.volatility) &&
-				(this.underlyingPrice == param.underlyingPrice) &&
-				(this.interestRate == param.interestRate) &&
-				(this.timeToExpiry == param.timeToExpiry) &&
 				(this.dayCountConvention == param.dayCountConvention) &&
 
 				(this.deltaShares == param.deltaShares) &&
@@ -1016,11 +945,6 @@ public final class RequestDetailImpl
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.salesCreditFXRate);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.salesCreditPercentage);
 		
-		result = (37 * result) + UtilityMethods.doubleHashCode(this.volatility);
-		result = (37 * result) + UtilityMethods.doubleHashCode(this.underlyingPrice);
-		result = (37 * result) + UtilityMethods.doubleHashCode(this.strike);
-		result = (37 * result) + UtilityMethods.doubleHashCode(this.interestRate);
-		result = (37 * result) + UtilityMethods.doubleHashCode(this.timeToExpiry);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.dayCountConvention);
 
 		if(this.legs != null)
