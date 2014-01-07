@@ -126,10 +126,22 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		this.requestManagerDao.save(null, "testUser");
 	}
 	
+	@Test(expected = NullPointerException.class)
+	public void test_update_InValidRequestReference_ExceptionThrown()
+	{
+		this.requestManagerDao.update(null, "testUser");
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_save_InvalidUser_ExceptionThrown()
 	{
 		this.requestManagerDao.save(new RequestDetailImpl(), "");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_update_InvalidUser_ExceptionThrown()
+	{
+		this.requestManagerDao.update(new RequestDetailImpl(), "");
 	}
 	
 	@Test
@@ -391,7 +403,8 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		savedRequest.setVegaNotional(371.0);
 		savedRequest.setVegaShares(381.0);
 		
-		this.requestManagerDao.update(savedRequest, "test");
+		assertTrue(this.requestManagerDao.update(savedRequest, "test"));
+		
 		RequestDetailImpl updatedRequest = this.requestManagerDao.getRequest(savedRequest.getIdentifier());
 		
 		// Assert
