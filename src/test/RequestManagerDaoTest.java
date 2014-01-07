@@ -1,4 +1,5 @@
 					import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -324,7 +325,186 @@ public class RequestManagerDaoTest  extends AbstractJUnit4SpringContextTests
 		assertEquals("Vega notional should be 37.0", 37.0, result.getVegaNotional(), 0.1);
 		
 		assertEquals("Vega shares should be 38.0", 38.0, result.getVegaShares(), 0.1);
+	}
 	
-				
+	@Test
+	public void test_update_CompleteRequest_UpdatedFieldsShouldBeRetrieved()
+	{
+		// Act
+		RequestDetailImpl savedRequest = this.requestManagerDao.save(this.request, "testUser");
+		savedRequest.setLegs(this.optionLegs);
+		savedRequest.setQuantity(11);
+		savedRequest.setAskFinalAmount(11.0);
+		savedRequest.setAskFinalPercentage(21.0);
+		savedRequest.setAskImpliedVol(31.0);
+		savedRequest.setAskPremiumAmount(41.0);
+		savedRequest.setAskPremiumPercentage(51.0);
+		savedRequest.setBidFinalAmount(61.0);
+		savedRequest.setBidFinalPercentage(71.0);
+		savedRequest.setBidPremiumAmount(81.0);
+		savedRequest.setBidPremiumPercentage(91.0);
+		savedRequest.setBookCode("AB11");
+		savedRequest.setClientComment("client comment 1");
+		savedRequest.setClientId(11);
+		savedRequest.setContracts(21);
+		savedRequest.setDelta(101.0);
+		savedRequest.setDeltaNotional(111.0);
+		savedRequest.setDeltaShares(121.0);
+		savedRequest.setExpiryDate("12/24/2014");
+		savedRequest.setDayCountConvention(255.0);
+		savedRequest.setGamma(131.0);
+		savedRequest.setGammaNotional(141.0);
+		savedRequest.setGammaShares(151.0);
+		savedRequest.setHedgePrice(161.0);
+		savedRequest.setHedgeType("test 1");
+		savedRequest.setImpliedVol(171.0);
+		savedRequest.setIsOTC(false);
+		savedRequest.setLotSize(31);
+		savedRequest.setMultiplier(41);
+		savedRequest.setNotionalCurrency("HKD");
+		savedRequest.setNotionalFXRate(191.0);
+		savedRequest.setNotionalMillions(201.0);
+		savedRequest.setPickedUpBy("test 1");
+		savedRequest.setPremiumAmount(211.0);
+		savedRequest.setPremiumPercentage(221.0);
+		savedRequest.setPremiumSettlementCurrency("HKD");
+		savedRequest.setPremiumSettlementDate("12/24/2014");
+		savedRequest.setPremiumSettlementDaysOverride(51);
+		savedRequest.setPremiumSettlementFXRate(231.0);
+		savedRequest.setRequest("test 1");
+		savedRequest.setRho(241.0);
+		savedRequest.setRhoNotional(251.0);
+		savedRequest.setRhoShares(261.0);
+		savedRequest.setSalesComment("test 1");
+		savedRequest.setSalesCreditAmount(271.0);
+		savedRequest.setSalesCreditCurrency("HKD");
+		savedRequest.setSalesCreditFXRate(281.0);
+		savedRequest.setSalesCreditPercentage(291.0);
+		savedRequest.setStatus("test 1");
+		savedRequest.setTheta(311.0);
+		savedRequest.setThetaNotional(321.0);
+		savedRequest.setThetaShares(331.0);
+		savedRequest.setTotalPremium(351.0);
+		savedRequest.setTradeDate("12/24/2013");
+		savedRequest.setTraderComment("test 1");
+		savedRequest.setVega(361.0);
+		savedRequest.setVegaNotional(371.0);
+		savedRequest.setVegaShares(381.0);
+		
+		this.requestManagerDao.update(savedRequest, "test");
+		RequestDetailImpl updatedRequest = this.requestManagerDao.getRequest(savedRequest.getIdentifier());
+		
+		// Assert
+		assertEquals("Ask final amount should be 11.0", 11.0, updatedRequest.getAskFinalAmount(), 0.1);
+
+		assertEquals("Ask final percentage should be 21.0", 21.0, updatedRequest.getAskFinalPercentage(), 0.1);
+
+		assertEquals("Ask implied vol should be 31.0", 31.0, updatedRequest.getAskImpliedVol(), 0.1);
+
+		assertEquals("Ask premium amount should be 41.0", 41.0, updatedRequest.getAskPremiumAmount(), 0.1);
+
+		assertEquals("Ask premium percentage should be 51.0", 51.0, updatedRequest.getAskPremiumPercentage(), 0.1);
+
+		assertEquals("Bid final amount should be 61.0", 61.0, updatedRequest.getBidFinalAmount(), 0.1);
+
+		assertEquals("Bid final percentage should be 71.0", 71.0, updatedRequest.getBidFinalPercentage(), 0.1);
+
+		assertEquals("Bid premium amount should be 81.0", 81.0, updatedRequest.getBidPremiumAmount(), 0.1);
+
+		assertEquals("Bid premium percentage should be 91.0", 91.0, updatedRequest.getBidPremiumPercentage(), 0.1);
+
+		assertEquals("Book code should be AB11", "AB11", updatedRequest.getBookCode());
+
+		assertEquals("Client comment should be client comment 1", "client comment 1", updatedRequest.getClientComment());
+
+		assertEquals("Client id should be 11", 11, updatedRequest.getClientId());
+
+		assertEquals("Contracts should be 21", 21, updatedRequest.getContracts());
+
+		assertEquals("Delta should be 101.0", 101.0, updatedRequest.getDelta(), 0.1);
+
+		assertEquals("Delta notional should be 111.0", 111.0, updatedRequest.getDeltaNotional(), 0.1);
+
+		assertEquals("Delta shares should be 121.0", 121.0, updatedRequest.getDeltaShares(), 0.1);
+
+		assertEquals("Expiry date should be 24 Dec 2014", "24 Dec 2014", updatedRequest.getExpiryDate());
+
+		assertEquals("Day count convention should be 255.0", 255.0, updatedRequest.getDayCountConvention(), 0.1);
+
+		assertEquals("Gamma should be 131.0", 131.0, updatedRequest.getGamma(), 0.1);
+
+		assertEquals("Gamma notional should be 141.0", 141.0, updatedRequest.getGammaNotional(), 0.1);
+
+		assertEquals("Gamma shares should be 151.0", 151.0, updatedRequest.getGammaShares(), 0.1);
+		
+		assertEquals("Hedge price should be 161.0", 161.0, updatedRequest.getHedgePrice(), 0.1);
+		
+		assertEquals("Hedge type should be test 1", "test 1", updatedRequest.getHedgeType());
+		
+		assertEquals("Implied vol should be 171.0", 171.0, updatedRequest.getImpliedVol(), 0.1);
+		
+		assertFalse("IsOTC should be false", updatedRequest.getIsOTC());
+		
+		assertEquals("Lot size should be 31", 31, updatedRequest.getLotSize());
+		
+		assertEquals("Multiplier should be 41", 41, updatedRequest.getMultiplier());
+		
+		assertEquals("Notional currency should be HKD", "HKD", updatedRequest.getNotionalCurrency());
+		
+		assertEquals("Notional FX rate should be 191.0", 191.0, updatedRequest.getNotionalFXRate(), 0.1);
+		
+		assertEquals("Notional millions should be 201.0", 201.0, updatedRequest.getNotionalMillions(), 0.1);
+		
+		assertEquals("Picked up by should be test 1", "test 1", updatedRequest.getPickedUpBy());
+
+		assertEquals("Premium amount should be 211.0", 211.0, updatedRequest.getPremiumAmount(), 0.1);
+		
+		assertEquals("Premium percentage should be 221.0", 221.0, updatedRequest.getPremiumPercentage(), 0.1);
+		
+		assertEquals("Premium settlement currency should be HKD", "HKD", updatedRequest.getPremiumSettlementCurrency());
+		
+		assertEquals("Premium settlement date should be 24 Dec 2014", "24 Dec 2014", updatedRequest.getPremiumSettlementDate());
+		
+		assertEquals("Premium settlement days override should be 51", 51, updatedRequest.getPremiumSettlementDaysOverride());
+		
+		assertEquals("Premium settlement FX rate should be 231.0", 231.0, updatedRequest.getPremiumSettlementFXRate(), 0.1);
+		
+		assertEquals("Request should be test 1", "test 1", updatedRequest.getRequest());
+		
+		assertEquals("Rho should be 241.0", 241.0, updatedRequest.getRho(), 0.1);
+		
+		assertEquals("Rho notional should be 251.0", 251.0, updatedRequest.getRhoNotional(), 0.1);
+		
+		assertEquals("Rho shares should be 261.0", 261.0, updatedRequest.getRhoShares(), 0.1);
+		
+		assertEquals("Sales comment should be test 1", "test 1", updatedRequest.getSalesComment());
+		
+		assertEquals("Sales credit amount should be 271.0", 271.0, updatedRequest.getSalesCreditAmount(), 0.1);
+		
+		assertEquals("Sales credit currency should be HKD", "HKD", updatedRequest.getSalesCreditCurrency());
+		
+		assertEquals("Sales credit FX rate should be 281.0", 281.0, updatedRequest.getSalesCreditFXRate(), 0.1);
+		
+		assertEquals("Sales credit percentage should be 291.0", 291.0, updatedRequest.getSalesCreditPercentage(), 0.1);
+		
+		assertEquals("Status should be test", "test 1", updatedRequest.getStatus());
+		
+		assertEquals("Theta should be 311.0", 311.0, updatedRequest.getTheta(), 0.1);
+		
+		assertEquals("Theta notional should be 321.0", 321.0, updatedRequest.getThetaNotional(), 0.1);
+		
+		assertEquals("Theta shares should be 331.0", 331.0, updatedRequest.getThetaShares(), 0.1);
+		
+		assertEquals("Total premium should be 351.0", 351.0, updatedRequest.getTotalPremium(), 0.1);
+		
+		assertEquals("Trade date should be 24 Dec 2013", "24 Dec 2013", updatedRequest.getTradeDate());
+		
+		assertEquals("Traders comment should be test 1", "test 1", updatedRequest.getTraderComment());
+		
+		assertEquals("Vega should be 361.0", 361.0, updatedRequest.getVega(), 0.1);
+		
+		assertEquals("Vega notional should be 371.0", 371.0, updatedRequest.getVegaNotional(), 0.1);
+		
+		assertEquals("Vega shares should be 381.0", 381.0, updatedRequest.getVegaShares(), 0.1);
 	}
 }
