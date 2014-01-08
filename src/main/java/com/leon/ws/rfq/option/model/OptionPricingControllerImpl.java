@@ -67,12 +67,45 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 		return "Black Scholes Model - European options only.";
 	}
 	
+	/**
+	 * Parameterizes the model with the inputs prior to the range calculation.
+	 * 
+	 * @param strike						the strike or exercise price of the option.
+	 * @param volatility					the volatility of the underlying.
+	 * @param underlyingPrice				the underlying price of the option.
+	 * @param daysToExpiry					the number of days until expiry.
+	 * @param interestRate					the risk-free interest rate.
+	 * @param isCall						the call or put type of the option flag
+	 * @param isEuropean					the European or American type of the option.
+	 * @param dayCountConvention			the day count convention use dot calculate time to expiry.
+	 * 
+	 * @throws IllegalArgumentException 	if strike, volatility, underlyingPrice,
+	 * interestRate, dayCountConvention, daysToExpiry are less than or equal to zero.
+	 */
 	@Override
 	@WebMethod
 	@Oneway
 	public void parameterize(double strike,	double volatility, double underlyingPrice, double daysToExpiry,
 			double interestRate, boolean isCall, boolean isEuropean, double dayCountConvention)
 	{
+		if(strike <= 0)
+			throw new IllegalArgumentException("strike");
+		
+		if(volatility <= 0)
+			throw new IllegalArgumentException("volatility");
+		
+		if(underlyingPrice <= 0)
+			throw new IllegalArgumentException("underlyingPrice");
+		
+		if(daysToExpiry <= 0)
+			throw new IllegalArgumentException("daysToExpiry");
+		
+		if(interestRate <= 0)
+			throw new IllegalArgumentException("interestRate");
+		
+		if(dayCountConvention <= 0)
+			throw new IllegalArgumentException("dayCountConvention");
+				
 		if(this.context != null)
 		{
 			if(logger.isDebugEnabled())
@@ -93,12 +126,45 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 		else if(logger.isErrorEnabled())
 			logger.error("Pricing context is null! Cannot price.");
 	}
-	
+
+	/**
+	 * Calculates the pricing and greeks of the option using the model inputs.
+	 * 
+	 * @param strike						the strike or exercise price of the option.
+	 * @param volatility					the volatility of the underlying.
+	 * @param underlyingPrice				the underlying price of the option.
+	 * @param daysToExpiry					the number of days until expiry.
+	 * @param interestRate					the risk-free interest rate.
+	 * @param isCall						the call or put type of the option flag
+	 * @param isEuropean					the European or American type of the option.
+	 * @param dayCountConvention			the day count convention use dot calculate time to expiry.
+	 * 
+	 * @throws IllegalArgumentException 	if strike, volatility, underlyingPrice,
+	 * interestRate, dayCountConvention, daysToExpiry are less than or equal to zero.
+	 */
 	@Override
 	@WebMethod
 	public OptionPriceResult calculate(double strike,	double volatility, double underlyingPrice, double daysToExpiry,
 			double interestRate, boolean isCall, boolean isEuropean, double dayCountConvention)
 	{
+		if(strike <= 0)
+			throw new IllegalArgumentException("strike");
+		
+		if(volatility <= 0)
+			throw new IllegalArgumentException("volatility");
+		
+		if(underlyingPrice <= 0)
+			throw new IllegalArgumentException("underlyingPrice");
+		
+		if(daysToExpiry <= 0)
+			throw new IllegalArgumentException("daysToExpiry");
+		
+		if(interestRate <= 0)
+			throw new IllegalArgumentException("interestRate");
+		
+		if(dayCountConvention <= 0)
+			throw new IllegalArgumentException("dayCountConvention");
+		
 		if(this.context != null)
 		{
 			if(logger.isDebugEnabled())
@@ -132,10 +198,30 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 		return null;
 	}
 	
+	/**
+	 * Calculates the pricing and greeks of the option over a range of values of a specific input parameter.
+	 * 
+	 * @param rangeKey						the input parameter that will vary in the range calculation.
+	 * @param startValue					the starting value of the variable that will vary.
+	 * @param endValue						the ending value of the variable that will vary.
+	 * @param increment						the incremental value of the range variable.
+	 * 
+	 * @throws IllegalArgumentException 	if rangeKey is empty, or if the startValue is greater than the endValue,
+	 * or if the startValue is equal to the endValue, or if the increment is zero.
+	 */
 	@Override
 	@WebMethod
 	public ExtrapolationPoints calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
 	{
+		if(rangeKey.isEmpty())
+			throw new IllegalArgumentException("rangeKey");
+		
+		if((startValue > endValue) || (startValue == endValue))
+			throw new IllegalArgumentException("startValue");
+		
+		if(increment == 0)
+			throw new IllegalArgumentException("increment");
+		
 		try
 		{
 			if(logger.isDebugEnabled())
