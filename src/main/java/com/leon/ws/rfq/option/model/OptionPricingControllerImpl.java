@@ -168,7 +168,7 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	        		optionLeg.getInterestRate(),
 	        		optionLeg.getIsCall(),
 	        		optionLeg.getIsEuropean(),
-	        		optionLeg.getDayCountConvention());
+	        		request.getDayCountConvention());
 
 	        	optionLeg.setDelta(result.getDelta());
 	        	optionLeg.setGamma(result.getGamma());
