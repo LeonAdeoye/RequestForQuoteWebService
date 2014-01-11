@@ -77,7 +77,7 @@ public final class BlackScholesModelImpl implements OptionPricingModel
                     input.put(rangeKey, value);
                     OptionPriceResult optionPriceResult = calculate(input);
                     optionPriceResult.setRangeVariable(value);
-                    optionPriceResultSet.add(optionPriceResult);
+                    optionPriceResultSet.merge(optionPriceResult);
                 }
             }
             catch(Exception e)
