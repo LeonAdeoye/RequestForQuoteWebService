@@ -6,7 +6,7 @@ import java.util.List;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import com.leon.ws.rfq.option.model.ExtrapolationPoints;
+import com.leon.ws.rfq.option.model.OptionPriceResultSet;
 
 @WebService(name="ReportingController")
 public interface ReportingController
@@ -22,7 +22,7 @@ public interface ReportingController
 			@WebParam(name="maturityDateTo")GregorianCalendar maturityDateTo,
 			@WebParam(name="minimumGreek")double minimumGreek);
 	
-	ExtrapolationPoints getGreeksExtrapolation(
+	OptionPriceResultSet getGreeksExtrapolation(
 			@WebParam(name="requestId") int requestId,
 			@WebParam(name="rangeVariable") String rangeVariable,
 			@WebParam(name="rangeMinimum") double rangeMinimum,

@@ -13,6 +13,7 @@ public final class OptionPriceResult
 	private double theta;
 	private double vega;
 	private double price;
+	private double rangeVariable;
 
 	@Override
 	public String toString()
@@ -29,6 +30,8 @@ public final class OptionPriceResult
 		sb.append(this.rho);
 		sb.append("\n Price=");
 		sb.append(this.price);
+		sb.append("\n Range variable=");
+		sb.append(this.rangeVariable);
 		return sb.toString();
 	}
 
@@ -44,7 +47,8 @@ public final class OptionPriceResult
 		OptionPriceResult res = (OptionPriceResult) o;
 
 		return (this.delta == res.delta) && (this.gamma == res.gamma) && (this.vega == res.vega)
-				&& (this.theta == res.theta) && (this.rho == res.rho) && (this.price == res.price);
+				&& (this.theta == res.theta) && (this.rho == res.rho) && (this.price == res.price)
+				&& (this.rangeVariable == res.rangeVariable);
 	}
 
 	@Override
@@ -57,6 +61,7 @@ public final class OptionPriceResult
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.theta);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.rho);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.price);
+		result = (37 * result) + UtilityMethods.doubleHashCode(this.rangeVariable);
 		return result;
 	}
 
@@ -68,6 +73,16 @@ public final class OptionPriceResult
 	public double getDelta()
 	{
 		return this.delta;
+	}
+	
+	public void setRangeVariable(double rangeVariable)
+	{
+		this.rangeVariable = rangeVariable;
+	}
+
+	public double getRangeVariable()
+	{
+		return this.rangeVariable;
 	}
 
 	public void setGamma(double gamma)

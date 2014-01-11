@@ -138,6 +138,7 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	 * @param isCall						the call or put type of the option flag
 	 * @param isEuropean					the European or American type of the option.
 	 * @param dayCountConvention			the day count convention use dot calculate time to expiry.
+	 * @return OptionPriceResult			the calculated option price results
 	 * 
 	 * @throws IllegalArgumentException 	if strike, volatility, underlyingPrice,
 	 * interestRate, dayCountConvention, daysToExpiry are less than or equal to zero.
@@ -205,13 +206,14 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 	 * @param startValue					the starting value of the variable that will vary.
 	 * @param endValue						the ending value of the variable that will vary.
 	 * @param increment						the incremental value of the range variable.
+	 * @return OptionPriceResultSet			the array list of option price results.
 	 * 
 	 * @throws IllegalArgumentException 	if rangeKey is empty, or if the startValue is greater than the endValue,
 	 * or if the startValue is equal to the endValue, or if the increment is zero.
 	 */
 	@Override
 	@WebMethod
-	public ExtrapolationPoints calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
+	public OptionPriceResultSet calculateRange(String rangeKey,	double startValue, double endValue,	double increment)
 	{
 		if(rangeKey.isEmpty())
 			throw new IllegalArgumentException("rangeKey");

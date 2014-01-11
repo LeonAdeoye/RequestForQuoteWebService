@@ -11,7 +11,7 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.leon.ws.rfq.option.model.ExtrapolationPoints;
+import com.leon.ws.rfq.option.model.OptionPriceResultSet;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
 import com.leon.ws.rfq.request.OptionDetailImpl;
 import com.leon.ws.rfq.request.RequestDetailImpl;
@@ -141,7 +141,7 @@ public class ReportingControllerImpl implements ReportingController
 	 */
 	@Override
 	@WebMethod
-	public ExtrapolationPoints getGreeksExtrapolation(int requestId, String rangeVariable,
+	public OptionPriceResultSet getGreeksExtrapolation(int requestId, String rangeVariable,
 			double rangeMinimum, double rangeMaximum, double rangeIncrement)
 	{
 		if(requestId <= 0)
@@ -167,7 +167,7 @@ public class ReportingControllerImpl implements ReportingController
 					", with inclusive maximum range value: " + rangeMaximum +
 					", and with range increment: " + rangeIncrement);
 		
-		ExtrapolationPoints extrapolationPoints = new ExtrapolationPoints();
+		OptionPriceResultSet resultSet = new OptionPriceResultSet();
 		
 		try
 		{
@@ -178,7 +178,7 @@ public class ReportingControllerImpl implements ReportingController
 				if(logger.isErrorEnabled())
 					logger.error("Failed to retrieve request details for RFQ with identifier: " + requestId);
 				
-				return extrapolationPoints;
+				return resultSet;
 			}
 							
 			Map<String, Double> input = new HashMap<>();
@@ -192,10 +192,11 @@ public class ReportingControllerImpl implements ReportingController
 				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getYearsToExpiry());
 				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
 				
-				extrapolationPoints.merge(this.model.calculateRange(input, rangeVariable,
-						rangeMinimum, rangeMaximum, rangeIncrement));
+				return this.model.calculateRange(input, rangeVariable,
+						rangeMinimum, rangeMaximum, rangeIncrement);
 				
-				input.clear();
+				// TODO
+				//input.clear();
 			}
 		}
 		catch(Exception e)
@@ -205,8 +206,8 @@ public class ReportingControllerImpl implements ReportingController
 		}
 		
 		if(logger.isDebugEnabled())
-			logger.debug(extrapolationPoints.toString());
+			logger.debug(resultSet.toString());
 		
-		return extrapolationPoints;
+		return resultSet;
 	}
 }

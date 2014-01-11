@@ -67,22 +67,24 @@ public final class BlackScholesModelImpl implements OptionPricingModel
         }
         
         @Override
-		public ExtrapolationPoints calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment)
+		public OptionPriceResultSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment)
         {
-    		ExtrapolationPoints result = new ExtrapolationPoints();
+        	OptionPriceResultSet optionPriceResultSet = new OptionPriceResultSet();
             try
             {
                 for(double value = startValue; value <= endValue; value += increment)
                 {
                     input.put(rangeKey, value);
-                    result.addExtrapolationPoint(value, calculate(input));
+                    OptionPriceResult optionPriceResult = calculate(input);
+                    optionPriceResult.setRangeVariable(value);
+                    optionPriceResultSet.add(optionPriceResult);
                 }
             }
             catch(Exception e)
             {
             	throw new RuntimeException(this.toString() + " calculation range error: " + e.getMessage());
             }
-            return result;
+            return optionPriceResultSet;
         }
                        
         public double calculateOptionPrice(double underlyingPrice, double strike, double timeToExpiryInYears, double interestRate)
@@ -206,6 +208,6 @@ public final class BlackScholesModelImpl implements OptionPricingModel
 			input.put(INTEREST_RATE, 0.1);
 			
 			BlackScholesModelImpl model = new BlackScholesModelImpl();
-			ExtrapolationPoints points = model.calculateRange(input, UNDERLYING_PRICE,	70, 90, 5);
+			OptionPriceResultSet points = model.calculateRange(input, UNDERLYING_PRICE,	70, 90, 5);
         }
 }
