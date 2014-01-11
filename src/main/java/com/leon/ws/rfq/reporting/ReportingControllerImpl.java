@@ -192,11 +192,11 @@ public class ReportingControllerImpl implements ReportingController
 				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getYearsToExpiry());
 				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
 				
-				return this.model.calculateRange(input, rangeVariable,
+				// TODO need to persist the result set across legs
+				resultSet = this.model.calculateRange(input, rangeVariable,
 						rangeMinimum, rangeMaximum, rangeIncrement);
 				
-				// TODO
-				//input.clear();
+				input.clear();
 			}
 		}
 		catch(Exception e)
