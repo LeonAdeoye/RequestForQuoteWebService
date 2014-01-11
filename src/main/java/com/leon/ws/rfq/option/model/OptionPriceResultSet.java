@@ -43,12 +43,7 @@ public final class OptionPriceResultSet
 		if(this.optionPriceResultSetMap.containsKey(optionPriceResultToBeMerged.getRangeVariable()))
 		{
 			OptionPriceResult optionPriceResult = this.optionPriceResultSetMap.get(optionPriceResultToBeMerged.getRangeVariable());
-			optionPriceResult.setDelta(optionPriceResult.getDelta() + optionPriceResultToBeMerged.getDelta());
-			optionPriceResult.setGamma(optionPriceResult.getGamma() + optionPriceResultToBeMerged.getGamma());
-			optionPriceResult.setVega(optionPriceResult.getVega() + optionPriceResultToBeMerged.getVega());
-			optionPriceResult.setTheta(optionPriceResult.getTheta() + optionPriceResultToBeMerged.getTheta());
-			optionPriceResult.setRho(optionPriceResult.getRho() + optionPriceResultToBeMerged.getRho());
-			optionPriceResult.setPrice(optionPriceResult.getPrice() + optionPriceResultToBeMerged.getPrice());
+			optionPriceResult.add(optionPriceResultToBeMerged);
 		}
 		else
 			this.optionPriceResultSetMap.put(optionPriceResultToBeMerged.getRangeVariable(), optionPriceResultToBeMerged);

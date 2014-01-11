@@ -64,6 +64,16 @@ public final class OptionPriceResult
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.rangeVariable);
 		return result;
 	}
+	
+	public void add(OptionPriceResult priceResult)
+	{
+		this.setDelta(this.getDelta() + priceResult.getDelta());
+		this.setGamma(this.getGamma() + priceResult.getGamma());
+		this.setVega(this.getVega() + priceResult.getVega());
+		this.setTheta(this.getTheta() + priceResult.getTheta());
+		this.setRho(this.getRho() + priceResult.getRho());
+		this.setPrice(this.getPrice() + priceResult.getPrice());
+	}
 
 	public void setDelta(double delta)
 	{
