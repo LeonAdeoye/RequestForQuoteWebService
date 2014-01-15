@@ -67,9 +67,8 @@ public final class BlackScholesModelImpl implements OptionPricingModel
         }
         
         @Override
-		public OptionPriceResultSet calculateRange(Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment)
+		public void calculateRange(OptionPriceResultSet optionPriceResultSet, Map<String, Double> input, String rangeKey, double startValue, double endValue, double increment)
         {
-        	OptionPriceResultSet optionPriceResultSet = new OptionPriceResultSet();
             try
             {
                 for(double value = startValue; value <= endValue; value += increment)
@@ -84,7 +83,6 @@ public final class BlackScholesModelImpl implements OptionPricingModel
             {
             	throw new RuntimeException(this.toString() + " calculation range error: " + e.getMessage());
             }
-            return optionPriceResultSet;
         }
                        
         public double calculateOptionPrice(double underlyingPrice, double strike, double timeToExpiryInYears, double interestRate)
@@ -207,7 +205,12 @@ public final class BlackScholesModelImpl implements OptionPricingModel
 			input.put(TIME_TO_EXPIRY, 1.0);
 			input.put(INTEREST_RATE, 0.1);
 			
+			OptionPriceResultSet resultSet = new OptionPriceResultSet();
 			BlackScholesModelImpl model = new BlackScholesModelImpl();
-			OptionPriceResultSet points = model.calculateRange(input, UNDERLYING_PRICE,	70, 90, 5);
+			
+			model.calculateRange(resultSet, input, UNDERLYING_PRICE,	70, 90, 5);
+			input.put(STRIKE, 100.0);
+			input.put(TIME_TO_EXPIRY, 2.0);
+			model.calculateRange(resultSet, input, UNDERLYING_PRICE,	70, 90, 5);
         }
 }

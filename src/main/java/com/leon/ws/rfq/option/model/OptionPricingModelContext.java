@@ -89,6 +89,8 @@ final class  OptionPricingModelContext
        
         OptionPriceResultSet calculateRange(String rangeKey, double startValue, double endValue, double increment) throws Exception
         {
-                return this.model.calculateRange(this.input, rangeKey, startValue, endValue, increment);
+        	OptionPriceResultSet resultSet = new OptionPriceResultSet();
+            this.model.calculateRange(resultSet, this.input, rangeKey, startValue, endValue, increment);
+            return resultSet;
         }
 }

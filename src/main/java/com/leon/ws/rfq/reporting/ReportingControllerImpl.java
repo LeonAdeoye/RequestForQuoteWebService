@@ -182,7 +182,6 @@ public class ReportingControllerImpl implements ReportingController
 			}
 							
 			Map<String, Double> input = new HashMap<>();
-			 
 			
 			for(OptionDetailImpl leg : request.getLegs())
 			{
@@ -192,10 +191,12 @@ public class ReportingControllerImpl implements ReportingController
 				input.put(OptionPricingModel.TIME_TO_EXPIRY, leg.getYearsToExpiry());
 				input.put(OptionPricingModel.INTEREST_RATE, leg.getInterestRate());
 				
-				// TODO need to persist the result set across legs
-				resultSet = this.model.calculateRange(input, rangeVariable,
+				this.model.calculateRange(resultSet, input, rangeVariable,
 						rangeMinimum, rangeMaximum, rangeIncrement);
 				
+				if(logger.isDebugEnabled())
+					logger.debug(resultSet.toString());
+									
 				input.clear();
 			}
 		}

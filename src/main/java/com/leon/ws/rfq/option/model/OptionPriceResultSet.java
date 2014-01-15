@@ -48,4 +48,19 @@ public final class OptionPriceResultSet
 		else
 			this.optionPriceResultSetMap.put(optionPriceResultToBeMerged.getRangeVariable(), optionPriceResultToBeMerged);
 	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder("Option price result set:\n");
+		for(Map.Entry<Double, OptionPriceResult> result : this.optionPriceResultSetMap.entrySet())
+		{
+			builder.append("Key: ");
+			builder.append(result.getKey());
+			builder.append(", OptionPriceResult: ");
+			builder.append(result.getValue());
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
 }
