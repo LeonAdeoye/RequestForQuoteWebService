@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertArrayEquals;
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -8,7 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.leon.ws.rfq.option.model.OptionPriceResult;
+import com.leon.ws.rfq.option.model.OptionPriceResultSet;
 import com.leon.ws.rfq.option.model.OptionPricingController;
+import com.leon.ws.rfq.option.model.OptionPricingModel;
 
 public class PricingTest extends TestCase
 {
@@ -60,6 +63,7 @@ public class PricingTest extends TestCase
 		this.result1.setVega(0.35877140455038464);
 		this.result1.setRho(0.4125266814364821);
 		this.result1.setPrice(5.156713918695523);
+		this.result1.setRangeVariable(0.15);
 		
 		this.result2 = new OptionPriceResult();
 		this.result2.setDelta(0.5185429152657319);
@@ -68,6 +72,7 @@ public class PricingTest extends TestCase
 		this.result2.setVega(0.35866014004141467);
 		this.result2.setRho(0.4115343127198103);
 		this.result2.setPrice(5.515431101934844);
+		this.result2.setRangeVariable(0.16);
 	}
 	
 	public void test_calculate_validInput_validDeltaResult()
@@ -101,17 +106,17 @@ public class PricingTest extends TestCase
 	}
 	
 	// TODO
-	/*
+	
 	public void test_calculateRange_validInputToCalculateRangeOfTwo_resultSetOfSizeTwo()
 	{
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
 				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
 		
-		ExtrapolationPoints results = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY ,
+		OptionPriceResultSet resultSet = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY ,
 				this.startOfRange, this.endOfRange1, this.increment);
 		
 		assertEquals("Calculated range resultSet size does not match expectations!",
-				3, results.getExtrapolationPoints().size());
+				3, resultSet.getResultSet().size());
 	}
 	
 	public void test_calculateRange_validInputWithRangeOfTwo_resultSetsMatch()
@@ -119,22 +124,22 @@ public class PricingTest extends TestCase
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
 				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
 		
-		ExtrapolationPoints resultSet = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY,
+		OptionPriceResultSet resultSet = this.pricingController.calculateRange(OptionPricingModel.VOLATILITY,
 				this.startOfRange, this.endOfRange2, this.increment);
 		
-		OptionPriceResult[] actualResultSet = new OptionPriceResult[resultSet.getExtrapolationPoints().size()];
+		OptionPriceResult[] actualResultSet = new OptionPriceResult[resultSet.getResultSet().size()];
 		
-		for(int i = 0; i < resultSet.getExtrapolationPoints().size(); i++)
+		for(int i = 0; i < resultSet.getResultSet().size(); i++)
 		{
-			actualResultSet[i] = resultSet.getExtrapolationPoints().get(i).getOptionPriceResult();
+			actualResultSet[i] = resultSet.getResultSet().get(i);
 		}
 				
 		OptionPriceResult[] expectedResultSet = new OptionPriceResult[2];
 		expectedResultSet[0]= this.result1;
 		expectedResultSet[1]= this.result2;
 		
-		Assert.assertArrayEquals("Calculated range resultset does not match expectations!",
+		assertArrayEquals("Calculated range resultset does not match expectations!",
 				expectedResultSet, actualResultSet);
 	}
-	*/
+	
 }

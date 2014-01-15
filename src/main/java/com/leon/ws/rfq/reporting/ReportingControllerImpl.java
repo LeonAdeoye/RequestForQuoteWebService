@@ -206,9 +206,6 @@ public class ReportingControllerImpl implements ReportingController
 				logger.error("Failed to complete range calculation. Exception thrown: " + e);
 		}
 		
-		if(logger.isDebugEnabled())
-			logger.debug(resultSet.toString());
-		
 		return resultSet;
 	}
 }

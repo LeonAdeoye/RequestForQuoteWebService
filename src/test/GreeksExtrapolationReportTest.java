@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -10,6 +11,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.leon.ws.rfq.option.model.OptionPriceResultSet;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
 import com.leon.ws.rfq.reporting.ReportingController;
 
@@ -60,9 +62,8 @@ public class GreeksExtrapolationReportTest
 	{
 		assertNotNull(reportingController);
 		// Act
-		//ExtrapolationPoints result = reportingController.getGreeksExtrapolation(this.requestId, this.rangeVariable, this.rangeMinimum, this.rangeMaximum, this.rangeIncrement);
-
+		OptionPriceResultSet result = reportingController.getGreeksExtrapolation(this.requestId, this.rangeVariable, this.rangeMinimum, this.rangeMaximum, this.rangeIncrement);
 		// Assert
-		//Assert.isTrue(result.getExtrapolationPoints().size() > 0);
+		assertTrue(result.getResultSet().size() > 0);
 	}
 }
