@@ -97,10 +97,10 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 		if(underlyingPrice <= 0)
 			throw new IllegalArgumentException("underlyingPrice");
 		
-		if(daysToExpiry <= 0)
+		if(daysToExpiry < 0)
 			throw new IllegalArgumentException("daysToExpiry");
 		
-		if(interestRate <= 0)
+		if(interestRate < 0)
 			throw new IllegalArgumentException("interestRate");
 		
 		if(dayCountConvention <= 0)

@@ -1,22 +1,24 @@
 import static org.junit.Assert.assertArrayEquals;
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.leon.ws.rfq.option.model.OptionPriceResult;
 import com.leon.ws.rfq.option.model.OptionPriceResultSet;
 import com.leon.ws.rfq.option.model.OptionPricingController;
 import com.leon.ws.rfq.option.model.OptionPricingModel;
 
-public class PricingTest extends TestCase
+@ContextConfiguration(locations = { "classpath:/cxf-servlet-test.xml" })
+public class PricingTest extends AbstractJUnit4SpringContextTests
 {
-	private static final Logger logger = LoggerFactory.getLogger(PricingTest.class);
+	@Autowired
 	private OptionPricingController pricingController;
+	
 	private OptionPriceResult result1;
 	private OptionPriceResult result2;
 	private final double strike = 100.0;
@@ -30,32 +32,14 @@ public class PricingTest extends TestCase
 	private final double endOfRange2 = 0.16;
 	private final double increment = 0.01;
 	
-	public PricingTest(String name)
-	{
-		super(name);
-		initializeBean();
-	}
 	
-	private void initializeBean()
-	{
-		try
-		{
-			ApplicationContext context = new FileSystemXmlApplicationContext(".\\src\\main\\webapp\\WEB-INF\\cxf-servlet.xml");
-			this.pricingController = (OptionPricingController) context.getBean("optionPricer");
-			
-			if(logger.isDebugEnabled())
-				logger.debug("Successfully wired bean option pricing controller from file system application context.");
-		}
-		catch(BeansException be)
-		{
-			logger.error("Failed to load application context for option controller!", be);
-		}
-	}
+	public PricingTest() {}
 	
-	@Override
 	@Before
 	public void setUp()
 	{
+		assertNotNull("autowired option price controller should not be null", this.pricingController);
+		
 		this.result1 = new OptionPriceResult();
 		this.result1.setDelta(0.5156598006927081);
 		this.result1.setGamma(0.0295285106625831);
@@ -75,38 +59,112 @@ public class PricingTest extends TestCase
 		this.result2.setRangeVariable(0.16);
 	}
 	
+	@Test
 	public void test_calculate_validInput_validDeltaResult()
 	{
 		OptionPriceResult result = this.pricingController.calculate(this.strike,this.volatility,this.underlyingPrice, this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
-		assertEquals("Delta does not match expectations!", 0.52917556104899343694114577374421060085296630859375, result.getDelta());
+		assertEquals("Delta does not match expectations!", 0.52917556104899343694114577374421060085296630859375, result.getDelta(), 0.0001);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_ZeroDayCountConvention_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, 0);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_ZeroStrike_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(0,this.volatility, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeDayCountConvention_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, Double.NEGATIVE_INFINITY);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeStrike_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(Double.NEGATIVE_INFINITY,this.volatility, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_ZeroUnderlyingPrice_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, 0,
+				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeUnderlyingPrice_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, Double.NEGATIVE_INFINITY,
+				this.daysToExpiry, this.interestRate, true, true, this.strike);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_ZeroVolatility_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,0, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeVolatility_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike, Double.NEGATIVE_INFINITY, this.underlyingPrice,
+				this.daysToExpiry, this.interestRate, true, true, this.strike);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeInterestRate_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
+				this.daysToExpiry, Double.NEGATIVE_INFINITY, true, true, this.strike);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_NegativeDaysToExpiry_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
+				Double.NEGATIVE_INFINITY, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test
 	public void test_calculate_validInput_validGammaResult()
 	{
 		OptionPriceResult result = this.pricingController.calculate(this.strike,this.volatility,this.underlyingPrice, this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
-		assertEquals("Gamma does not match expectations!", 0.0221041650951190084273267899561687954701483249664306640625, result.getGamma());
+		assertEquals("Gamma does not match expectations!", 0.0221041650951190084273267899561687954701483249664306640625, result.getGamma(), 0.0001);
 	}
 	
+	@Test
 	public void test_calculate_validInput_validThetaResult()
 	{
 		OptionPriceResult result = this.pricingController.calculate(this.strike,this.volatility,this.underlyingPrice, this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
-		assertEquals("Theta does not match expectations!", -0.07648555867321778223288930576018174178898334503173828125, result.getTheta());
+		assertEquals("Theta does not match expectations!", -0.07648555867321778223288930576018174178898334503173828125, result.getTheta(), 0.0001);
 	}
 	
+	@Test
 	public void test_calculate_validInput_validVegaResult()
 	{
 		OptionPriceResult result = this.pricingController.calculate(this.strike,this.volatility,this.underlyingPrice, this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
-		assertEquals("Vega does not match expectations!", 0.3580874745409279302776894837734289467334747314453125, result.getVega());
+		assertEquals("Vega does not match expectations!", 0.3580874745409279302776894837734289467334747314453125, result.getVega(), 0.0001);
 	}
 	
+	@Test
 	public void test_calculate_validInput_validRhoResult()
 	{
 		OptionPriceResult result = this.pricingController.calculate(this.strike,this.volatility,this.underlyingPrice, this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
-		assertEquals("Rho does not match expectations!", 0.406768112191249919806779189457301981747150421142578125, result.getRho());
+		assertEquals("Rho does not match expectations!", 0.406768112191249919806779189457301981747150421142578125, result.getRho(), 0.0001);
 	}
 	
-	// TODO
-	
+	@Test
 	public void test_calculateRange_validInputToCalculateRangeOfTwo_resultSetOfSizeTwo()
 	{
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
@@ -119,6 +177,7 @@ public class PricingTest extends TestCase
 				3, resultSet.getResultSet().size());
 	}
 	
+	@Test
 	public void test_calculateRange_validInputWithRangeOfTwo_resultSetsMatch()
 	{
 		this.pricingController.parameterize(this.strike,this.volatility,this.underlyingPrice,
