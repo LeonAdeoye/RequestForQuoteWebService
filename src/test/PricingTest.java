@@ -111,7 +111,7 @@ public class PricingTest extends AbstractJUnit4SpringContextTests
 	@Test(expected = IllegalArgumentException.class)
 	public void test_calculate_ZeroVolatility_IllegalArgumentExceptionThrown()
 	{
-		this.pricingController.calculate(this.strike,0, this.underlyingPrice,
+		this.pricingController.calculate(this.strike, 0, this.underlyingPrice,
 				this.daysToExpiry, this.interestRate, true, true, this.dayCountConvention);
 	}
 	
@@ -134,6 +134,13 @@ public class PricingTest extends AbstractJUnit4SpringContextTests
 	{
 		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
 				Double.NEGATIVE_INFINITY, this.interestRate, true, true, this.dayCountConvention);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_calculate_ZeroDaysToExpiry_IllegalArgumentExceptionThrown()
+	{
+		this.pricingController.calculate(this.strike,this.volatility, this.underlyingPrice,
+				0, this.interestRate, true, true, this.dayCountConvention);
 	}
 	
 	@Test
