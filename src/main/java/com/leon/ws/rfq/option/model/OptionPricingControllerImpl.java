@@ -163,7 +163,7 @@ public final class OptionPricingControllerImpl implements OptionPricingControlle
 		if(interestRate < 0)
 			throw new IllegalArgumentException("interestRate");
 		
-		if(dayCountConvention <= 0)
+		if((dayCountConvention <= 0) || (dayCountConvention > 365.0))
 			throw new IllegalArgumentException("dayCountConvention");
 		
 		if(this.context != null)
