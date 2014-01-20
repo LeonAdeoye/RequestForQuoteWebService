@@ -27,6 +27,7 @@ public final class OptionDetailImpl
 	private double premiumPercentage;
 	private int quantity;
 	private double yearsToExpiry;
+	private String tradeDate;
 	private String maturityDate;
 
 	private double daysToExpiry;
@@ -55,6 +56,16 @@ public final class OptionDetailImpl
 	public void setMaturityDate(String maturityDate)
 	{
 		this.maturityDate = maturityDate;
+	}
+	
+	public String getTradeDate()
+	{
+		return this.tradeDate;
+	}
+
+	public void setTradeDate(String tradeDate)
+	{
+		this.tradeDate = tradeDate;
 	}
 
 	public double getPremiumPercentage()
@@ -295,8 +306,10 @@ public final class OptionDetailImpl
 		buf.append(this.daysToExpiry);
 		buf.append(", Years to expiry: ");
 		buf.append(this.yearsToExpiry);
-		buf.append(", MaturityDate: ");
+		buf.append(", Maturity date: ");
 		buf.append(this.maturityDate);
+		buf.append(", trade date: ");
+		buf.append(this.tradeDate);
 		buf.append(", Day count convention: ");
 		buf.append(this.dayCountConvention);
 		buf.append(", Strike: ");
@@ -350,6 +363,7 @@ public final class OptionDetailImpl
 				(this.daysToExpiry == param.daysToExpiry) &&
 				(this.yearsToExpiry == param.yearsToExpiry) &&
 				(this.maturityDate.equals(param.maturityDate)) &&
+				(this.tradeDate.equals(param.tradeDate)) &&
 				(this.volatility == param.volatility) &&
 				(this.interestRate == param.interestRate) &&
 				(this.side.equals(param.side)) &&
@@ -373,6 +387,7 @@ public final class OptionDetailImpl
 		result = (37 * result) + this.underlyingRIC.hashCode();
 		result = (37 * result) + this.description.hashCode();
 		result = (37 * result) + this.maturityDate.hashCode();
+		result = (37 * result) + this.tradeDate.hashCode();
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.delta);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.gamma);
 		result = (37 * result) + UtilityMethods.doubleHashCode(this.vega);

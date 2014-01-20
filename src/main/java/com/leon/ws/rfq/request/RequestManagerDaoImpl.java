@@ -58,8 +58,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			optionLeg.setDayCountConvention(rs.getDouble("dayCountConvention"));
 
 			DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+			
 			if(rs.getDate("maturityDate") != null)
 				optionLeg.setMaturityDate(df.format(rs.getDate("maturityDate")));
+			
+			if(rs.getDate("tradeDate") != null)
+				optionLeg.setTradeDate(df.format(rs.getDate("tradeDate")));
 
 			return optionLeg;
 		}
@@ -79,8 +83,10 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 			request.setStatus(rs.getString("status")); //6
 
 			DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+			
 			if(rs.getDate("tradeDate") != null)
 				request.setTradeDate(df.format(rs.getDate("tradeDate")));
+			
 			if(rs.getDate("expiryDate") != null)
 				request.setExpiryDate(df.format(rs.getDate("expiryDate"))); //8
 			
@@ -173,12 +179,12 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 	private static final String SAVE_LEG =
 			"CALL optionLeg_SAVE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ? )";
+					+ "?, ?, ?, ?, ?)";
 
 	private static final String UPDATE_LEG =
 			"CALL optionLeg_UPDATE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-					+ "?, ?, ?, ? )";
+					+ "?, ?, ?, ?, ?)";
 
 	private static final String CLIENT_CRITERION = "Client";
 	private static final String STATUS_CRITERION = "Status";
@@ -408,6 +414,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					leg.getDaysToExpiry(),
 					leg.getYearsToExpiry(),
 					maturityDate,
+					tradeDate,
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
@@ -603,6 +610,7 @@ public final class RequestManagerDaoImpl implements RequestManagerDao
 					leg.getDaysToExpiry(),
 					leg.getYearsToExpiry(),
 					maturityDate,
+					tradeDate,
 
 					leg.getUnderlyingPrice(),
 					leg.getUnderlyingRIC(),
