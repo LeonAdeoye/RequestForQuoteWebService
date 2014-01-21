@@ -61,8 +61,9 @@ public final class RequestControllerImpl implements RequestController, Applicati
 
 		if(newRequest != null)
 		{
-			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, newRequest));
-			return newRequest.getIdentifier();
+			request.setIdentifier(newRequest.getIdentifier());
+			this.applicationEventPublisher.publishEvent(new TaggedRequestEvent(this, request));
+			return request.getIdentifier();
 		}
 
 		return -1;
