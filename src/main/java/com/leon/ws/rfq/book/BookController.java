@@ -18,7 +18,7 @@ public interface BookController
 	@WebMethod
 	boolean save(@WebParam(name="bookCode")String bookCode,
 			@WebParam(name="entity") String entity,
-			@WebParam(name="updatedByUser") String savedByUser);
+			@WebParam(name="savedByUser") String savedByUser);
 
 	@WebMethod
 	boolean updateValidity(@WebParam(name="bookCode") String bookCode,
