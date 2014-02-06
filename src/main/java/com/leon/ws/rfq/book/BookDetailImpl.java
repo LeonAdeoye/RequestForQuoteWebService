@@ -23,7 +23,7 @@ public final class BookDetailImpl
 		this.entity = entity;
 		this.isValid = isValid;
 
-		logger.debug("BookDetailImpl object instantiated = > " +  this);
+		logger.debug("BookDetailImpl object instantiated => " +  this);
 	}
 
 	public String getBookCode()

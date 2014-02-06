@@ -18,6 +18,9 @@ public interface UserController
 	boolean save(@WebParam(name="userId")String userId,
 			@WebParam(name="firstName") String firstName,
 			@WebParam(name="lastName") String lastName,
+			@WebParam(name="emailAddress") String emailAddress,
+			@WebParam(name="locationName") String locationName,
+			@WebParam(name="groupId") int groupId,
 			@WebParam(name="savedByUser") String savedByUser);
 
 	@WebMethod

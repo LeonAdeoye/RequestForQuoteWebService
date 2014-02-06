@@ -4,12 +4,13 @@ import java.util.List;
 
 public interface UserManagerDao
 {
-	boolean delete(String userId);
-	UserDetailImpl save(String userId, String firstName, String lastName, int locationId, int groupId, String emailAddress, String savedByUser);
 	List<UserDetailImpl> getAll();
-	List<UserDetailImpl> getByLocation(int locationId);
-	List<UserDetailImpl> getByGroup(int groupId);
-	UserDetailImpl getByEmailAddress(String emailAddress);
-	UserDetailImpl getByUserId(String userId);
+	List<UserDetailImpl> getUsersByLocation(String locationName);
+	List<UserDetailImpl> getUsersByGroup(int groupId);
+	UserDetailImpl getUserByEmailAddress(String emailAddress);
+	UserDetailImpl getUserByUserId(String userId);
 	boolean updateValidity(String userId, boolean isValid);
+	boolean delete(String userId);
+	UserDetailImpl save(String userId, String firstName, String lastName, String emailAddress,
+			 String locationName, int groupId, String savedByUser);
 }

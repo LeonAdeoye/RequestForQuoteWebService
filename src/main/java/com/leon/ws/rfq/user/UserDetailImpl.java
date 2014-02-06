@@ -1,7 +1,14 @@
 package com.leon.ws.rfq.user;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@XmlRootElement(name="UserDetailImpl")
 public class UserDetailImpl
 {
+	private static final Logger logger = LoggerFactory.getLogger(UserDetailImpl.class);
 	private String userId;
 	private String emailAddress;
 	private String firstName;
@@ -9,7 +16,20 @@ public class UserDetailImpl
 	private String locationName;
 	private int groupId;
 	
+	public UserDetailImpl() {}
 	
+	public UserDetailImpl(String userId, String emailAddress, String firstName,
+			String lastName, String locationName, int groupId)
+	{
+		this.userId = userId;
+		this.emailAddress = emailAddress;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.locationName = locationName;
+		this.groupId = groupId;
+		
+		logger.debug("UserDetailImpl object instantiated => " +  this);
+	}
 	/**
 	 * @return the userId
 	 */
@@ -122,10 +142,10 @@ public class UserDetailImpl
 		int result = 1;
 		result = (prime * result)	+ ((this.emailAddress == null) ? 0 : this.emailAddress.hashCode());
 		result = (prime * result)	+ ((this.firstName == null) ? 0 : this.firstName.hashCode());
-		result = (prime * result) + this.groupId;
 		result = (prime * result)	+ ((this.lastName == null) ? 0 : this.lastName.hashCode());
 		result = (prime * result)	+ ((this.locationName == null) ? 0 : this.locationName.hashCode());
 		result = (prime * result) + ((this.userId == null) ? 0 : this.userId.hashCode());
+		result = (prime * result) + this.groupId;
 		return result;
 	}
 
@@ -134,10 +154,13 @@ public class UserDetailImpl
 	{
 		if (this == obj)
 			return true;
+		
 		if (obj == null)
 			return false;
+		
 		if (!(obj instanceof UserDetailImpl))
 			return false;
+		
 		UserDetailImpl other = (UserDetailImpl) obj;
 		
 		if (this.emailAddress == null)
