@@ -15,11 +15,12 @@ public class UserDetailImpl
 	private String lastName;
 	private String locationName;
 	private int groupId;
+	private boolean isValid;
 	
 	public UserDetailImpl() {}
 	
 	public UserDetailImpl(String userId, String emailAddress, String firstName,
-			String lastName, String locationName, int groupId)
+			String lastName, String locationName, int groupId, boolean isValid)
 	{
 		this.userId = userId;
 		this.emailAddress = emailAddress;
@@ -27,6 +28,7 @@ public class UserDetailImpl
 		this.lastName = lastName;
 		this.locationName = locationName;
 		this.groupId = groupId;
+		this.isValid = isValid;
 		
 		logger.debug("UserDetailImpl object instantiated => " +  this);
 	}
@@ -44,6 +46,22 @@ public class UserDetailImpl
 	{
 		this.userId = userId;
 	}
+	/**
+	 * @return the isValid
+	 */
+	public boolean getIsValid()
+	{
+		return this.isValid;
+	}
+
+	/**
+	 * @param isValid the isValid to set
+	 */
+	public void setIsValid(boolean isValid)
+	{
+		this.isValid = isValid;
+	}
+
 	/**
 	 * @return the emailAddress
 	 */
@@ -131,6 +149,8 @@ public class UserDetailImpl
 		builder.append(this.locationName);
 		builder.append(", groupId=");
 		builder.append(this.groupId);
+		builder.append(", isValid=");
+		builder.append(this.isValid);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -145,6 +165,7 @@ public class UserDetailImpl
 		result = (prime * result)	+ ((this.lastName == null) ? 0 : this.lastName.hashCode());
 		result = (prime * result)	+ ((this.locationName == null) ? 0 : this.locationName.hashCode());
 		result = (prime * result) + ((this.userId == null) ? 0 : this.userId.hashCode());
+		result = (prime * result) + (this.isValid ? 1231 : 1237);
 		result = (prime * result) + this.groupId;
 		return result;
 	}
@@ -199,6 +220,9 @@ public class UserDetailImpl
 			if (other.userId != null)
 				return false;
 		} else if (!this.userId.equals(other.userId))
+			return false;
+		
+		if (this.isValid != other.isValid)
 			return false;
 		
 		return true;

@@ -11,13 +11,13 @@ import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 public class UserManagerDaoImpl implements UserManagerDao
 {
 	private static final String DELETE_USER = "CALL users_DELETE (?)";
-	private static final String SAVE_USER = "CALL users_SAVE (?, ?, ?)";
+	private static final String SAVE_USER = "CALL users_SAVE (?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_USER_VALIDITY = "CALL users_UPDATE_VALIDITY (?, ?)";
 	private static final String SELECT_ALL_USERS = "CALL users_SELECT_ALL";
 	private static final String SELECT_USERS_BY_LOCATION = "CALL users_SELECT_BY_LOCATION (?)";
 	private static final String SELECT_USERS_BY_GROUP = "CALL users_SELECT_BY_GROUP (?)";
-	private static final String SELECT_USER_BY_EMAIL_ADDRESS = "CALL user_SELECT_BY_EMAIL_ADDRESS (?)";
-	private static final String SELECT_USER_BY_USER_ID = "CALL user_SELECT_BY_USER_ID (?)";
+	private static final String SELECT_USER_BY_EMAIL_ADDRESS = "CALL users_SELECT_BY_EMAIL_ADDRESS (?)";
+	private static final String SELECT_USER_BY_USER_ID = "CALL users_SELECT_BY_USER_ID (?)";
 	
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
@@ -27,7 +27,8 @@ public class UserManagerDaoImpl implements UserManagerDao
 		public UserDetailImpl mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			UserDetailImpl userDetailImpl = new UserDetailImpl(rs.getString("userId"), rs.getString("emailAddress"),
-					rs.getString("firstName"), rs.getString("lastName"), rs.getString("locationName"), rs.getInt("groupId"));
+					rs.getString("firstName"), rs.getString("lastName"), rs.getString("locationName"), rs.getInt("groupId")
+					, rs.getString("isValid").equals("Y"));
 
 			return userDetailImpl;
 		}
