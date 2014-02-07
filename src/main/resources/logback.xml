@@ -101,6 +101,14 @@
 	<logger name="com.leon.ws.rfq.underlying.UnderlyingControllerImpl" level="TRACE">
 		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
 	</logger>	
+
+	<logger name="com.leon.ws.rfq.group.GroupControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>
+	
+	<logger name="com.leon.ws.rfq.user.UserControllerImpl" level="TRACE">
+		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
+	</logger>	
 	
 	<logger name="com.leon.ws.rfq.reporting.ReportingControllerImpl" level="TRACE">
 		<appender-ref ref="CONTROLLERS_LOG_FILE" />           
