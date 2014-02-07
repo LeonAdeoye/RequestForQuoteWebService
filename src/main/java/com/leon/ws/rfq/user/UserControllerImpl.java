@@ -2,11 +2,16 @@ package com.leon.ws.rfq.user;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
+@WebService(serviceName="UserController", endpointInterface="com.leon.ws.rfq.user.UserController")
 public class UserControllerImpl implements UserController
 {
 	private UserManagerDao dao;
 	
 	@Override
+	@WebMethod(exclude = true)
 	public void setUserManagerDao(UserManagerDao dao)
 	{
 		this.dao = dao;
@@ -47,12 +52,15 @@ public class UserControllerImpl implements UserController
 	}
 
 	@Override
-	public boolean updateValidity(String userId, boolean isValid)
+	public boolean updateValidity(String userId, boolean isValid, String updatedByUser)
 	{
 		if(userId.isEmpty() || (userId == null))
 			throw new IllegalArgumentException("userId");
 		
-		return this.dao.updateValidity(userId, isValid);
+		if(updatedByUser.isEmpty() || (updatedByUser == null))
+			throw new IllegalArgumentException("updatedByUser");
+		
+		return this.dao.updateValidity(userId, isValid, updatedByUser);
 	}
 
 	@Override

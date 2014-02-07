@@ -25,7 +25,8 @@ public interface UserController
 
 	@WebMethod
 	boolean updateValidity(@WebParam(name="userId") String userId,
-			@WebParam(name="isValid") boolean isValid);
+			@WebParam(name="isValid") boolean isValid,
+			@WebParam(name="updatedByUser") String updatedByUser);
 
 	@WebMethod
 	List<UserDetailImpl> getAll();

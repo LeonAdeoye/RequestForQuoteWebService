@@ -2,11 +2,16 @@ package com.leon.ws.rfq.group;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
+@WebService(serviceName="GroupController", endpointInterface="com.leon.ws.rfq.group.GroupController")
 public class GroupControllerImpl implements GroupController
 {
 	private GroupManagerDao dao;
 	
 	@Override
+	@WebMethod(exclude = true)
 	public void setGroupManagerDao(GroupManagerDao dao)
 	{
 		this.dao = dao;
@@ -31,9 +36,12 @@ public class GroupControllerImpl implements GroupController
 	}
 
 	@Override
-	public boolean updateValidity(int groupId, boolean isValid)
+	public boolean updateValidity(int groupId, boolean isValid, String updatedByUser)
 	{
-		return this.dao.updateValidity(groupId, isValid);
+		if(updatedByUser.isEmpty() || (updatedByUser == null))
+			throw new IllegalArgumentException("updatedByUser");
+		
+		return this.dao.updateValidity(groupId, isValid, updatedByUser);
 	}
 
 	@Override

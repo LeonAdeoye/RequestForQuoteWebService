@@ -6,7 +6,7 @@ public interface GroupManagerDao
 {
 	List<GroupDetailImpl> getAll();
 	GroupDetailImpl getGroupByGroupId(int groupId);
-	boolean updateValidity(int groupId, boolean isValid);
+	boolean updateValidity(int groupId, boolean isValid, String updatedByUser);
 	boolean delete(int groupId);
 	GroupDetailImpl save(int groupId, String groupName, String savedByUser);
 }

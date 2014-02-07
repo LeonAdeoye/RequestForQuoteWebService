@@ -12,7 +12,7 @@ public class UserManagerDaoImpl implements UserManagerDao
 {
 	private static final String DELETE_USER = "CALL users_DELETE (?)";
 	private static final String SAVE_USER = "CALL users_SAVE (?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE_USER_VALIDITY = "CALL users_UPDATE_VALIDITY (?, ?)";
+	private static final String UPDATE_USER_VALIDITY = "CALL users_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SELECT_ALL_USERS = "CALL users_SELECT_ALL";
 	private static final String SELECT_USERS_BY_LOCATION = "CALL users_SELECT_BY_LOCATION (?)";
 	private static final String SELECT_USERS_BY_GROUP = "CALL users_SELECT_BY_GROUP (?)";
@@ -91,8 +91,8 @@ public class UserManagerDaoImpl implements UserManagerDao
 	}
 
 	@Override
-	public boolean updateValidity(String userId, boolean isValid)
+	public boolean updateValidity(String userId, boolean isValid, String updatedByUser)
 	{
-		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_USER_VALIDITY, userId, (isValid ? 'Y' : 'N'));
+		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_USER_VALIDITY, userId, (isValid ? 'Y' : 'N'), updatedByUser);
 	}
 }

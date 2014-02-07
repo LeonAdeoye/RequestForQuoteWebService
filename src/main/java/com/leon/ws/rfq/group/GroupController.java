@@ -21,7 +21,8 @@ public interface GroupController
 
 	@WebMethod
 	boolean updateValidity(@WebParam(name="groupId") int groupId,
-			@WebParam(name="isValid") boolean isValid);
+			@WebParam(name="isValid") boolean isValid,
+			@WebParam(name="updatedByUser") String updatedByUser);
 
 	@WebMethod
 	List<GroupDetailImpl> getAll();

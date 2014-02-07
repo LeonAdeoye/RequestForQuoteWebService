@@ -12,6 +12,8 @@ public class GroupDetailImpl
 	private int groupId;
 	private String groupName;
 	private boolean isValid;
+	
+	public GroupDetailImpl() {}
 		
 	public GroupDetailImpl(int groupId, String groupName, boolean isValid)
 	{

@@ -9,7 +9,7 @@ public interface UserManagerDao
 	List<UserDetailImpl> getUsersByGroup(int groupId);
 	UserDetailImpl getUserByEmailAddress(String emailAddress);
 	UserDetailImpl getUserByUserId(String userId);
-	boolean updateValidity(String userId, boolean isValid);
+	boolean updateValidity(String userId, boolean isValid, String updatedByUser);
 	boolean delete(String userId);
 	UserDetailImpl save(String userId, String firstName, String lastName, String emailAddress,
 			 String locationName, int groupId, String savedByUser);
