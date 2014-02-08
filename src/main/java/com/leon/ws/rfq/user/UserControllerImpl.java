@@ -62,6 +62,7 @@ public class UserControllerImpl implements UserController, ApplicationEventPubli
 	/**
 	 * Saves the user to the database and publishes an event for the listening client communicator.
 	 * 
+	 * @param userId						the user id of the user to be saved.
 	 * @param firstName						the first name of the user to be saved.
 	 * @param lastName						the last name of the user to be saved.
 	 * @param emailAddress					the emailAddress of the user to be saved.
@@ -72,9 +73,12 @@ public class UserControllerImpl implements UserController, ApplicationEventPubli
 	 * @throws IllegalArgumentException 	if the string parameters are empty or null.
 	 */
 	@Override
-	public boolean save(String firstName, String lastName, String emailAddress,
+	public boolean save(String userId, String firstName, String lastName, String emailAddress,
 			 String locationName, int groupId, String savedByUser)
 	{
+		if(userId.isEmpty() || (userId == null))
+			throw new IllegalArgumentException("userId");
+		
 		if(firstName.isEmpty() || (firstName == null))
 			throw new IllegalArgumentException("firstName");
 		
@@ -91,9 +95,9 @@ public class UserControllerImpl implements UserController, ApplicationEventPubli
 			throw new IllegalArgumentException("savedByUser");
 			
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + savedByUser + " to save user with first name [" + firstName + "] and lats name [" + lastName + "]");
+			logger.debug("Received request from user " + savedByUser + " to save user with userId [" + userId + "] , first name [" + firstName + "], and last name [" + lastName + "]");
 
-		UserDetailImpl newUser = this.dao.save(firstName, lastName, emailAddress, locationName, groupId, savedByUser);
+		UserDetailImpl newUser = this.dao.save(userId, firstName, lastName, emailAddress, locationName, groupId, savedByUser);
 
 		if(newUser != null)
 			this.applicationEventPublisher.publishEvent(new NewUserEvent(this, newUser));

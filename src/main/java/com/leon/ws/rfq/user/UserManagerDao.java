@@ -11,6 +11,6 @@ public interface UserManagerDao
 	UserDetailImpl getUserByUserId(String userId);
 	boolean updateValidity(String userId, boolean isValid, String updatedByUser);
 	boolean delete(String userId);
-	UserDetailImpl save(String firstName, String lastName, String emailAddress,
+	UserDetailImpl save(String userId, String firstName, String lastName, String emailAddress,
 			 String locationName, int groupId, String savedByUser);
 }

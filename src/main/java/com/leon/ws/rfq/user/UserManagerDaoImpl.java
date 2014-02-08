@@ -11,7 +11,7 @@ import com.leon.ws.rfq.database.GenericDatabaseCommandExecutor;
 public class UserManagerDaoImpl implements UserManagerDao
 {
 	private static final String DELETE_USER = "CALL users_DELETE (?)";
-	private static final String SAVE_USER = "CALL users_SAVE (?, ?, ?, ?, ?, ?)";
+	private static final String SAVE_USER = "CALL users_SAVE (?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_USER_VALIDITY = "CALL users_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SELECT_ALL_USERS = "CALL users_SELECT_ALL";
 	private static final String SELECT_USERS_BY_LOCATION = "CALL users_SELECT_BY_LOCATION (?)";
@@ -53,11 +53,11 @@ public class UserManagerDaoImpl implements UserManagerDao
 	}
 
 	@Override
-	public UserDetailImpl save(String firstName, String lastName, String emailAddress,
+	public UserDetailImpl save(String userId, String firstName, String lastName, String emailAddress,
 			 String locationName, int groupId, String savedByUser)
 	{
 		return this.databaseExecutor.<UserDetailImpl>getSingleResult(SAVE_USER, new UserDetailParameterizedRowMapper(),
-				firstName, lastName, emailAddress, locationName, groupId, savedByUser);
+				userId, firstName, lastName, emailAddress, locationName, groupId, savedByUser);
 	}
 
 	@Override
