@@ -8,5 +8,5 @@ public interface GroupManagerDao
 	GroupDetailImpl getGroupByGroupId(int groupId);
 	boolean updateValidity(int groupId, boolean isValid, String updatedByUser);
 	boolean delete(int groupId);
-	GroupDetailImpl save(int groupId, String groupName, String savedByUser);
+	GroupDetailImpl save(String groupName, String savedByUser);
 }

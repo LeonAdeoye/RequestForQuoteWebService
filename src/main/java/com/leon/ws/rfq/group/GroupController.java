@@ -15,8 +15,7 @@ public interface GroupController
 	boolean delete(@WebParam(name="groupId") int groupId);
 
 	@WebMethod
-	boolean save(@WebParam(name="groupId")int groupId,
-			@WebParam(name="groupName") String groupName,
+	boolean save(@WebParam(name="groupName") String groupName,
 			@WebParam(name="savedByUser") String savedByUser);
 
 	@WebMethod

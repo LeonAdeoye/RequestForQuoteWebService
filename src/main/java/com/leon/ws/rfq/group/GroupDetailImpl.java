@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 @XmlRootElement(name="GroupDetailImpl")
 public class GroupDetailImpl
 {
@@ -128,4 +130,8 @@ public class GroupDetailImpl
 		return true;
 	}
 	
+	public String toJson()
+	{
+		return new Gson().toJson(this);
+	}
 }

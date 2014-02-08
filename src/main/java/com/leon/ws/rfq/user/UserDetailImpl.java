@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 @XmlRootElement(name="UserDetailImpl")
 public class UserDetailImpl
 {
@@ -228,5 +230,8 @@ public class UserDetailImpl
 		return true;
 	}
 	
-	
+	public String toJson()
+	{
+		return new Gson().toJson(this);
+	}
 }

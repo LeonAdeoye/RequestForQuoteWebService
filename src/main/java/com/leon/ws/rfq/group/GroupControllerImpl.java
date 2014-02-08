@@ -58,14 +58,13 @@ public class GroupControllerImpl implements GroupController, ApplicationEventPub
 	/**
 	 * Saves the group to the database and publishes an event for the listening client communicator.
 	 * 
-	 * @param groupId 						the identifier of the group to be saved.
 	 * @param groupName						the name of the group to be saved.
 	 * @param savedByUser					the user who is saving the group.
 	 * @returns	true if the save was successful; false otherwise.
 	 * @throws IllegalArgumentException 	if the groupId or savedByUser parameter is an empty string.
 	 */
 	@Override
-	public boolean save(int groupId, String groupName, String savedByUser)
+	public boolean save(String groupName, String savedByUser)
 	{
 		if(groupName.isEmpty() || (groupName == null))
 			throw new IllegalArgumentException("groupName");
@@ -74,9 +73,9 @@ public class GroupControllerImpl implements GroupController, ApplicationEventPub
 			throw new IllegalArgumentException("savedByUser");
 		
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + savedByUser + " to save group with identifier [" + groupId + "] and name [" + groupName + "].");
+			logger.debug("Received request from user " + savedByUser + " to save group with name [" + groupName + "].");
 
-		GroupDetailImpl newGroup = this.dao.save(groupId, groupName, savedByUser);
+		GroupDetailImpl newGroup = this.dao.save(groupName, savedByUser);
 
 		if(newGroup != null)
 			this.applicationEventPublisher.publishEvent(new NewGroupEvent(this, newGroup));
@@ -85,7 +84,7 @@ public class GroupControllerImpl implements GroupController, ApplicationEventPub
 	}
 
 	/**
-	 * Updates the validity of the book in the database.
+	 * Updates the validity of the group in the database.
 	 * 
 	 * @param groupId 						the identifier of the group to be updated.
 	 * @param isValid						the validity of the group to be updated.
@@ -127,7 +126,7 @@ public class GroupControllerImpl implements GroupController, ApplicationEventPub
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)
 	{
-		if(this.applicationEventPublisher == null)
+		if(applicationEventPublisher == null)
 			throw new NullPointerException("applicationEventPublisher");
 
 		this.applicationEventPublisher = applicationEventPublisher;

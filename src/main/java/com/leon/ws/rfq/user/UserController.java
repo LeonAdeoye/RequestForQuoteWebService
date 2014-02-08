@@ -15,8 +15,7 @@ public interface UserController
 	boolean delete(@WebParam(name="userId") String userId);
 
 	@WebMethod
-	boolean save(@WebParam(name="userId")String userId,
-			@WebParam(name="firstName") String firstName,
+	boolean save(@WebParam(name="firstName") String firstName,
 			@WebParam(name="lastName") String lastName,
 			@WebParam(name="emailAddress") String emailAddress,
 			@WebParam(name="locationName") String locationName,

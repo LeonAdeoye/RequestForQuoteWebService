@@ -62,21 +62,19 @@ public class UserControllerImpl implements UserController, ApplicationEventPubli
 	/**
 	 * Saves the user to the database and publishes an event for the listening client communicator.
 	 * 
-	 * @param userId 						the identifier of the user to be saved.
 	 * @param firstName						the first name of the user to be saved.
 	 * @param lastName						the last name of the user to be saved.
 	 * @param emailAddress					the emailAddress of the user to be saved.
+	 * @param locationName					the location name of the user.
+	 * @param groupId						the group identifier of the user.
 	 * @param savedByUser					the user who is saving the user.
 	 * @returns	true if the save was successful; false otherwise.
 	 * @throws IllegalArgumentException 	if the string parameters are empty or null.
 	 */
 	@Override
-	public boolean save(String userId, String firstName, String lastName, String emailAddress,
+	public boolean save(String firstName, String lastName, String emailAddress,
 			 String locationName, int groupId, String savedByUser)
 	{
-		if(userId.isEmpty() || (userId == null))
-			throw new IllegalArgumentException("userId");
-		
 		if(firstName.isEmpty() || (firstName == null))
 			throw new IllegalArgumentException("firstName");
 		
@@ -93,9 +91,9 @@ public class UserControllerImpl implements UserController, ApplicationEventPubli
 			throw new IllegalArgumentException("savedByUser");
 			
 		if(logger.isDebugEnabled())
-			logger.debug("Received request from user " + savedByUser + " to save user with userId [" + userId + "] and first name [" + firstName + "].");
+			logger.debug("Received request from user " + savedByUser + " to save user with first name [" + firstName + "] and lats name [" + lastName + "]");
 
-		UserDetailImpl newUser = this.dao.save(userId, firstName, lastName, emailAddress, locationName, groupId, savedByUser);
+		UserDetailImpl newUser = this.dao.save(firstName, lastName, emailAddress, locationName, groupId, savedByUser);
 
 		if(newUser != null)
 			this.applicationEventPublisher.publishEvent(new NewUserEvent(this, newUser));
