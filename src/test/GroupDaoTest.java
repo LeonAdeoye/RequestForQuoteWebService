@@ -74,7 +74,7 @@ public class GroupDaoTest extends AbstractJUnit4SpringContextTests
 	}
 	
 	@Test
-	public void test_get_AddAndRetrieveValidTestGroup_RetrievesNewlyAddedGroup()
+	public void test_getGroupByGroupId_AddAndRetrieveValidTestGroup_RetrievesNewlyAddedGroup()
 	{
 		// Arrange
 		GroupDetailImpl savedGroup = this.groupDao.save("TEST", "testUser");
@@ -83,7 +83,7 @@ public class GroupDaoTest extends AbstractJUnit4SpringContextTests
 		GroupDetailImpl newGroup = this.groupDao.getGroupByGroupId(savedGroup.getGroupId());
 		
 		// Assert
-		assertNotNull("get method does not retrieve newly saved group", newGroup);
+		assertNotNull("getGroupByGroupId method does not retrieve newly saved group", newGroup);
 	}
 	
 	@Test
