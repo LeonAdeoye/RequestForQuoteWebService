@@ -15,7 +15,7 @@ public class GroupManagerDaoImpl implements GroupManagerDao
 	private static final String SAVE_GROUP = "CALL groups_SAVE (?, ?)";
 	private static final String UPDATE_GROUP_VALIDITY = "CALL groups_UPDATE_VALIDITY (?, ?, ?)";
 	private static final String SELECT_ALL_GROUPS = "CALL groups_SELECT_ALL";
-	private static final String SELECT_GROUP_BY_GROUP_ID = "CALL groups_SELECT_BY_GROUP_ID";
+	private static final String SELECT_GROUP_BY_GROUP_ID = "CALL groups_SELECT_BY_GROUP_ID (?)";
 	
 	private GenericDatabaseCommandExecutor databaseExecutor;
 
@@ -57,7 +57,7 @@ public class GroupManagerDaoImpl implements GroupManagerDao
 	@Override
 	public boolean updateValidity(int groupId, boolean isValid, String updatedByUser)
 	{
-		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_GROUP_VALIDITY, groupId, (isValid ? 'Y' : 'N'), updatedByUser);
+		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_GROUP_VALIDITY, groupId, (isValid ? "Y" : "N"), updatedByUser);
 	}
 
 	@Override

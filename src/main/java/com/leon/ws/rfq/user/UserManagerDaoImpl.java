@@ -93,6 +93,6 @@ public class UserManagerDaoImpl implements UserManagerDao
 	@Override
 	public boolean updateValidity(String userId, boolean isValid, String updatedByUser)
 	{
-		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_USER_VALIDITY, userId, (isValid ? 'Y' : 'N'), updatedByUser);
+		return this.databaseExecutor.<UserDetailImpl>executePreparedStatement(UPDATE_USER_VALIDITY, userId, (isValid ? "Y" : "N"), updatedByUser);
 	}
 }
