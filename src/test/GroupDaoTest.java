@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -84,6 +85,15 @@ public class GroupDaoTest extends AbstractJUnit4SpringContextTests
 		
 		// Assert
 		assertNotNull("getGroupByGroupId method does not retrieve newly saved group", newGroup);
+	}
+	
+	@Test
+	public void test_getGroupByGroupId_RetrieveNonExistentGroup_ShouldReturnNull()
+	{
+		GroupDetailImpl newGroup = this.groupDao.getGroupByGroupId(Integer.MAX_VALUE);
+		
+		// Assert
+		assertNull("getGroupByGroupId method incorrectly retrieves non existent group", newGroup);
 	}
 	
 	@Test
