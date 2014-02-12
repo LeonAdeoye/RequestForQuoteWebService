@@ -114,7 +114,7 @@ public class GroupControllerImpl implements GroupController, ApplicationEventPub
 		if(logger.isDebugEnabled())
 			logger.debug("Received request to get a list of all groups.");
 		
-		return getAll();
+		return this.dao.getAll();
 	}
 
 	/**
