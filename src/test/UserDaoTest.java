@@ -147,19 +147,19 @@ public class UserDaoTest extends AbstractJUnit4SpringContextTests
 	{
 		// Arrange
 		UserDetailImpl savedUser = this.userDao.save("testUserId1", "firstName", "lastName",
-				"emailAddress1", "Tokyo", 1, "testUser");
+				"emailAddress1", "testLocation", 1, "testUser");
 		
 		this.userDao.save("testUserId2", "firstName", "lastName",
-				"emailAddress2", "Tokyo", 1, "testUser");
+				"emailAddress2", "testLocation", 1, "testUser");
 		
 		this.userDao.save("testUserId3", "firstName", "lastName",
-				"emailAddress3", "Tokyo", 1, "testUser");
+				"emailAddress3", "testLocation", 1, "testUser");
 		
 		// Act
-		List<UserDetailImpl> tokyoUsers = this.userDao.getUsersByLocation(savedUser.getLocationName());
+		List<UserDetailImpl> testLocationUsers = this.userDao.getUsersByLocation(savedUser.getLocationName());
 		
 		// Assert
-		assertEquals("getUsersByLocation method does not retrieve newly saved users", 3, tokyoUsers.size());
+		assertEquals("getUsersByLocation method does not retrieve newly saved users", 3, testLocationUsers.size());
 	}
 	
 	@Test
